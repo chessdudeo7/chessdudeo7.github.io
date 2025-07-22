@@ -35,17 +35,24 @@ export default function InterestsCarousel() {
     const slider = sliderRef.current;
     const card = slider.querySelector('.carousel-card');
     if (!card) return;
-  
-    const cardWidth = card.getBoundingClientRect().width;
-    const gap = 16; // Match this with your CSS gap
-    slider.scrollBy({ left: direction * (cardWidth + gap), behavior: 'smooth' });
+
+    const cardStyle = window.getComputedStyle(card);
+    const cardWidth = card.offsetWidth;
+    const gap = parseInt(cardStyle.marginRight); // margin between cards
+
+    slider.scrollBy({
+      left: direction * (cardWidth + gap),
+      behavior: 'smooth',
+    });
   };
 
   return (
     <section className="carousel-section">
       <h2>My Interests</h2>
-      <div className="carousel-container">
-        <button className="carousel-btn left" onClick={() => scrollCard(-1)}>&#10094;</button>
+      <div className="carousel-wrapper">
+        <button className="carousel-btn left" onClick={() => scrollCard(-1)}>
+          &#10094;
+        </button>
 
         <div className="carousel" ref={sliderRef}>
           {interests.map((item, idx) => (
@@ -56,7 +63,9 @@ export default function InterestsCarousel() {
           ))}
         </div>
 
-        <button className="carousel-btn right" onClick={() => scrollCard(1)}>&#10095;</button>
+        <button className="carousel-btn right" onClick={() => scrollCard(1)}>
+          &#10095;
+        </button>
       </div>
     </section>
   );
