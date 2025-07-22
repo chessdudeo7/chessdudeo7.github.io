@@ -34,8 +34,11 @@ export default function InterestsCarousel() {
   const scrollCard = (direction) => {
     const slider = sliderRef.current;
     const card = slider.querySelector('.carousel-card');
-    const cardWidth = card.offsetWidth + 16; // card width + margin
-    slider.scrollBy({ left: direction * cardWidth, behavior: 'smooth' });
+    if (!card) return;
+  
+    const cardWidth = card.getBoundingClientRect().width;
+    const gap = 16; // Match this with your CSS gap
+    slider.scrollBy({ left: direction * (cardWidth + gap), behavior: 'smooth' });
   };
 
   return (

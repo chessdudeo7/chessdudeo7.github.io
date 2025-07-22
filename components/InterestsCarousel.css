@@ -1,19 +1,19 @@
 .carousel-section {
-    padding: 4rem 2rem;
-    text-align: center;
+    padding: 4rem 1rem;
     background: #f7f9fc;
+    text-align: center;
   }
   
   .carousel-container {
     position: relative;
     max-width: 1000px;
-    margin: 2rem auto;
+    margin: 0 auto;
     overflow: hidden;
   }
   
   .carousel {
     display: flex;
-    gap: 1rem;
+    gap: 16px;
     overflow-x: auto;
     scroll-behavior: smooth;
     padding: 1rem 0;
@@ -29,8 +29,8 @@
     padding: 1.5rem;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
     text-align: left;
+    transition: transform 0.3s ease;
   }
   
   .carousel-card:hover {
@@ -38,9 +38,9 @@
   }
   
   .carousel-card h3 {
-    color: #007bff;
-    font-size: 1.1rem;
     margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    color: #007bff;
   }
   
   .carousel-card p {
@@ -51,7 +51,7 @@
   
   .carousel-btn {
     position: absolute;
-    top: 40%;
+    top: 50%;
     transform: translateY(-50%);
     background: #007bff;
     color: white;
@@ -61,7 +61,7 @@
     border-radius: 50%;
     cursor: pointer;
     z-index: 10;
-    opacity: 0.8;
+    opacity: 0.85;
     transition: background 0.3s ease;
   }
   
@@ -70,11 +70,11 @@
   }
   
   .carousel-btn.left {
-    left: -10px;
+    left: -20px;
   }
   
   .carousel-btn.right {
-    right: -10px;
+    right: -20px;
   }
   
   @media screen and (max-width: 600px) {
