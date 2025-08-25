@@ -67,6 +67,8 @@
       text-decoration: none;
       font-weight: 600;
       transition: background 0.3s ease;
+      border: none;
+      cursor: pointer;
     }
 
     .button:hover {
@@ -83,57 +85,67 @@
     }
 
     .review-section {
-    display: flex;
-    flex-direction: row;
-    gap: 40px;
-    flex-wrap: wrap;
+      display: flex;
+      flex-direction: row;
+      gap: 40px;
+      flex-wrap: wrap;
     }
 
     .review-list, .review-form {
-    flex: 1 1 400px;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    color: #333;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      flex: 1 1 400px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      color: #333;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .review-list p {
-    margin-bottom: 10px;
+      margin-bottom: 10px;
     }
 
     .review-form h3 {
-    margin-bottom: 10px;
+      margin-bottom: 10px;
     }
 
     .review-form label {
-    display: block;
-    margin-top: 15px;
-    font-weight: 600;
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
     }
 
-    textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    resize: vertical;
-    font-family: 'Poppins', sans-serif;
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-family: 'Poppins', sans-serif;
     }
 
     .stars {
-    font-size: 24px;
-    margin-top: 5px;
-    cursor: pointer;
-    user-select: none;
+      font-size: 24px;
+      margin-top: 5px;
+      cursor: pointer;
+      user-select: none;
     }
 
     .stars span {
-    color: #bbb;
-    transition: color 0.2s ease;
+      color: #bbb;
+      transition: color 0.2s ease;
     }
 
+    .stars span.selected {
+      color: #ffc107;
+    }
+
+    /* Star hover effect */
+    .stars span:hover,
+    .stars span:hover ~ span {
+    color: #ffc107;
+    }
+
+    /* Keep selected stars yellow even after hover ends */
     .stars span.selected {
     color: #ffc107;
     }
@@ -162,34 +174,35 @@
     </section>
 
     <section class="section" id="reviews">
-    <h2>Student/Parent Reviews</h2>
-    <div class="review-section">
-        
+      <h2>Student/Parent Reviews</h2>
+      <div class="review-section">
         <!-- Left: Review Display -->
         <div class="review-list" id="review-list">
-        <p>No reviews yet. Be the first!</p>
+          <p>No reviews yet. Be the first!</p>
         </div>
 
         <!-- Right: Add Review -->
         <div class="review-form">
-        <h3>Leave a Review</h3>
-        <label for="rating">Rating:</label>
-        <div id="star-rating" class="stars">
-            <!-- 5 clickable stars -->
-            <span data-value="1">&#9734;</span>
-            <span data-value="2">&#9734;</span>
-            <span data-value="3">&#9734;</span>
-            <span data-value="4">&#9734;</span>
-            <span data-value="5">&#9734;</span>
-        </div>
-        
-        <label for="review-text">Your Review:</label>
-        <textarea id="review-text" rows="4" placeholder="Write your thoughts here..."></textarea>
+          <h3>Leave a Review</h3>
 
-        <button id="submit-review" class="button">Submit Review</button>
-        </div>
+          <label for="name">Your Name (optional):</label>
+          <input type="text" id="review-name" placeholder="Your name" />
 
-    </div>
+          <label for="rating">Rating:</label>
+          <div id="star-rating" class="stars">
+            <span data-value="1">&#9733;</span>
+            <span data-value="2">&#9733;</span>
+            <span data-value="3">&#9733;</span>
+            <span data-value="4">&#9733;</span>
+            <span data-value="5">&#9733;</span>
+          </div>
+
+          <label for="review-text">Your Review:</label>
+          <textarea id="review-text" rows="4" placeholder="Write your thoughts here..."></textarea>
+
+          <button id="submit-review" class="button">Submit Review</button>
+        </div>
+      </div>
     </section>
 
     <section class="section">
@@ -203,97 +216,94 @@
     &copy; 2025 Matthew Zhu. All rights reserved.
   </footer>
 
-<!-- Firebase SDKs -->
-<script type="module">
-  // Import Firebase modules from CDN
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  <!-- Firebase SDKs + Review Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  // ✅ Your Firebase config (replace with your actual info)
-  const firebaseConfig = {
-  apiKey: "AIzaSyD7WVCD-O23S5g9QZTfPRiUf63tu7bLaCM",
-  authDomain: "personal-website-4889a.firebaseapp.com",
-  projectId: "personal-website-4889a",
-  storageBucket: "personal-website-4889a.firebasestorage.app",
-  messagingSenderId: "884740731820",
-  appId: "1:884740731820:web:057d078a088337dc660009",
-  measurementId: "G-2NYM4HBJBT"
-};
+    const firebaseConfig = {
+      apiKey: "AIzaSyD7WVCD-O23S5g9QZTfPRiUf63tu7bLaCM",
+      authDomain: "personal-website-4889a.firebaseapp.com",
+      projectId: "personal-website-4889a",
+      storageBucket: "personal-website-4889a.appspot.com",
+      messagingSenderId: "884740731820",
+      appId: "1:884740731820:web:057d078a088337dc660009",
+      measurementId: "G-2NYM4HBJBT"
+    };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-  const reviewList = document.getElementById('review-list');
-  const submitBtn = document.getElementById('submit-review');
-  const reviewText = document.getElementById('review-text');
-  const stars = document.querySelectorAll('#star-rating span');
+    const reviewList = document.getElementById('review-list');
+    const submitBtn = document.getElementById('submit-review');
+    const reviewText = document.getElementById('review-text');
+    const reviewName = document.getElementById('review-name');
+    const stars = document.querySelectorAll('#star-rating span');
 
-  let selectedRating = 0;
+    let selectedRating = 0;
 
-  // Select star
-  stars.forEach(star => {
-    star.addEventListener('click', () => {
-      selectedRating = parseInt(star.dataset.value);
-      stars.forEach(s => {
-        s.classList.toggle('selected', parseInt(s.dataset.value) <= selectedRating);
+    stars.forEach(star => {
+      star.addEventListener('click', () => {
+        selectedRating = parseInt(star.dataset.value);
+        stars.forEach(s => {
+          s.classList.toggle('selected', parseInt(s.dataset.value) <= selectedRating);
+        });
       });
     });
-  });
 
-  // Submit review to Firestore
-  submitBtn.addEventListener('click', async () => {
-    const text = reviewText.value.trim();
-    if (selectedRating === 0 || text === '') {
-      alert("Please select a rating and write a review.");
-      return;
-    }
+    submitBtn.addEventListener('click', async () => {
+      const text = reviewText.value.trim();
+      const name = reviewName.value.trim() || "Anonymous";
 
-    try {
-      await addDoc(collection(db, "reviews"), {
-        rating: selectedRating,
-        text,
-        created: serverTimestamp()
-      });
+      if (selectedRating === 0 || text === '') {
+        alert("Please select a rating and write a review.");
+        return;
+      }
 
-      reviewText.value = '';
-      selectedRating = 0;
-      stars.forEach(s => s.classList.remove('selected'));
+      try {
+        await addDoc(collection(db, "reviews"), {
+          name,
+          rating: selectedRating,
+          text,
+          created: serverTimestamp()
+        });
 
-      loadReviews(); // Refresh list
-    } catch (e) {
-      console.error("Error adding review: ", e);
-    }
-  });
+        reviewText.value = '';
+        reviewName.value = '';
+        selectedRating = 0;
+        stars.forEach(s => s.classList.remove('selected'));
 
-  // Load reviews from Firestore
-  async function loadReviews() {
-    reviewList.innerHTML = "";
-    const snapshot = await getDocs(collection(db, "reviews"));
-    const reviews = snapshot.docs.map(doc => doc.data());
-
-    if (reviews.length === 0) {
-      reviewList.innerHTML = "<p>No reviews yet. Be the first!</p>";
-      return;
-    }
-
-    // Sort by newest
-    reviews.sort((a, b) => b.created?.seconds - a.created?.seconds);
-
-    reviews.forEach(r => {
-      const item = document.createElement("div");
-      item.innerHTML = `
-        <p><strong>${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</strong></p>
-        <p>${r.text}</p>
-        <hr />
-      `;
-      reviewList.appendChild(item);
+        loadReviews();
+      } catch (e) {
+        console.error("Error adding review: ", e);
+      }
     });
-  }
 
-  // Call on load
-  loadReviews();
-</script>
+    async function loadReviews() {
+      reviewList.innerHTML = "";
+      const snapshot = await getDocs(collection(db, "reviews"));
+      const reviews = snapshot.docs.map(doc => doc.data());
 
+      if (reviews.length === 0) {
+        reviewList.innerHTML = "<p>No reviews yet. Be the first!</p>";
+        return;
+      }
+
+      reviews.sort((a, b) => b.created?.seconds - a.created?.seconds);
+
+      reviews.forEach(r => {
+        const item = document.createElement("div");
+        item.innerHTML = `
+          <p><strong>${r.name}</strong></p>
+          <p style="color: #ffc107;">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</p>
+          <p>${r.text}</p>
+          <hr />
+        `;
+        reviewList.appendChild(item);
+      });
+    }
+
+    loadReviews();
+  </script>
 </body>
 </html>
