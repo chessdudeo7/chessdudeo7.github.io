@@ -130,32 +130,35 @@
       user-select: none;
     }
 
-    .stars span {
-      color: #bbb;
-      transition: color 0.2s ease;
-    }
-
-    .stars span.selected {
-      color: #ffc107;
-    }
-
-    /* Star hover effect */
-    .stars span:hover,
-    .stars span:hover ~ span {
-    color: #ffc107;
-    }
-
-    /* Keep selected stars yellow even after hover ends */
-    .stars span.selected {
-    color: #ffc107;
-    }
-
     .stars {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     }
-  </style>
+
+    .stars span {
+    color: #bbb;
+    transition: color 0.2s ease;
+    }
+
+    .stars span:hover,
+    .stars span:hover ~ span {
+    color: #bbb; /* Reset others */
+    }
+
+    /* Hover effect from left to right */
+    .stars span:hover {
+    color: #ffc107;
+    }
+    .stars span:hover ~ span {
+    color: #ffc107;
+    }
+
+    /* Keep selected stars yellow */
+    .stars span.selected {
+    color: #ffc107;
+    }  
+</style>
 </head>
 <body>
 
