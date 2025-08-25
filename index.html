@@ -12,30 +12,23 @@
       padding: 0;
     }
 
-    body {
+    body, html {
+      height: 100%;
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #e0f7fa, #e1bee7);
       color: #333;
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 20px;
       text-align: center;
+      padding: 20px;
     }
 
     h1 {
       color: #673ab7;
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
-
-    p {
-      font-size: 1.2rem;
+      font-size: 4rem;
       margin-bottom: 2rem;
-      max-width: 400px;
-      color: #555;
     }
 
     .button-group {
@@ -52,10 +45,11 @@
       border-radius: 8px;
       text-decoration: none;
       font-weight: 600;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       box-shadow: 0 4px 10px rgba(103, 58, 183, 0.3);
       transition: background-color 0.3s ease;
       user-select: none;
+      min-width: 120px;
     }
 
     a.button:hover {
@@ -63,8 +57,10 @@
     }
 
     footer {
-      margin-top: auto;
-      padding: 15px;
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
       font-size: 0.9rem;
       color: #777;
     }
@@ -72,8 +68,7 @@
 </head>
 <body>
 
-  <h1>Welcome to Matthew Zhu's Site</h1>
-  <p>Your gateway to my projects, tutoring, and more.</p>
+  <h1>Welcome</h1>
 
   <div class="button-group">
     <a href="profile.html" class="button">Profile</a>
