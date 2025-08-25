@@ -93,88 +93,109 @@
 
     /* --- Planets (small glowing balls) --- */
     .planet {
-      position: fixed;
-      border-radius: 50%;
-      filter: drop-shadow(0 0 8px);
-      opacity: 0.8;
-      animation: float 8s ease-in-out infinite alternate;
-      pointer-events: none;
-      z-index: 2;
-    }
+    position: fixed;
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: float 8s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 2;
+    background: #eee; /* subtle white */
+    box-shadow: 0 0 6px rgba(255,255,255,0.4);
+  }
 
-    @keyframes float {
-      from { transform: translateY(0); }
-      to { transform: translateY(-15px); }
-    }
+  .planet1 {
+    width: 40px;
+    height: 40px;
+    animation-delay: 0s;
+  }
 
-    /* Different planet colors */
-    .planet1 {
-      background: radial-gradient(circle at 30% 30%, #6ee7ff, #3f51b5);
-      width: 40px;
-      height: 40px;
-      box-shadow: 0 0 20px #6ee7ff;
-      animation-delay: 0s;
-    }
+  .planet2 {
+    width: 30px;
+    height: 30px;
+    animation-delay: 3s;
+  }
 
-    .planet2 {
-      background: radial-gradient(circle at 40% 40%, #ff9a9e, #fad0c4);
-      width: 30px;
-      height: 30px;
-      box-shadow: 0 0 15px #ff9a9e;
-      animation-delay: 3s;
-    }
+  .planet3 {
+    width: 50px;
+    height: 50px;
+    animation-delay: 5s;
+  }
 
-    .planet3 {
-      background: radial-gradient(circle at 50% 50%, #a0e7e5, #b4f8c8);
-      width: 50px;
-      height: 50px;
-      box-shadow: 0 0 25px #a0e7e5;
-      animation-delay: 5s;
-    }
+  .planet4 {
+    width: 35px;
+    height: 35px;
+    animation-delay: 2s;
+  }
 
-    .planet4 {
-      background: radial-gradient(circle at 50% 50%, #fbc7aa, #f9f5f0);
-      width: 35px;
-      height: 35px;
-      box-shadow: 0 0 18px #fbc7aa;
-      animation-delay: 2s;
-    }
+  /* --- Comet --- */
+  .comet {
+    position: fixed;
+    top: 15%;
+    left: -120px;
+    width: 100px;
+    height: 30px;
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0;
 
-    /* --- Comet --- */
-    .comet {
-      position: fixed;
-      top: 10%;
-      left: -150px;
-      width: 80px;
-      height: 4px;
-      background: linear-gradient(90deg, #fff, rgba(255,255,255,0));
-      border-radius: 2px;
-      box-shadow: 0 0 15px 5px #fff;
-      filter: drop-shadow(0 0 10px #fff);
+    /* Create a comet shape with a glowing head and a tapered tail */
+    background:
+      radial-gradient(circle at 20% 50%, #fff, rgba(255,255,255,0) 70%),
+      linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0));
+    background-repeat: no-repeat;
+    background-size: 40% 100%, 60% 100%;
+
+    filter: drop-shadow(0 0 8px #fff);
+    border-radius: 50% / 50%;
+    transform-origin: center;
+  }
+
+  @keyframes comet-fly {
+    0% {
+      left: -120px;
+      top: 15%;
+      opacity: 1;
+      transform: rotate(30deg) translateX(0) translateY(0);
+    }
+    50% {
+      /* Midway slightly arcs downward */
+      top: 25%;
+      transform: rotate(30deg) translateX(50vw) translateY(20vh);
+      opacity: 1;
+    }
+    100% {
+      left: 110%;
+      top: 35%;
       opacity: 0;
-      z-index: 3;
-      pointer-events: none;
-      transform: rotate(30deg);
-      animation-fill-mode: forwards;
+      transform: rotate(30deg) translateX(100vw) translateY(40vh);
     }
+  }
+</style>
 
-    @keyframes comet-fly {
-      0% {
-        left: -150px;
-        top: 10%;
-        opacity: 1;
-      }
-      80% {
-        left: 110%;
-        top: 30%;
-        opacity: 1;
-      }
-      100% {
-        left: 110%;
-        top: 30%;
-        opacity: 0;
-      }
-    }
+<!-- Planets -->
+<div class="planet planet1" style="top: 10%; left: 20%;"></div>
+<div class="planet planet2" style="top: 50%; left: 10%;"></div>
+<div class="planet planet3" style="top: 35%; left: 70%;"></div>
+<div class="planet planet4" style="top: 75%; left: 50%;"></div>
+
+<!-- Comet -->
+<div class="comet" id="comet"></div>
+
+<script>
+  const comet = document.getElementById('comet');
+
+  function flyComet() {
+    comet.style.animation = 'none'; // Reset animation
+    comet.offsetHeight; // Trigger reflow
+    comet.style.animation = 'comet-fly 5s ease-in-out forwards';
+  }
+
+  // Initial comet fly after 3 seconds, then every 15 seconds
+  setTimeout(() => {
+    flyComet();
+    setInterval(flyComet, 15000);
+  }, 3000);
+</script>
 
   </style>
 </head>
@@ -217,8 +238,6 @@
     }
 
     // Comet animation trigger every 15 seconds
-    const comet = document.getElementById('comet');
-
     function flyComet() {
       comet.style.animation = 'none'; // reset animation
       comet.offsetHeight; // trigger reflow
