@@ -203,15 +203,35 @@
     &copy; 2025 Matthew Zhu. All rights reserved.
   </footer>
 
-<script>
-  const stars = document.querySelectorAll('#star-rating span');
-  const reviewText = document.getElementById('review-text');
-  const submitBtn = document.getElementById('submit-review');
+<!-- Firebase SDKs -->
+<script type="module">
+  // Import Firebase modules from CDN
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  // ✅ Your Firebase config (replace with your actual info)
+  const firebaseConfig = {
+  apiKey: "AIzaSyD7WVCD-O23S5g9QZTfPRiUf63tu7bLaCM",
+  authDomain: "personal-website-4889a.firebaseapp.com",
+  projectId: "personal-website-4889a",
+  storageBucket: "personal-website-4889a.firebasestorage.app",
+  messagingSenderId: "884740731820",
+  appId: "1:884740731820:web:057d078a088337dc660009",
+  measurementId: "G-2NYM4HBJBT"
+};
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
   const reviewList = document.getElementById('review-list');
+  const submitBtn = document.getElementById('submit-review');
+  const reviewText = document.getElementById('review-text');
+  const stars = document.querySelectorAll('#star-rating span');
 
   let selectedRating = 0;
 
-  // Star selection logic
+  // Select star
   stars.forEach(star => {
     star.addEventListener('click', () => {
       selectedRating = parseInt(star.dataset.value);
@@ -221,27 +241,58 @@
     });
   });
 
-  // Submit review
-  submitBtn.addEventListener('click', () => {
+  // Submit review to Firestore
+  submitBtn.addEventListener('click', async () => {
     const text = reviewText.value.trim();
     if (selectedRating === 0 || text === '') {
-      alert("Please select a rating and enter a review.");
+      alert("Please select a rating and write a review.");
       return;
     }
 
-    const reviewItem = document.createElement('div');
-    reviewItem.innerHTML = `
-      <p><strong>${'★'.repeat(selectedRating)}${'☆'.repeat(5 - selectedRating)}</strong></p>
-      <p>${text}</p>
-      <hr />
-    `;
-    reviewList.prepend(reviewItem); // Add new review at the top
+    try {
+      await addDoc(collection(db, "reviews"), {
+        rating: selectedRating,
+        text,
+        created: serverTimestamp()
+      });
 
-    // Reset form
-    selectedRating = 0;
-    stars.forEach(s => s.classList.remove('selected'));
-    reviewText.value = '';
+      reviewText.value = '';
+      selectedRating = 0;
+      stars.forEach(s => s.classList.remove('selected'));
+
+      loadReviews(); // Refresh list
+    } catch (e) {
+      console.error("Error adding review: ", e);
+    }
   });
+
+  // Load reviews from Firestore
+  async function loadReviews() {
+    reviewList.innerHTML = "";
+    const snapshot = await getDocs(collection(db, "reviews"));
+    const reviews = snapshot.docs.map(doc => doc.data());
+
+    if (reviews.length === 0) {
+      reviewList.innerHTML = "<p>No reviews yet. Be the first!</p>";
+      return;
+    }
+
+    // Sort by newest
+    reviews.sort((a, b) => b.created?.seconds - a.created?.seconds);
+
+    reviews.forEach(r => {
+      const item = document.createElement("div");
+      item.innerHTML = `
+        <p><strong>${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</strong></p>
+        <p>${r.text}</p>
+        <hr />
+      `;
+      reviewList.appendChild(item);
+    });
+  }
+
+  // Call on load
+  loadReviews();
 </script>
 
 </body>

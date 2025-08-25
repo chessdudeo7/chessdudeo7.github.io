@@ -17,33 +17,32 @@
       font-family: 'Poppins', sans-serif;
       color: white;
       overflow: hidden;
+      background: black;
     }
 
+    /* Starry background layers */
     .stars, .stars2, .stars3 {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 0; left: 0; right: 0; bottom: 0;
       background: transparent;
       z-index: -1;
-      animation: moveStars 200s linear infinite;
     }
 
     .stars {
-      background: url('https://raw.githubusercontent.com/VincentGarreau/particles.js/master/demo/img/stars.png') repeat;
-      opacity: 0.5;
+      background: url('https://vincentgarreau.com/particles.js/assets/img/stars.png') repeat;
+      animation: moveStars 200s linear infinite;
+      opacity: 0.6;
     }
 
     .stars2 {
-      background: url('https://raw.githubusercontent.com/VincentGarreau/particles.js/master/demo/img/stars2.png') repeat;
-      animation-duration: 400s;
+      background: url('https://vincentgarreau.com/particles.js/assets/img/stars2.png') repeat;
+      animation: moveStars 400s linear infinite;
       opacity: 0.3;
     }
 
     .stars3 {
-      background: url('https://raw.githubusercontent.com/VincentGarreau/particles.js/master/demo/img/stars3.png') repeat;
-      animation-duration: 600s;
+      background: url('https://vincentgarreau.com/particles.js/assets/img/stars3.png') repeat;
+      animation: moveStars 600s linear infinite;
       opacity: 0.2;
     }
 
@@ -53,19 +52,19 @@
     }
 
     .container {
+      height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
-      height: 100%;
       padding: 20px;
     }
 
     h1 {
       font-size: 3rem;
       margin-bottom: 30px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
     }
 
     .buttons {
@@ -76,7 +75,7 @@
     }
 
     .button {
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.1);
       color: white;
       padding: 14px 28px;
       border: 2px solid white;
@@ -95,12 +94,13 @@
   </style>
 </head>
 <body>
-  <!-- Starry layers -->
+
+  <!-- Animated star layers -->
   <div class="stars"></div>
   <div class="stars2"></div>
   <div class="stars3"></div>
 
-  <!-- Main Content -->
+  <!-- Main content -->
   <div class="container">
     <h1>Welcome to My Site</h1>
     <div class="buttons">
@@ -108,5 +108,6 @@
       <a href="tutoring.html" class="button">Tutoring</a>
     </div>
   </div>
+
 </body>
 </html>
