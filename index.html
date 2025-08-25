@@ -2,255 +2,87 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Welcome</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welcome | Matthew Zhu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
     }
 
-    body, html {
-      height: 100%;
+    body {
       font-family: 'Poppins', sans-serif;
-      color: white;
-      background: black;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .container {
-      position: relative;
-      z-index: 10;
-      height: 100vh;
+      background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+      color: #333;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      padding: 20px;
       text-align: center;
-      padding: 0 20px;
     }
 
     h1 {
+      color: #673ab7;
       font-size: 3rem;
-      margin-bottom: 30px;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      margin-bottom: 1rem;
     }
 
-    .buttons {
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      max-width: 400px;
+      color: #555;
+    }
+
+    .button-group {
       display: flex;
-      flex-wrap: wrap;
       gap: 20px;
+      flex-wrap: wrap;
       justify-content: center;
     }
 
-    .button {
-      background: rgba(255, 255, 255, 0.1);
+    a.button {
+      background-color: #673ab7;
       color: white;
       padding: 14px 28px;
-      border: 2px solid white;
       border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
       text-decoration: none;
-      transition: background 0.3s ease, transform 0.2s ease;
+      font-weight: 600;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 10px rgba(103, 58, 183, 0.3);
+      transition: background-color 0.3s ease;
+      user-select: none;
     }
 
-    .button:hover {
-      background: rgba(255, 255, 255, 0.3);
-      transform: scale(1.05);
+    a.button:hover {
+      background-color: #5e35b1;
     }
 
-    /* --- Animated Background Stars --- */
-    .stars {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: transparent;
-      overflow: hidden;
-      z-index: 1;
-      top: 0;
-      left: 0;
-      pointer-events: none;
+    footer {
+      margin-top: auto;
+      padding: 15px;
+      font-size: 0.9rem;
+      color: #777;
     }
-
-    .star {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: white;
-      border-radius: 50%;
-      animation: twinkle 2s infinite ease-in-out alternate;
-    }
-
-    @keyframes twinkle {
-      from { opacity: 0.1; transform: scale(0.5); }
-      to { opacity: 1; transform: scale(1.2); }
-    }
-
-    /* --- Planets (small glowing balls) --- */
-    .planet {
-    position: fixed;
-    border-radius: 50%;
-    opacity: 0.3;
-    animation: float 8s ease-in-out infinite alternate;
-    pointer-events: none;
-    z-index: 2;
-    background: #eee; /* subtle white */
-    box-shadow: 0 0 6px rgba(255,255,255,0.4);
-  }
-
-  .planet1 {
-    width: 40px;
-    height: 40px;
-    animation-delay: 0s;
-  }
-
-  .planet2 {
-    width: 30px;
-    height: 30px;
-    animation-delay: 3s;
-  }
-
-  .planet3 {
-    width: 50px;
-    height: 50px;
-    animation-delay: 5s;
-  }
-
-  .planet4 {
-    width: 35px;
-    height: 35px;
-    animation-delay: 2s;
-  }
-
-  /* --- Comet --- */
-  .comet {
-    position: fixed;
-    top: 15%;
-    left: -120px;
-    width: 100px;
-    height: 30px;
-    pointer-events: none;
-    z-index: 3;
-    opacity: 0;
-
-    /* Create a comet shape with a glowing head and a tapered tail */
-    background:
-      radial-gradient(circle at 20% 50%, #fff, rgba(255,255,255,0) 70%),
-      linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0));
-    background-repeat: no-repeat;
-    background-size: 40% 100%, 60% 100%;
-
-    filter: drop-shadow(0 0 8px #fff);
-    border-radius: 50% / 50%;
-    transform-origin: center;
-  }
-
-  @keyframes comet-fly {
-    0% {
-      left: -120px;
-      top: 15%;
-      opacity: 1;
-      transform: rotate(30deg) translateX(0) translateY(0);
-    }
-    50% {
-      /* Midway slightly arcs downward */
-      top: 25%;
-      transform: rotate(30deg) translateX(50vw) translateY(20vh);
-      opacity: 1;
-    }
-    100% {
-      left: 110%;
-      top: 35%;
-      opacity: 0;
-      transform: rotate(30deg) translateX(100vw) translateY(40vh);
-    }
-  }
-</style>
-
-<!-- Planets -->
-<div class="planet planet1" style="top: 10%; left: 20%;"></div>
-<div class="planet planet2" style="top: 50%; left: 10%;"></div>
-<div class="planet planet3" style="top: 35%; left: 70%;"></div>
-<div class="planet planet4" style="top: 75%; left: 50%;"></div>
-
-<!-- Comet -->
-<div class="comet" id="comet"></div>
-
-<script>
-  const comet = document.getElementById('comet');
-
-  function flyComet() {
-    comet.style.animation = 'none'; // Reset animation
-    comet.offsetHeight; // Trigger reflow
-    comet.style.animation = 'comet-fly 5s ease-in-out forwards';
-  }
-
-  // Initial comet fly after 3 seconds, then every 15 seconds
-  setTimeout(() => {
-    flyComet();
-    setInterval(flyComet, 15000);
-  }, 3000);
-</script>
-
   </style>
 </head>
 <body>
 
-  <!-- Star container -->
-  <div class="stars" id="stars"></div>
+  <h1>Welcome to Matthew Zhu's Site</h1>
+  <p>Your gateway to my projects, tutoring, and more.</p>
 
-  <!-- Planets -->
-  <div class="planet planet1" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
-  <div class="planet planet2" style="top: 50%; left: 10%; animation-delay: 3s;"></div>
-  <div class="planet planet3" style="top: 35%; left: 70%; animation-delay: 5s;"></div>
-  <div class="planet planet4" style="top: 75%; left: 50%; animation-delay: 2s;"></div>
-
-  <!-- Comet -->
-  <div class="comet" id="comet"></div>
-
-  <!-- Content -->
-  <div class="container">
-    <h1>Welcome to My Site</h1>
-    <div class="buttons">
-      <a href="profile.html" class="button">View Profile</a>
-      <a href="tutoring.html" class="button">Tutoring</a>
-    </div>
+  <div class="button-group">
+    <a href="profile.html" class="button">Profile</a>
+    <a href="tutoring.html" class="button">Tutoring</a>
   </div>
 
-  <!-- JavaScript to generate stars -->
-  <script>
-    const starContainer = document.getElementById('stars');
-    const numStars = 150;
-
-    for (let i = 0; i < numStars; i++) {
-      const star = document.createElement('div');
-      star.classList.add('star');
-      star.style.top = `${Math.random() * 100}%`;
-      star.style.left = `${Math.random() * 100}%`;
-      star.style.animationDuration = `${Math.random() * 3 + 1}s`;
-      star.style.opacity = Math.random();
-      starContainer.appendChild(star);
-    }
-
-    // Comet animation trigger every 15 seconds
-    function flyComet() {
-      comet.style.animation = 'none'; // reset animation
-      comet.offsetHeight; // trigger reflow
-      comet.style.animation = 'comet-fly 4s linear forwards';
-    }
-
-    // Initial fly after 3 seconds
-    setTimeout(() => {
-      flyComet();
-      // Then every 15 seconds
-      setInterval(flyComet, 15000);
-    }, 3000);
-  </script>
+  <footer>
+    &copy; 2025 Matthew Zhu. All rights reserved.
+  </footer>
 
 </body>
 </html>
