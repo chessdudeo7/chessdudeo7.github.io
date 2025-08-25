@@ -152,8 +152,8 @@
 
     .stars {
     display: flex;
-    flex-direction: row-reverse;
-    justify-content: flex-end;
+    flex-direction: row;
+    justify-content: flex-start;
     }
   </style>
 </head>
@@ -176,6 +176,7 @@
         <li>Mathematics (Grade 1 to Grade 12)</li>
         <li>Physics (Grade 9 to Grade 12)</li>
         <li>Chemistry (Grade 9 to Grade 12)</li>
+        <li>Other subjects may be available upon request</li>
       </ul>
     </section>
 
@@ -195,13 +196,13 @@
           <input type="text" id="review-name" placeholder="Your name" />
 
           <label for="rating">Rating:</label>
-          <div id="star-rating" class="stars">
-            <span data-value="5">&#9733;</span>
-            <span data-value="4">&#9733;</span>
-            <span data-value="3">&#9733;</span>
-            <span data-value="2">&#9733;</span>
+            <div id="star-rating" class="stars">
             <span data-value="1">&#9733;</span>
-        </div>
+            <span data-value="2">&#9733;</span>
+            <span data-value="3">&#9733;</span>
+            <span data-value="4">&#9733;</span>
+            <span data-value="5">&#9733;</span>
+            </div>
           <label for="review-text">Your Review:</label>
           <textarea id="review-text" rows="4" placeholder="Write your thoughts here..."></textarea>
 
