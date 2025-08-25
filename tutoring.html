@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tutoring | Matthew Zhu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: #673ab7;
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .section {
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      color: #673ab7;
+      margin-bottom: 16px;
+    }
+
+    p {
+      line-height: 1.6;
+    }
+
+    ul {
+      padding-left: 20px;
+      line-height: 1.8;
+    }
+
+    .button {
+      display: inline-block;
+      margin-top: 20px;
+      background-color: #673ab7;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #5e35b1;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #f3e5f5;
+      margin-top: auto;
+      font-size: 0.9em;
+      color: #555;
+    }
+
+    .review-section {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    flex-wrap: wrap;
+    }
+
+    .review-list, .review-form {
+    flex: 1 1 400px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    color: #333;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .review-list p {
+    margin-bottom: 10px;
+    }
+
+    .review-form h3 {
+    margin-bottom: 10px;
+    }
+
+    .review-form label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 600;
+    }
+
+    textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    resize: vertical;
+    font-family: 'Poppins', sans-serif;
+    }
+
+    .stars {
+    font-size: 24px;
+    margin-top: 5px;
+    cursor: pointer;
+    user-select: none;
+    }
+
+    .stars span {
+    color: #bbb;
+    transition: color 0.2s ease;
+    }
+
+    .stars span.selected {
+    color: #ffc107;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Matthew Zhu | Tutoring</h1>
+  </header>
+
+  <div class="container">
+    <section class="section">
+      <h2>About My Tutoring</h2>
+      <p>I'm passionate about helping students reach their full potential. Whether you're struggling to grasp a concept or aiming to get ahead, I offer tailored sessions to meet your needs in a clear and engaging way.</p>
+    </section>
+
+    <section class="section">
+      <h2>Subjects I Tutor</h2>
+      <ul>
+        <li>Mathematics (Middle School through Calculus)</li>
+        <li>Computer Science (Python, Java, Algorithms, Web Dev)</li>
+        <li>Chess (Beginner to Advanced)</li>
+        <li>Study Skills & Academic Coaching</li>
+      </ul>
+    </section>
+
+    <section class="section" id="reviews">
+    <h2>Student/Parent Reviews</h2>
+    <div class="review-section">
+        
+        <!-- Left: Review Display -->
+        <div class="review-list" id="review-list">
+        <p>No reviews yet. Be the first!</p>
+        </div>
+
+        <!-- Right: Add Review -->
+        <div class="review-form">
+        <h3>Leave a Review</h3>
+        <label for="rating">Rating:</label>
+        <div id="star-rating" class="stars">
+            <!-- 5 clickable stars -->
+            <span data-value="1">&#9734;</span>
+            <span data-value="2">&#9734;</span>
+            <span data-value="3">&#9734;</span>
+            <span data-value="4">&#9734;</span>
+            <span data-value="5">&#9734;</span>
+        </div>
+        
+        <label for="review-text">Your Review:</label>
+        <textarea id="review-text" rows="4" placeholder="Write your thoughts here..."></textarea>
+
+        <button id="submit-review" class="button">Submit Review</button>
+        </div>
+
+    </div>
+    </section>
+
+    <section class="section">
+      <h2>Session Info & Availability</h2>
+      <p>I offer both in-person and online sessions. I'm flexible with scheduling and aim to accommodate busy student routines. Pricing and specific time slots available upon request.</p>
+      <a href="mailto:your.email@example.com" class="button">Contact Me</a>
+    </section>
+  </div>
+
+  <footer>
+    &copy; 2025 Matthew Zhu. All rights reserved.
+  </footer>
+
+<script>
+  const stars = document.querySelectorAll('#star-rating span');
+  const reviewText = document.getElementById('review-text');
+  const submitBtn = document.getElementById('submit-review');
+  const reviewList = document.getElementById('review-list');
+
+  let selectedRating = 0;
+
+  // Star selection logic
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      selectedRating = parseInt(star.dataset.value);
+      stars.forEach(s => {
+        s.classList.toggle('selected', parseInt(s.dataset.value) <= selectedRating);
+      });
+    });
+  });
+
+  // Submit review
+  submitBtn.addEventListener('click', () => {
+    const text = reviewText.value.trim();
+    if (selectedRating === 0 || text === '') {
+      alert("Please select a rating and enter a review.");
+      return;
+    }
+
+    const reviewItem = document.createElement('div');
+    reviewItem.innerHTML = `
+      <p><strong>${'★'.repeat(selectedRating)}${'☆'.repeat(5 - selectedRating)}</strong></p>
+      <p>${text}</p>
+      <hr />
+    `;
+    reviewList.prepend(reviewItem); // Add new review at the top
+
+    // Reset form
+    selectedRating = 0;
+    stars.forEach(s => s.classList.remove('selected'));
+    reviewText.value = '';
+  });
+</script>
+
+</body>
+</html>

@@ -7,57 +7,100 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
-    body {
+    body, html {
+      height: 100%;
       font-family: 'Poppins', sans-serif;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #667eea, #764ba2);
       color: white;
-      text-align: center;
+      overflow: hidden;
+    }
+
+    .stars, .stars2, .stars3 {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: transparent;
+      z-index: -1;
+      animation: moveStars 200s linear infinite;
+    }
+
+    .stars {
+      background: url('https://raw.githubusercontent.com/VincentGarreau/particles.js/master/demo/img/stars.png') repeat;
+      opacity: 0.5;
+    }
+
+    .stars2 {
+      background: url('https://raw.githubusercontent.com/VincentGarreau/particles.js/master/demo/img/stars2.png') repeat;
+      animation-duration: 400s;
+      opacity: 0.3;
+    }
+
+    .stars3 {
+      background: url('https://raw.githubusercontent.com/VincentGarreau/particles.js/master/demo/img/stars3.png') repeat;
+      animation-duration: 600s;
+      opacity: 0.2;
+    }
+
+    @keyframes moveStars {
+      from { background-position: 0 0; }
+      to { background-position: -10000px 5000px; }
     }
 
     .container {
-      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      height: 100%;
+      padding: 20px;
     }
 
     h1 {
-      font-size: 3em;
+      font-size: 3rem;
       margin-bottom: 30px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
     }
 
     .buttons {
       display: flex;
-      justify-content: center;
-      gap: 20px;
       flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
     }
 
     .button {
-      background-color: #ffffff;
-      color: #333;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
       padding: 14px 28px;
-      border: none;
+      border: 2px solid white;
       border-radius: 8px;
       font-size: 16px;
       font-weight: 600;
       cursor: pointer;
       text-decoration: none;
-      transition: all 0.3s ease;
+      transition: background 0.3s ease, transform 0.2s ease;
     }
 
     .button:hover {
-      background-color: #e0e0e0;
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
     }
   </style>
 </head>
 <body>
+  <!-- Starry layers -->
+  <div class="stars"></div>
+  <div class="stars2"></div>
+  <div class="stars3"></div>
+
+  <!-- Main Content -->
   <div class="container">
     <h1>Welcome to My Site</h1>
     <div class="buttons">
