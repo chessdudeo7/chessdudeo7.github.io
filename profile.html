@@ -2,10 +2,288 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Matthew Zhu</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body, html {
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+      color: #333;
+      scroll-behavior: smooth;
+    }
+
+    /* Navbar */
+    nav.navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 32px;
+      background-color: #673ab7;
+      color: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav .logo {
+      font-weight: 700;
+      font-size: 1.8rem;
+    }
+
+    nav ul.nav-links {
+      list-style: none;
+      display: flex;
+      gap: 24px;
+    }
+
+    nav ul.nav-links li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    nav ul.nav-links li a:hover {
+      color: #b39ddb;
+    }
+
+    /* Hero Section */
+    header.hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 80px 20px 60px;
+    }
+
+    header.hero h1 {
+      font-size: 3.5rem;
+      color: #673ab7;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    header.hero h1 span {
+      color: #4527a0;
+    }
+
+    header.hero p {
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin-bottom: 24px;
+      color: #4a148c;
+    }
+
+    .hero-links a {
+      display: inline-block;
+      background-color: #673ab7;
+      color: white;
+      padding: 12px 28px;
+      border-radius: 8px;
+      margin: 0 10px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      text-decoration: none;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .hero-links a:hover {
+      background-color: #5e35b1;
+    }
+
+    /* Section Styling */
+    .section {
+      max-width: 900px;
+      margin: 0 auto 60px;
+      padding: 0 20px;
+      color: #333;
+    }
+
+    .section h2 {
+      font-size: 2.2rem;
+      color: #673ab7;
+      margin-bottom: 18px;
+      font-weight: 700;
+      border-bottom: 3px solid #b39ddb;
+      display: inline-block;
+      padding-bottom: 6px;
+      margin-bottom: 24px;
+    }
+
+    .section p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    /* Project Cards */
+    .project-card {
+      background: white;
+      padding: 20px 24px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+
+    .project-card h3 {
+      font-weight: 700;
+      color: #4527a0;
+      margin-bottom: 8px;
+    }
+
+    .project-card p {
+      margin-bottom: 12px;
+      color: #555;
+    }
+
+    .project-card a {
+      color: #673ab7;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .project-card a:hover {
+      color: #5e35b1;
+    }
+
+    /* Slider (Interests) */
+    .slider-container {
+      position: relative;
+      max-width: 900px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+    }
+
+    .slider {
+      display: flex;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      gap: 16px;
+      padding-bottom: 10px;
+      scrollbar-width: thin;
+      scrollbar-color: #673ab7 #ddd;
+    }
+
+    .slider::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .slider::-webkit-scrollbar-thumb {
+      background: #673ab7;
+      border-radius: 10px;
+    }
+
+    .slide {
+      flex: 0 0 220px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.07);
+      text-align: center;
+    }
+
+    .slide h3 {
+      margin-bottom: 12px;
+      color: #5e35b1;
+      font-weight: 700;
+      font-size: 1.3rem;
+    }
+
+    .slide p {
+      font-size: 1rem;
+      color: #555;
+      line-height: 1.4;
+    }
+
+    /* Slider Buttons */
+    .slide-btn {
+      background-color: #673ab7;
+      border: none;
+      color: white;
+      font-size: 2rem;
+      padding: 10px 16px;
+      border-radius: 50%;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease;
+      margin: 0 8px;
+    }
+
+    .slide-btn:hover {
+      background-color: #5e35b1;
+    }
+
+    /* Resume Button */
+    .button {
+      background-color: #673ab7;
+      color: white;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      text-decoration: none;
+      display: inline-block;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #5e35b1;
+    }
+
+    /* Contact Section */
+    #contact p {
+      font-size: 1.1rem;
+    }
+
+    #contact a {
+      color: #673ab7;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    #contact a:hover {
+      color: #5e35b1;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      header.hero h1 {
+        font-size: 2.4rem;
+      }
+      header.hero p {
+        font-size: 1rem;
+      }
+      nav.navbar {
+        flex-direction: column;
+        gap: 12px;
+      }
+      nav ul.nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+      }
+      .slider-container {
+        flex-direction: column;
+      }
+      .slide-btn {
+        margin: 12px 0;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -23,17 +301,17 @@
     <h1>Hi, I'm <span>Matthew Zhu</span></h1>
     <p>CS student | Developer | Tech Enthusiast</p>
     <div class="hero-links">
-      <a href="https://github.com/chessdudeo7" target="_blank">GitHub</a>
-      <a href="https://linkedin.com/in/yourusername" target="_blank">LinkedIn</a>
+      <a href="https://github.com/chessdudeo7" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer">LinkedIn</a>
     </div>
   </header>
 
-  <section id="about" class="section fade-in">
+  <section id="about" class="section">
     <h2>About Me</h2>
     <p>I’m a computer science student passionate about building useful, creative software and learning new technologies. I enjoy solving problems, working on side projects, and sharing knowledge.</p>
   </section>
 
-  <section id="projects" class="section fade-in">
+  <section id="projects" class="section">
     <h2>Projects</h2>
     <div class="project-card">
       <h3>Chess4All</h3>
@@ -50,9 +328,9 @@
   <section id="interests" class="section">
     <h2>My Interests</h2>
     <div class="slider-container">
-      <button class="slide-btn left">&#10094;</button>
-  
-      <div class="slider" id="slider">
+      <button class="slide-btn left" aria-label="Scroll left">&#10094;</button>
+
+      <div class="slider" id="slider" tabindex="0" aria-live="polite">
         <div class="slide">
           <h3>🎧 Music Production</h3>
           <p>I enjoy playing and listening many genres of music.</p>
@@ -78,21 +356,38 @@
           <p>I want to visit and explore countries all around the world.</p>
         </div>
       </div>
-  
-      <button class="slide-btn right">&#10095;</button>
+
+      <button class="slide-btn right" aria-label="Scroll right">&#10095;</button>
     </div>
   </section>
 
-  <section id="resume" class="section fade-in">
+  <section id="resume" class="section">
     <h2>Resume</h2>
-    <a class="button" href="resume.pdf" target="_blank">Download Resume (PDF)</a>
+    <a class="button" href="resume.pdf" target="_blank" rel="noopener noreferrer">Download Resume (PDF)</a>
   </section>
 
-  <section id="contact" class="section fade-in">
+  <section id="contact" class="section">
     <h2>Contact</h2>
     <p>Email: <a href="mailto:matthewzhu99@gmail.com">matthewzhu99@gmail.com</a></p>
   </section>
 
-  <script src="script.js"></script>
+  <script>
+    // Simple slider buttons functionality
+    const slider = document.getElementById('slider');
+    const btnLeft = document.querySelector('.slide-btn.left');
+    const btnRight = document.querySelector('.slide-btn.right');
+
+    btnLeft.addEventListener('click', () => {
+      slider.scrollBy({ left: -240, behavior: 'smooth' });
+    });
+
+    btnRight.addEventListener('click', () => {
+      slider.scrollBy({ left: 240, behavior: 'smooth' });
+    });
+  </script>
+  <footer>
+    &copy; 2025 Matthew Zhu. All rights reserved.
+  </footer>
+
 </body>
 </html>
