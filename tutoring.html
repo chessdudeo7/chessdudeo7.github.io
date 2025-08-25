@@ -124,41 +124,24 @@
     }
 
     .stars {
+      display: flex;
+      flex-direction: row;
       font-size: 24px;
       margin-top: 5px;
       cursor: pointer;
       user-select: none;
     }
 
-    .stars {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    }
-
     .stars span {
-    color: #bbb;
-    transition: color 0.2s ease;
+      color: #bbb;
+      transition: color 0.2s ease;
     }
 
-    .stars span:hover,
-    .stars span:hover ~ span {
-    color: #bbb; /* Reset others */
-    }
-
-    /* Hover effect from left to right */
-    .stars span:hover {
-    color: #ffc107;
-    }
-    .stars span:hover ~ span {
-    color: #ffc107;
-    }
-
-    /* Keep selected stars yellow */
+    .stars span.hovered,
     .stars span.selected {
-    color: #ffc107;
+      color: #ffc107;
     }
-</style>
+  </style>
 </head>
 <body>
 
@@ -199,13 +182,14 @@
           <input type="text" id="review-name" placeholder="Your name" />
 
           <label for="rating">Rating:</label>
-            <div id="star-rating" class="stars">
+          <div id="star-rating" class="stars">
             <span data-value="1">&#9733;</span>
             <span data-value="2">&#9733;</span>
             <span data-value="3">&#9733;</span>
             <span data-value="4">&#9733;</span>
             <span data-value="5">&#9733;</span>
-            </div>
+          </div>
+
           <label for="review-text">Your Review:</label>
           <textarea id="review-text" rows="4" placeholder="Write your thoughts here..."></textarea>
 
@@ -225,7 +209,7 @@
     &copy; 2025 Matthew Zhu. All rights reserved.
   </footer>
 
-  <!-- Firebase SDKs + Review Script -->
+  <!-- Firebase SDKs + Rating Logic -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -251,11 +235,21 @@
 
     let selectedRating = 0;
 
-    stars.forEach(star => {
+    stars.forEach((star, idx) => {
+      star.addEventListener('mouseover', () => {
+        stars.forEach((s, i) => {
+          s.classList.toggle('hovered', i <= idx);
+        });
+      });
+
+      star.addEventListener('mouseout', () => {
+        stars.forEach(s => s.classList.remove('hovered'));
+      });
+
       star.addEventListener('click', () => {
-        selectedRating = parseInt(star.dataset.value);
-        stars.forEach(s => {
-          s.classList.toggle('selected', parseInt(s.dataset.value) <= selectedRating);
+        selectedRating = idx + 1;
+        stars.forEach((s, i) => {
+          s.classList.toggle('selected', i < selectedRating);
         });
       });
     });
