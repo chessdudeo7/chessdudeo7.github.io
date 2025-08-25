@@ -2,83 +2,78 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Welcome | Matthew Zhu</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
-    body, html {
+    html, body {
       height: 100%;
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #e0f7fa, #e1bee7);
       color: #333;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .content {
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      text-align: center;
-      padding: 20px;
+      justify-content: center;
     }
 
     h1 {
+      font-size: 3rem;
       color: #673ab7;
-      font-size: 4rem;
-      margin-bottom: 2rem;
+      margin-bottom: 40px;
     }
 
-    .button-group {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    a.button {
+    .button {
+      display: inline-block;
       background-color: #673ab7;
       color: white;
       padding: 14px 28px;
+      margin: 12px;
       border-radius: 8px;
       text-decoration: none;
       font-weight: 600;
-      font-size: 1.2rem;
-      user-select: none;
-      min-width: 120px;
-      /* Removed box-shadow */
-      /* Removed fixed width */
-      transition: background-color 0.3s ease;
+      font-size: 1.1rem;
+      transition: background 0.3s ease;
     }
 
-    a.button:hover {
+    .button:hover {
       background-color: #5e35b1;
     }
 
-    footer {
-      position: absolute;
-      bottom: 10px;
-      width: 100%;
-      text-align: center;
-      font-size: 0.9rem;
-      color: #777;
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+      .button {
+        width: 80%;
+        max-width: 280px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h1>Welcome</h1>
-
-  <div class="button-group">
+  <div class="content">
+    <h1>Welcome</h1>
     <a href="profile.html" class="button">Profile</a>
     <a href="tutoring.html" class="button">Tutoring</a>
   </div>
-
-  <footer>
-    &copy; 2025 Matthew Zhu. All rights reserved.
-  </footer>
 
 </body>
 </html>
