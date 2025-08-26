@@ -141,6 +141,12 @@
     .stars span.selected {
       color: #ffc107;
     }
+
+    .button:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
@@ -205,7 +211,7 @@
           <label for="review-text">Your Review:</label>
           <textarea id="review-text" rows="4" placeholder="Write your review here..."></textarea>
 
-          <button id="submit-review" class="button">Submit Review</button>
+          <button id="submit-review" class="button" disabled>Submit Review</button>
         </div>
       </div>
     </section>
@@ -223,102 +229,115 @@
 
   <!-- Firebase SDKs + Rating Logic -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyD7WVCD-O23S5g9QZTfPRiUf63tu7bLaCM",
-      authDomain: "personal-website-4889a.firebaseapp.com",
-      projectId: "personal-website-4889a",
-      storageBucket: "personal-website-4889a.appspot.com",
-      messagingSenderId: "884740731820",
-      appId: "1:884740731820:web:057d078a088337dc660009",
-      measurementId: "G-2NYM4HBJBT"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyD7WVCD-O23S5g9QZTfPRiUf63tu7bLaCM",
+    authDomain: "personal-website-4889a.firebaseapp.com",
+    projectId: "personal-website-4889a",
+    storageBucket: "personal-website-4889a.appspot.com",
+    messagingSenderId: "884740731820",
+    appId: "1:884740731820:web:057d078a088337dc660009",
+    measurementId: "G-2NYM4HBJBT"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-    const reviewList = document.getElementById('review-list');
-    const submitBtn = document.getElementById('submit-review');
-    const reviewText = document.getElementById('review-text');
-    const reviewName = document.getElementById('review-name');
-    const stars = document.querySelectorAll('#star-rating span');
+  const reviewList = document.getElementById('review-list');
+  const submitBtn = document.getElementById('submit-review');
+  const reviewText = document.getElementById('review-text');
+  const reviewName = document.getElementById('review-name');
+  const stars = document.querySelectorAll('#star-rating span');
 
-    let selectedRating = 0;
+  let selectedRating = 0;
 
-    stars.forEach((star, idx) => {
-      star.addEventListener('mouseover', () => {
-        stars.forEach((s, i) => {
-          s.classList.toggle('hovered', i <= idx);
-        });
-      });
+  function updateSubmitButtonState() {
+    const textFilled = reviewText.value.trim().length > 0;
+    const ratingSelected = selectedRating > 0;
+    submitBtn.disabled = !(textFilled && ratingSelected);
+  }
 
-      star.addEventListener('mouseout', () => {
-        stars.forEach(s => s.classList.remove('hovered'));
-      });
-
-      star.addEventListener('click', () => {
-        selectedRating = idx + 1;
-        stars.forEach((s, i) => {
-          s.classList.toggle('selected', i < selectedRating);
-        });
+  stars.forEach((star, idx) => {
+    star.addEventListener('mouseover', () => {
+      stars.forEach((s, i) => {
+        s.classList.toggle('hovered', i <= idx);
       });
     });
 
-    submitBtn.addEventListener('click', async () => {
-      const text = reviewText.value.trim();
-      const name = reviewName.value.trim() || "Anonymous";
-
-      if (selectedRating === 0 || text === '') {
-        alert("Please select a rating and write a review.");
-        return;
-      }
-
-      try {
-        await addDoc(collection(db, "reviews"), {
-          name,
-          rating: selectedRating,
-          text,
-          created: serverTimestamp()
-        });
-
-        reviewText.value = '';
-        reviewName.value = '';
-        selectedRating = 0;
-        stars.forEach(s => s.classList.remove('selected'));
-
-        loadReviews();
-      } catch (e) {
-        console.error("Error adding review: ", e);
-      }
+    star.addEventListener('mouseout', () => {
+      stars.forEach(s => s.classList.remove('hovered'));
     });
 
-    async function loadReviews() {
-      reviewList.innerHTML = "";
-      const snapshot = await getDocs(collection(db, "reviews"));
-      const reviews = snapshot.docs.map(doc => doc.data());
-
-      if (reviews.length === 0) {
-        reviewList.innerHTML = "<p>No reviews yet. Be the first!</p>";
-        return;
-      }
-
-      reviews.sort((a, b) => b.created?.seconds - a.created?.seconds);
-
-      reviews.forEach(r => {
-        const item = document.createElement("div");
-        item.innerHTML = `
-          <p><strong>${r.name}</strong></p>
-          <p style="color: #ffc107;">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</p>
-          <p>${r.text}</p>
-          <hr />
-        `;
-        reviewList.appendChild(item);
+    star.addEventListener('click', () => {
+      selectedRating = idx + 1;
+      stars.forEach((s, i) => {
+        s.classList.toggle('selected', i < selectedRating);
       });
+      updateSubmitButtonState();
+    });
+  });
+
+  reviewText.addEventListener('input', updateSubmitButtonState);
+
+  submitBtn.addEventListener('click', async () => {
+    const text = reviewText.value.trim();
+    const name = reviewName.value.trim() || "Anonymous";
+
+    if (selectedRating === 0 || text === '') {
+      alert("Please select a rating and write a review.");
+      return;
     }
 
-    loadReviews();
-  </script>
+    try {
+      await addDoc(collection(db, "reviews"), {
+        name,
+        rating: selectedRating,
+        text,
+        created: serverTimestamp()
+      });
+
+      // Clear form
+      reviewText.value = '';
+      reviewName.value = '';
+      selectedRating = 0;
+      stars.forEach(s => s.classList.remove('selected'));
+
+      // Disable the button again
+      updateSubmitButtonState();
+
+      loadReviews();
+    } catch (e) {
+      console.error("Error adding review: ", e);
+    }
+  });
+
+  async function loadReviews() {
+    reviewList.innerHTML = "";
+    const snapshot = await getDocs(collection(db, "reviews"));
+    const reviews = snapshot.docs.map(doc => doc.data());
+
+    if (reviews.length === 0) {
+      reviewList.innerHTML = "<p>No reviews yet. Be the first!</p>";
+      return;
+    }
+
+    reviews.sort((a, b) => b.created?.seconds - a.created?.seconds);
+
+    reviews.forEach(r => {
+      const item = document.createElement("div");
+      item.innerHTML = `
+        <p><strong>${r.name}</strong></p>
+        <p style="color: #ffc107;">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</p>
+        <p>${r.text}</p>
+        <hr />
+      `;
+      reviewList.appendChild(item);
+    });
+  }
+
+  loadReviews();
+</script>
 </body>
 </html>
