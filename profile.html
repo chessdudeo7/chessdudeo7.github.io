@@ -67,7 +67,7 @@
     /* Hero */
     header.hero {
       text-align: center;
-      padding: 80px 20px 60px;
+      padding: 80px 20px 30px;
     }
 
     header.hero h1 {
@@ -103,6 +103,27 @@
       background-color: #5e35b1;
     }
 
+    .resume-below {
+      text-align: center;
+      margin-top: 20px;
+      margin-bottom: 40px;
+    }
+
+    .resume-below a.button {
+      background-color: #673ab7;
+      color: white;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: inline-block;
+      transition: background-color 0.3s ease;
+    }
+
+    .resume-below a.button:hover {
+      background-color: #5e35b1;
+    }
+
     /* Section */
     .section {
       max-width: 900px;
@@ -126,7 +147,7 @@
       margin-bottom: 18px;
     }
 
-    /* Cards */
+    /* Project Cards */
     .project-card {
       background: white;
       padding: 20px 24px;
@@ -156,7 +177,7 @@
       color: #5e35b1;
     }
 
-    /* Interests Slider */
+    /* Slider (Interests) */
     .slider-container {
       display: flex;
       align-items: center;
@@ -216,22 +237,6 @@
     }
 
     .slide-btn:hover {
-      background-color: #5e35b1;
-    }
-
-    /* Resume Button */
-    .button {
-      background-color: #673ab7;
-      color: white;
-      padding: 14px 32px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 1.1rem;
-      display: inline-block;
-      transition: background-color 0.3s ease;
-    }
-
-    .button:hover {
       background-color: #5e35b1;
     }
 
@@ -307,6 +312,10 @@
     </div>
   </header>
 
+  <div class="resume-below">
+    <a class="button" href="resume.pdf" target="_blank">Download Resume (PDF)</a>
+  </div>
+
   <section id="about" class="section">
     <h2>About Me</h2>
     <p>I’m a computer science student passionate about building useful, creative software and learning new technologies. I enjoy solving problems, working on side projects, and sharing knowledge.</p>
@@ -332,7 +341,7 @@
       <button class="slide-btn left" aria-label="Scroll left">&#10094;</button>
       <div class="slider" id="slider">
         <div class="slide"><h3>🎧 Music Production</h3><p>I enjoy playing and listening to many genres of music.</p></div>
-        <div class="slide"><h3>🧗 Sports</h3><p>I love playing hockey, running, swimming, table tennis and watching all sports.</p></div>
+        <div class="slide"><h3>🧗 Sports</h3><p>I love playing hockey, running, swimming, table tennis, and watching all sports.</p></div>
         <div class="slide"><h3>🕹️ Mobile Games</h3><p>I sometimes play mobile games in my free time. Feel free to add me as a friend.</p></div>
         <div class="slide"><h3>📚 Math Enthusiast</h3><p>Love investigating and solving all types of math problems.</p></div>
         <div class="slide"><h3>💻 Building Projects</h3><p>I like coding and designing my own personal projects.</p></div>
@@ -340,11 +349,6 @@
       </div>
       <button class="slide-btn right" aria-label="Scroll right">&#10095;</button>
     </div>
-  </section>
-
-  <section id="resume" class="section">
-    <h2>Resume</h2>
-    <a class="button" href="resume.pdf" target="_blank">Download Resume (PDF)</a>
   </section>
 
   <section id="contact" class="section">
@@ -357,6 +361,7 @@
   </footer>
 
   <script>
+    // Simple slider button logic
     const slider = document.getElementById('slider');
     const btnLeft = document.querySelector('.slide-btn.left');
     const btnRight = document.querySelector('.slide-btn.right');
