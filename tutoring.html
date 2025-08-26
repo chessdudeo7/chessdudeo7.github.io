@@ -147,13 +147,70 @@
     color: #666;
     cursor: not-allowed;
     }
+
+    nav.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 32px;
+    background-color: #673ab7;
+    color: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    }
+
+    nav .logo {
+    font-weight: 700;
+    font-size: 1.8rem;
+    }
+
+    nav ul.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 24px;
+    }
+
+    nav ul.nav-links li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+    }
+
+    nav ul.nav-links li a:hover {
+    color: #b39ddb;
+    }
+
+    /* Responsive for small screens */
+    @media (max-width: 600px) {
+    nav.navbar {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    nav ul.nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
+    }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>Matthew Zhu | Tutoring</h1>
-  </header>
+    <nav class="navbar">
+    <div class="logo">Matthew Zhu</div>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#resume">Resume</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+    </nav>
 
   <div class="container">
     <section class="section">
