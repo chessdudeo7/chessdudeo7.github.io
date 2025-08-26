@@ -6,29 +6,21 @@
   <title>Matthew Zhu</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    /* Reset and Base */
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    body, html {
+    html, body {
       height: 100%;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+      background: linear-gradient(to bottom, #e0f7fa 0%, #e1bee7 100%);
+      background-attachment: fixed;
       color: #333;
       scroll-behavior: smooth;
-      display: flex;
-      flex-direction: column;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    /* Navbar */
     nav.navbar {
       display: flex;
       justify-content: space-between;
@@ -36,10 +28,10 @@
       padding: 16px 32px;
       background-color: #673ab7;
       color: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       position: sticky;
       top: 0;
-      z-index: 1000;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      z-index: 100;
     }
 
     nav .logo {
@@ -55,6 +47,7 @@
 
     nav ul.nav-links li a {
       color: white;
+      text-decoration: none;
       font-weight: 600;
       font-size: 1rem;
       transition: color 0.3s ease;
@@ -64,10 +57,12 @@
       color: #b39ddb;
     }
 
-    /* Hero */
     header.hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
-      padding: 80px 20px 30px;
+      padding: 80px 20px 40px;
     }
 
     header.hero h1 {
@@ -88,7 +83,12 @@
       color: #4a148c;
     }
 
+    .hero-links {
+      margin-bottom: 24px;
+    }
+
     .hero-links a {
+      display: inline-block;
       background-color: #673ab7;
       color: white;
       padding: 12px 28px;
@@ -96,6 +96,8 @@
       margin: 0 10px;
       font-weight: 600;
       font-size: 1.1rem;
+      text-decoration: none;
+      user-select: none;
       transition: background-color 0.3s ease;
     }
 
@@ -103,42 +105,38 @@
       background-color: #5e35b1;
     }
 
-    .resume-below {
-      text-align: center;
-      margin-top: 20px;
-      margin-bottom: 40px;
-    }
-
-    .resume-below a.button {
+    .button {
       background-color: #673ab7;
       color: white;
       padding: 14px 32px;
       border-radius: 8px;
       font-weight: 600;
       font-size: 1.1rem;
+      text-decoration: none;
       display: inline-block;
+      user-select: none;
       transition: background-color 0.3s ease;
     }
 
-    .resume-below a.button:hover {
+    .button:hover {
       background-color: #5e35b1;
     }
 
-    /* Section */
     .section {
       max-width: 900px;
       margin: 0 auto 60px;
       padding: 0 20px;
+      color: #333;
     }
 
     .section h2 {
       font-size: 2.2rem;
       color: #673ab7;
+      margin-bottom: 24px;
       font-weight: 700;
       border-bottom: 3px solid #b39ddb;
-      padding-bottom: 6px;
-      margin-bottom: 24px;
       display: inline-block;
+      padding-bottom: 6px;
     }
 
     .section p {
@@ -147,7 +145,6 @@
       margin-bottom: 18px;
     }
 
-    /* Project Cards */
     .project-card {
       background: white;
       padding: 20px 24px;
@@ -163,12 +160,13 @@
     }
 
     .project-card p {
+      margin-bottom: 12px;
       color: #555;
-      margin-bottom: 10px;
     }
 
     .project-card a {
       color: #673ab7;
+      text-decoration: none;
       font-weight: 600;
       transition: color 0.3s ease;
     }
@@ -177,11 +175,12 @@
       color: #5e35b1;
     }
 
-    /* Slider (Interests) */
     .slider-container {
+      position: relative;
+      max-width: 900px;
+      margin: auto;
       display: flex;
       align-items: center;
-      gap: 16px;
     }
 
     .slider {
@@ -233,16 +232,22 @@
       padding: 10px 16px;
       border-radius: 50%;
       cursor: pointer;
+      user-select: none;
       transition: background-color 0.3s ease;
+      margin: 0 8px;
     }
 
     .slide-btn:hover {
       background-color: #5e35b1;
     }
 
-    /* Contact */
+    #contact p {
+      font-size: 1.1rem;
+    }
+
     #contact a {
       color: #673ab7;
+      text-decoration: none;
       font-weight: 600;
     }
 
@@ -250,41 +255,34 @@
       color: #5e35b1;
     }
 
-    /* Footer */
     footer {
       text-align: center;
-      padding: 20px;
-      background: #f3e5f5;
-      margin-top: auto;
-      font-size: 0.9em;
+      padding: 24px 0;
+      background-color: #f3e5f5;
       color: #555;
+      font-size: 0.9rem;
+      margin-top: 60px;
     }
 
-    /* Responsive */
     @media (max-width: 600px) {
       header.hero h1 {
         font-size: 2.4rem;
       }
-
       header.hero p {
         font-size: 1rem;
       }
-
       nav.navbar {
         flex-direction: column;
         gap: 12px;
       }
-
       nav ul.nav-links {
         flex-wrap: wrap;
         justify-content: center;
         gap: 12px;
       }
-
       .slider-container {
         flex-direction: column;
       }
-
       .slide-btn {
         margin: 12px 0;
       }
@@ -307,14 +305,11 @@
     <h1>Hi, I'm <span>Matthew Zhu</span></h1>
     <p>CS student | Developer | Tech Enthusiast</p>
     <div class="hero-links">
-      <a href="https://github.com/chessdudeo7" target="_blank">GitHub</a>
-      <a href="https://linkedin.com/in/yourusername" target="_blank">LinkedIn</a>
+      <a href="https://github.com/chessdudeo7" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer">LinkedIn</a>
     </div>
+    <a class="button" href="resume.pdf" target="_blank" rel="noopener noreferrer">Download Resume (PDF)</a>
   </header>
-
-  <div class="resume-below">
-    <a class="button" href="resume.pdf" target="_blank">Download Resume (PDF)</a>
-  </div>
 
   <section id="about" class="section">
     <h2>About Me</h2>
@@ -339,16 +334,21 @@
     <h2>My Interests</h2>
     <div class="slider-container">
       <button class="slide-btn left" aria-label="Scroll left">&#10094;</button>
-      <div class="slider" id="slider">
-        <div class="slide"><h3>🎧 Music Production</h3><p>I enjoy playing and listening to many genres of music.</p></div>
-        <div class="slide"><h3>🧗 Sports</h3><p>I love playing hockey, running, swimming, table tennis, and watching all sports.</p></div>
-        <div class="slide"><h3>🕹️ Mobile Games</h3><p>I sometimes play mobile games in my free time. Feel free to add me as a friend.</p></div>
+      <div class="slider" id="slider" tabindex="0" aria-live="polite">
+        <div class="slide"><h3>🎧 Music Production</h3><p>I enjoy playing and listening many genres of music.</p></div>
+        <div class="slide"><h3>🧗 Sports</h3><p>I love playing hockey, running, swimming, table tennis and I watch pretty much all sports.</p></div>
+        <div class="slide"><h3>🕹️ Mobile Games</h3><p>I sometimes play mobile games in my free time, feel free to add me as a friend.</p></div>
         <div class="slide"><h3>📚 Math Enthusiast</h3><p>Love investigating and solving all types of math problems.</p></div>
         <div class="slide"><h3>💻 Building Projects</h3><p>I like coding and designing my own personal projects.</p></div>
         <div class="slide"><h3>🌐 Traveling</h3><p>I want to visit and explore countries all around the world.</p></div>
       </div>
       <button class="slide-btn right" aria-label="Scroll right">&#10095;</button>
     </div>
+  </section>
+
+  <section id="resume" class="section">
+    <h2>Resume</h2>
+    <p>Download a PDF version of my resume using the button above.</p>
   </section>
 
   <section id="contact" class="section">
@@ -361,7 +361,6 @@
   </footer>
 
   <script>
-    // Simple slider button logic
     const slider = document.getElementById('slider');
     const btnLeft = document.querySelector('.slide-btn.left');
     const btnRight = document.querySelector('.slide-btn.right');
