@@ -5,19 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Profile | Chessdude07</title>
 <link rel="stylesheet" href="style.css">
+<style>
+  /* Optional: cursor effect for typing animation */
+  #hero-text::after {
+    content: '|';
+    animation: blink 0.7s infinite;
+    margin-left: 2px;
+  }
+
+  @keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0; }
+  }
+</style>
 </head>
 <body>
   <nav class="navbar">
     <div class="logo">Chessdude07</div>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
+      <li><a href="profile.html">Home</a></li>
       <li><a href="tutoring.html">Tutoring</a></li>
     </ul>
   </nav>
 
   <header class="hero fade-up">
-    <h1>About Me</h1>
-    <p>Hi! I'm Chessdude07, a passionate coder and chess enthusiast.</p>
+    <h1 id="hero-text"></h1>
+    <p>CS student | Developer | Tech Enthusiast</p>
   </header>
 
   <section class="section fade-up">
@@ -48,15 +61,14 @@
   </section>
 
   <footer class="fade-up">
-    &copy; 2025 Chessdude07. All rights reserved.
+    &copy; Matthew Zhu 2025. All rights reserved.
   </footer>
 
   <script>
+    // Scroll animations
     const reveals = document.querySelectorAll('.fade-up, .fade-left, .fade-right, .scale-up');
-
     function animateOnScroll() {
       const triggerBottom = window.innerHeight * 0.85;
-
       reveals.forEach(el => {
         const top = el.getBoundingClientRect().top;
         if(top < triggerBottom){
@@ -64,9 +76,25 @@
         }
       });
     }
-
     window.addEventListener('scroll', animateOnScroll);
     window.addEventListener('load', animateOnScroll);
+
+    // Typing animation for hero text
+    const heroText = "Hi, I'm Matthew Zhu";
+    const heroElement = document.getElementById('hero-text');
+    let charIndex = 0;
+
+    function typeHeroText() {
+      if (charIndex < heroText.length) {
+        heroElement.textContent += heroText[charIndex];
+        charIndex++;
+        setTimeout(typeHeroText, 100); // adjust speed (ms)
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      typeHeroText();
+    });
   </script>
 </body>
 </html>
