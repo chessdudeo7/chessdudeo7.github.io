@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tutoring | Matthew Zhu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-a:#041025;
+      --bg-b:#07183a;
+      --accent-1:#06b6d4;
+      --accent-2:#7c3aed;
+      --muted:#9fb0c8;
+      --card: rgba(255,255,255,0.03);
+      --focus:3px solid rgba(6,182,212,0.14);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Poppins',sans-serif;color:#e6eef8;min-height:100vh;display:flex;flex-direction:column;background:linear-gradient(120deg,var(--bg-a),var(--bg-b));background-size:400% 400%;animation:gradientShift 14s ease infinite}
+    @keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+    header{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);color:var(--muted);padding:18px 0;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.15)}
+    header h1{font-size:2.4rem;color:var(--accent-2)}
+
+    .container{max-width:980px;margin:36px auto;padding:0 20px}
+    .section{margin-bottom:36px}
+    h2{color:var(--accent-2);margin-bottom:12px}
+    p{line-height:1.6;color:var(--muted)}
+    ul{padding-left:20px;line-height:1.8;color:var(--muted)}
+
+    .button{display:inline-block;margin-top:18px;background:linear-gradient(90deg,var(--accent-2),var(--accent-1));color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:700;border:none;cursor:pointer;transition:transform .22s ease}
+    .button:hover{transform:translateY(-5px)}
+
+    footer{text-align:center;padding:18px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);margin-top:auto;font-size:0.95rem;color:var(--muted)}
+
+    .review-section{display:flex;flex-direction:row;gap:28px;flex-wrap:wrap}
+    .review-list,.review-form{flex:1 1 380px;background:var(--card);padding:18px;border-radius:12px;color:var(--muted);box-shadow:0 8px 20px rgba(2,6,23,0.45);border:1px solid rgba(255,255,255,0.02)}
+
+    input,textarea{width:100%;padding:10px;margin-top:6px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--muted)}
+    .stars{display:flex;gap:6px;font-size:22px;margin-top:6px;cursor:pointer}
+    .stars span{color:#bbb;transition:color .18s}
+    .stars span.hovered,.stars span.selected{color:#ffc107}
+
+    .button:disabled{background-color:#6b7280;color:#e6eef8;cursor:not-allowed}
+
+    nav.navbar{display:flex;justify-content:space-between;align-items:center;padding:12px 28px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);backdrop-filter:blur(6px);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.03)}
+    nav .logo{font-weight:700;font-size:1.6rem;color:var(--muted)}
+    nav ul.nav-links{list-style:none;display:flex;gap:18px}
+    nav ul.nav-links li a{color:var(--muted);text-decoration:none;font-weight:600}
+
+    /* reveal helpers */
+    .fade-up{opacity:0;transform:translateY(18px);transition:opacity .65s cubic-bezier(.2,.9,.2,1),transform .65s cubic-bezier(.2,.9,.2,1)}
+    .fade-up.reveal{opacity:1;transform:none}
+
+    @media(max-width:600px){nav.navbar{flex-direction:column;gap:8px}nav ul.nav-links{flex-wrap:wrap;justify-content:center;gap:10px}}
+  </style>
+</head>
+<body>
+
+    <nav class="navbar">
+    <div class="logo">Matthew Zhu</div>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#resume">Resume</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+    </nav>
+
+  <div class="container">
+    <section class="section">
+        <h2>About Me</h2>
+        <p>Hi! I'm Matthew Zhu, a first year Computer Science Student at the University of Waterloo. I graduated from Merivale High School's Class of 2025 as a student in the International Baccalaureate (IB) Programme. I love tutoring students and my specialty is in STEM subjects, particularly mathematics.</p>
+        <br>
+        <p>I am also a competitive chess player, having played for almost 2/3 of my life. I compete frequently at the national/international level and have been coaching for some time. I love playing the game and look forward to fostering the next generation of young players.</p>
+    </section>
+    <section class="section">
+        <h2>My Vision</h2>
+        <p>I'm passionate about helping students reach their full potential. Whether you're struggling to grasp a concept or aiming to get ahead, I offer tailored sessions to meet your needs in a clear and engaging way.</p>
+    </section>
+
+    <section class="section">
+      <h2>Subjects I Tutor + My Achievements/Qualifications</h2>
+      <ul>
+        <li>Chess (Beginner to Advanced)
+            <ul>
+                <li>2200+ CFC, 2050+ FIDE</li>
+                <li>Competed in Provincials (8x), Nationals (7x), Continentals (1x), Worlds (1x)</li>
+                <li>Top Three in Ontario from Gr.9-Gr.12</li>
+                <li>President of the Merivale High School Chess Club (2022-2025)</li>
+                <li>Team Captain of the Merivale High School Chess Team (led us to consecutive provincial championships) (2023-2025)</li>
+            </ul>
+        </li>
+        <li>Mathematics (Grade 1 to Grade 12)</li>
+            <ul>
+                <li>99 in IB HL Calculus&Vectors and Advanced Functions</li>
+                <li>7 in IB HL AA Math</li>
+                <li>Recipient of the René Descartes National Scholarship (maximum of $25,000) from the University of Waterloo</li>
+                <li>2024 CMO Repêchage Qualifier, Gr.12 Eastern Ontario Silver Award, Eastern Ontario Bronze Award</li>
+                <li>3x AIME Qualifier</li>
+                <li>Co-President of Merivale High School's Math Club (2023-2025)</li>
+            </ul>
+        <li>Physics (Grade 9 to Grade 12)</li>
+            <ul>
+                <li>97 in IB Grade 12 Physics, 99 in IB Grade 11 Physics</li>
+                <li>7 in IB HL Physics</li>
+            </ul>
+        <li>Chemistry (Grade 9 to Grade 12)</li>
+            <ul>
+                <li>97 in IB Grade 12 Chemistry</li>
+                <li>7 in IB HL Chemistry</li>
+            </ul>
+        <li>Other subjects may be available upon request</li>
+      </ul>
+    </section>
+
+    <section class="section" id="reviews">
+      <h2>Student/Parent Reviews</h2>
+      <div class="review-section">
+        <!-- Left: Review Display -->
+        <div class="review-list" id="review-list">
+          <p>No reviews yet. Be the first!</p>
+        </div>
+
+        <!-- Right: Add Review -->
+        <div class="review-form">
+          <h3>Leave a Review</h3>
+
+          <label for="name">Your Name (optional):</label>
+          <input type="text" id="review-name" placeholder="Your name" />
+
+          <label for="rating">Rating:</label>
+          <div id="star-rating" class="stars">
+            <span data-value="1">&#9733;</span>
+            <span data-value="2">&#9733;</span>
+            <span data-value="3">&#9733;</span>
+            <span data-value="4">&#9733;</span>
+            <span data-value="5">&#9733;</span>
+          </div>
+
+          <label for="review-text">Your Review:</label>
+          <textarea id="review-text" rows="4" placeholder="Write your review here..."></textarea>
+
+          <button id="submit-review" class="button" disabled>Submit Review</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Session Info & Availability</h2>
+      <p>I offer both in-person and online sessions. I'm flexible with scheduling and aim to accommodate busy student routines. Pricing and time slots are available upon request.</p>
+      <a href="mailto:matthewzhu99@gmail.com" class="button">Contact Me</a>
+    </section>
+  </div>
+
+  <footer>
+    &copy; 2025 Matthew Zhu. All rights reserved.
+  </footer>
+
+  <!-- Firebase SDKs + Rating Logic -->
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD7WVCD-O23S5g9QZTfPRiUf63tu7bLaCM",
+    authDomain: "personal-website-4889a.firebaseapp.com",
+    projectId: "personal-website-4889a",
+    storageBucket: "personal-website-4889a.appspot.com",
+    messagingSenderId: "884740731820",
+    appId: "1:884740731820:web:057d078a088337dc660009",
+    measurementId: "G-2NYM4HBJBT"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const reviewList = document.getElementById('review-list');
+  const submitBtn = document.getElementById('submit-review');
+  const reviewText = document.getElementById('review-text');
+  const reviewName = document.getElementById('review-name');
+  const stars = document.querySelectorAll('#star-rating span');
+
+  let selectedRating = 0;
+
+  function updateSubmitButtonState() {
+    const textFilled = reviewText.value.trim().length > 0;
+    const ratingSelected = selectedRating > 0;
+    submitBtn.disabled = !(textFilled && ratingSelected);
+  }
+
+  stars.forEach((star, idx) => {
+    star.addEventListener('mouseover', () => {
+      stars.forEach((s, i) => {
+        s.classList.toggle('hovered', i <= idx);
+      });
+    });
+
+    star.addEventListener('mouseout', () => {
+      stars.forEach(s => s.classList.remove('hovered'));
+    });
+
+    star.addEventListener('click', () => {
+      selectedRating = idx + 1;
+      stars.forEach((s, i) => {
+        s.classList.toggle('selected', i < selectedRating);
+      });
+      updateSubmitButtonState();
+    });
+  });
+
+  reviewText.addEventListener('input', updateSubmitButtonState);
+
+  submitBtn.addEventListener('click', async () => {
+    const text = reviewText.value.trim();
+    const name = reviewName.value.trim() || "Anonymous";
+
+    if (selectedRating === 0 || text === '') {
+      alert("Please select a rating and write a review.");
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "reviews"), {
+        name,
+        rating: selectedRating,
+        text,
+        created: serverTimestamp()
+      });
+
+      // Clear form
+      reviewText.value = '';
+      reviewName.value = '';
+      selectedRating = 0;
+      stars.forEach(s => s.classList.remove('selected'));
+
+      // Disable the button again
+      updateSubmitButtonState();
+
+      loadReviews();
+    } catch (e) {
+      console.error("Error adding review: ", e);
+    }
+  });
+
+  async function loadReviews() {
+    reviewList.innerHTML = "";
+    const snapshot = await getDocs(collection(db, "reviews"));
+    const reviews = snapshot.docs.map(doc => doc.data());
+
+    if (reviews.length === 0) {
+      reviewList.innerHTML = "<p>No reviews yet. Be the first!</p>";
+      return;
+    }
+
+    reviews.sort((a, b) => b.created?.seconds - a.created?.seconds);
+
+    reviews.forEach(r => {
+      const item = document.createElement("div");
+      item.innerHTML = `
+        <p><strong>${r.name}</strong></p>
+        <p style="color: #ffc107;">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</p>
+        <p>${r.text}</p>
+        <hr />
+      `;
+      reviewList.appendChild(item);
+    });
+  }
+
+  loadReviews();
+</script>
+  <script>
+    (function(){
+      const selectors = ['.section','.container','.review-list','.review-form','.logo','.button'];
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) { entry.target.classList.add('reveal'); obs.unobserve(entry.target); }
+        });
+      }, { threshold: 0.12 });
+
+      selectors.forEach(sel => document.querySelectorAll(sel).forEach(el => { el.classList.add('fade-up'); observer.observe(el); }));
+
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.querySelectorAll('.fade-up').forEach(el => el.classList.add('reveal'));
+        observer.disconnect();
+      }
+    })();
+  </script>
+</body>
+</html>

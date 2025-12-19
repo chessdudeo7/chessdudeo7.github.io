@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Matthew Zhu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --bg-a:#071029;
+      --bg-b:#07193a;
+      --accent-1:#7c3aed;
+      --accent-2:#06b6d4;
+      --muted:#9fb0c8;
+      --card: rgba(255,255,255,0.04);
+      --glass: rgba(255,255,255,0.03);
+      --focus: 3px solid rgba(124,58,237,0.22);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;font-family:'Poppins',sans-serif;color:#e6eef8;scroll-behavior:smooth}
+
+    body{background: linear-gradient(120deg,var(--bg-a),var(--bg-b));background-size:400% 400%;animation:gradientShift 14s ease infinite}
+    @keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+    nav.navbar{display:flex;justify-content:space-between;align-items:center;padding:12px 28px;background:linear-gradient(180deg,rgba(255,255,255,0.04),transparent);backdrop-filter:blur(6px);color:white;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.03)}
+    nav .logo{font-weight:700;font-size:1.8rem}
+    nav ul.nav-links{list-style:none;display:flex;gap:20px}
+    nav ul.nav-links li a{color:var(--muted);text-decoration:none;font-weight:600;font-size:1rem;transition:color .22s ease}
+    nav ul.nav-links li a:hover, nav ul.nav-links li a:focus{color:var(--accent-1);outline:none}
+
+    header.hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:72px 20px 36px}
+    header.hero h1{font-size:3.2rem;color:var(--accent-1);margin-bottom:8px;text-wrap:balance}
+    header.hero p{font-size:1.2rem;font-weight:500;margin-bottom:20px;color:var(--muted)}
+
+    .hero-links{margin-bottom:22px}
+    .hero-links a{display:inline-block;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:white;padding:10px 20px;border-radius:10px;margin:0 8px;font-weight:700;text-decoration:none;transition:transform .22s ease, box-shadow .22s ease}
+    .hero-links a:hover{transform:translateY(-5px);box-shadow:0 12px 24px rgba(9,11,28,0.5)}
+
+    .button{background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:white;padding:12px 28px;border-radius:10px;font-weight:700;text-decoration:none;transition:transform .22s ease}
+    .button:hover{transform:translateY(-5px)}
+
+    .section{max-width:980px;margin:0 auto 56px;padding:0 20px}
+    .section h2{font-size:2rem;color:var(--accent-1);margin-bottom:18px;font-weight:700;border-bottom:3px solid rgba(124,58,237,0.12);display:inline-block;padding-bottom:6px}
+    .section p{font-size:1.05rem;line-height:1.6;color:var(--muted)}
+
+    .project-card{background:var(--card);padding:18px 22px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 8px 20px rgba(2,6,23,0.45);margin-bottom:18px;transition:transform .28s ease,box-shadow .28s ease}
+    .project-card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(2,6,23,0.6)}
+    .project-card h3{font-weight:700;color:var(--accent-2);margin-bottom:6px}
+    .project-card p{margin-bottom:8px;color:var(--muted)}
+    .project-card a{color:var(--accent-1);text-decoration:none;font-weight:700}
+
+    .slider-container{position:relative;max-width:980px;margin:auto;display:flex;align-items:center}
+    .slider{display:flex;overflow-x:auto;scroll-behavior:smooth;gap:16px;padding-bottom:10px}
+    .slide{flex:0 0 220px;background:var(--card);padding:18px;border-radius:12px;box-shadow:0 8px 20px rgba(2,6,23,0.45);text-align:center}
+
+    #contact p{font-size:1.05rem;color:var(--muted)}
+    footer{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);text-align:center;padding:20px;margin-top:40px;color:var(--muted)}
+
+    /* reveal helpers */
+    .fade-up{opacity:0;transform:translateY(18px);transition:opacity .65s cubic-bezier(.2,.9,.2,1),transform .65s cubic-bezier(.2,.9,.2,1)}
+    .fade-up.reveal{opacity:1;transform:none}
+
+    @media (max-width:600px){header.hero h1{font-size:2.4rem}header.hero p{font-size:1rem}nav.navbar{flex-direction:column;gap:8px}nav ul.nav-links{flex-wrap:wrap;justify-content:center;gap:10px}}
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="logo">Matthew Zhu</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#resume">Resume</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <header class="hero">
+    <h1>Hi, I'm <span>Matthew Zhu</span></h1>
+    <p>CS student | Developer | Tech Enthusiast</p>
+    <div class="hero-links">
+      <a href="https://www.github.com/chessdudeo7" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="https://www.linkedin.com/in/matthew-zhu-9b6079319" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    </div>
+  </header>
+
+  <section id="about" class="section">
+    <h2>About Me</h2>
+    <p>I’m a computer science student passionate about building useful, creative software and learning new technologies. I enjoy solving problems, working on side projects, and sharing knowledge.</p>
+  </section>
+
+  <section id="projects" class="section">
+    <h2>Projects</h2>
+    <div class="project-card">
+      <h3>Chess4All</h3>
+      <p>Built a training site for chess enthusiasts. Used by my students to learn and practice their skills.</p>
+      <a href="https://github.com/MHS-CSCE/sdp-chess4all">View on GitHub</a>
+    </div>
+    <div class="project-card">
+      <h3>Ottawa Team Mathematics Competition</h3>
+      <p>Developed a website to help advertise for a local free team math competition for high schoolers.</p>
+      <a href="https://otmac.ca">View Website</a>
+    </div>
+    <div class="project-card">
+      <h3>Portfolio Website</h3>
+      <p>This very site! Designed from scratch with HTML, CSS, and JavaScript.</p>
+      <a href="https://chessdudeo7.github.io/">View Project</a>
+    </div>
+  </section>
+
+  <section id="interests" class="section">
+    <h2>My Interests</h2>
+    <div class="slider-container">
+      <button class="slide-btn left" aria-label="Scroll left">&#10094;</button>
+      <div class="slider" id="slider" tabindex="0" aria-live="polite">
+        <div class="slide"><h3>🎧 Music Production</h3><p>I enjoy playing and listening many genres of music.</p></div>
+        <div class="slide"><h3>🧗 Sports</h3><p>I love playing hockey, running, swimming, table tennis and I follow many sports in my free time.</p></div>
+        <div class="slide"><h3>🕹️ Mobile Games</h3><p>I sometimes play mobile games in my free time, feel free to add me as a friend on games like Clash Royale.</p></div>
+        <div class="slide"><h3>📚 Math Enthusiast</h3><p>I love investigating and solving all types of math problems.</p></div>
+        <div class="slide"><h3>💻 Building Projects</h3><p>I like coding and designing my own personal projects.</p></div>
+        <div class="slide"><h3>🌐 Traveling</h3><p>I want to visit and explore as many countries as I can.</p></div>
+      </div>
+      <button class="slide-btn right" aria-label="Scroll right">&#10095;</button>
+    </div>
+  </section>
+
+  <section id="resume" class="section">
+    <h2>Resume</h2>
+    <p>Download a PDF version of my resume using the button below.</p>
+    <a class="button" href="resume.pdf" target="_blank" rel="noopener noreferrer">Download Resume (PDF)</a>
+  </section>
+
+  <section id="contact" class="section">
+    <h2>Contact</h2>
+    <p>Email: <a href="mailto:matthewzhu99@gmail.com">matthewzhu99@gmail.com</a></p>
+  </section>
+
+  <footer>
+    &copy; 2025 Matthew Zhu. All rights reserved.
+  </footer>
+
+  <script>
+
+  <script>
+    (function(){
+      const selectors = ['.section','header.hero','.project-card','.slide','.content','.logo','.hero-links a'];
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) { entry.target.classList.add('reveal'); obs.unobserve(entry.target); }
+        });
+      }, { threshold: 0.12 });
+
+      selectors.forEach(sel => document.querySelectorAll(sel).forEach(el => { el.classList.add('fade-up'); observer.observe(el); }));
+
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.querySelectorAll('.fade-up').forEach(el => el.classList.add('reveal'));
+        observer.disconnect();
+      }
+    })();
+  </script>
+    const slider = document.getElementById('slider');
+    const btnLeft = document.querySelector('.slide-btn.left');
+    const btnRight = document.querySelector('.slide-btn.right');
+
+    btnLeft.addEventListener('click', () => {
+      slider.scrollBy({ left: -240, behavior: 'smooth' });
+    });
+
+    btnRight.addEventListener('click', () => {
+      slider.scrollBy({ left: 240, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
