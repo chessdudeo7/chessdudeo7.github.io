@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Welcome | Matthew Zhu</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <style>
+  <script>
     const slider = document.getElementById('slider');
     const btnLeft = document.querySelector('.slide-btn.left');
     const btnRight = document.querySelector('.slide-btn.right');
@@ -31,44 +31,7 @@
       }
     })();
   </script>
-    html,body{height:100%;font-family:'Poppins',sans-serif;color:#e6eef8}
-
-    body{
-      min-height:100vh;
-      display:flex;align-items:center;justify-content:center;text-align:center;
-      background: linear-gradient(120deg,var(--bg-a),var(--bg-b));
-      background-size:400% 400%;
-      animation: gradientShift 14s ease infinite;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-    }
-
-    @keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-
-    .content{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px}
-
-    h1{font-size:3rem;color:var(--accent-1);margin-bottom:28px;letter-spacing:0.6px}
-
-    .button-group{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
-
-    .button{
-      background: linear-gradient(90deg,var(--accent-1),var(--accent-2));
-      color:white;padding:12px 26px;border-radius:10px;text-decoration:none;font-weight:700;font-size:1.05rem;
-      box-shadow: 0 8px 20px rgba(15,23,42,0.45);
-      transform: translateZ(0);
-      transition: transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s ease, opacity .2s ease;
-      will-change: transform;
-    }
-
-    .button:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 14px 30px rgba(15,23,42,0.55)}
-    .button:focus{outline:var(--focus);outline-offset:3px}
-
-    /* reveal helpers */
-    .fade-up{opacity:0;transform:translateY(18px);transition:opacity .65s cubic-bezier(.2,.9,.2,1),transform .65s cubic-bezier(.2,.9,.2,1)}
-    .fade-up.reveal{opacity:1;transform:none}
-
-    @media (max-width:500px){h1{font-size:2.2rem}.button{padding:12px 20px}}
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
