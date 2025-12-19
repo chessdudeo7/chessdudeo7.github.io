@@ -1,47 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Welcome | Matthew Zhu</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <script>
-    const slider = document.getElementById('slider');
-    const btnLeft = document.querySelector('.slide-btn.left');
-    const btnRight = document.querySelector('.slide-btn.right');
-
-    if (btnLeft && slider) btnLeft.addEventListener('click', () => { slider.scrollBy({ left: -240, behavior: 'smooth' }); });
-    if (btnRight && slider) btnRight.addEventListener('click', () => { slider.scrollBy({ left: 240, behavior: 'smooth' }); });
-  </script>
-
-  <script>
-    (function(){
-      const selectors = ['.section','header.hero','.project-card','.slide','.content','.logo','.hero-links a'];
-      const observer = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) { entry.target.classList.add('reveal'); obs.unobserve(entry.target); }
-        });
-      }, { threshold: 0.12 });
-
-      selectors.forEach(sel => document.querySelectorAll(sel).forEach(el => { el.classList.add('fade-up'); observer.observe(el); }));
-
-      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.querySelectorAll('.fade-up').forEach(el => el.classList.add('reveal'));
-        observer.disconnect();
-      }
-    })();
-  </script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="content">
+  <div class="content fade-up">
     <h1>Welcome</h1>
-    <div class="button-group">
+    <div style="margin-top:28px;display:flex;gap:18px;flex-wrap:wrap;justify-content:center">
       <a href="profile.html" class="button">Profile</a>
       <a href="tutoring.html" class="button">Tutoring</a>
     </div>
   </div>
 
+  <script>
+    document.querySelector('.content').classList.add('reveal');
+  </script>
 </body>
 </html>
