@@ -1,65 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tutoring | Matthew Zhu</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tutoring | Chessdude07</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<nav class="navbar">
-  <div class="navbar-inner">
-    <div class="logo">Matthew Zhu</div>
-    <ul>
+  <nav class="navbar">
+    <div class="logo">Chessdude07</div>
+    <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="profile.html">Profile</a></li>
-      <li><a href="#reviews">Reviews</a></li>
-      <li><a href="#contact">Contact</a></li>
     </ul>
-  </div>
-</nav>
+  </nav>
 
-<div class="container">
+  <header class="hero fade-up">
+    <h1>Tutoring Services</h1>
+    <p>Learn chess or coding with personalized lessons!</p>
+  </header>
 
   <section class="section fade-up">
-    <h2>About Me</h2>
-    <p>I’m a first-year Computer Science student at the University of Waterloo and an experienced STEM tutor.</p>
-    <p>I also coach competitive chess at the national and international level.</p>
-  </section>
-
-  <section class="section fade-up">
-    <h2>Subjects & Qualifications</h2>
-    <ul style="margin-left:20px;color:var(--text-muted);line-height:1.8">
-      <li>Chess (2200+ CFC, 2050+ FIDE)</li>
-      <li>Mathematics (IB HL AA – 7)</li>
-      <li>Physics & Chemistry (IB HL – 7)</li>
-    </ul>
-  </section>
-
-  <section id="reviews" class="section fade-up">
-    <h2>Reviews</h2>
-    <div class="review-section">
-      <div class="review-list">No reviews yet.</div>
-      <div class="review-form">Review form stays here.</div>
+    <h2>Chess Tutoring</h2>
+    <div class="project-card">
+      <h3>Beginner Lessons</h3>
+      <p>Learn the fundamentals of chess, openings, and basic tactics.</p>
+    </div>
+    <div class="project-card">
+      <h3>Intermediate Lessons</h3>
+      <p>Strategy development, positional play, and midgame planning.</p>
+    </div>
+    <div class="project-card">
+      <h3>Advanced Lessons</h3>
+      <p>Endgame mastery, advanced tactics, and tournament preparation.</p>
     </div>
   </section>
 
-  <section id="contact" class="section fade-up">
-    <h2>Contact</h2>
-    <a class="button" href="mailto:matthewzhu99@gmail.com">Email Me</a>
+  <section class="section fade-left">
+    <h2>Coding Tutoring</h2>
+    <div class="project-card">
+      <h3>HTML/CSS/JS</h3>
+      <p>Learn front-end web development through fun projects.</p>
+    </div>
+    <div class="project-card">
+      <h3>Python</h3>
+      <p>From basic syntax to advanced programming concepts.</p>
+    </div>
   </section>
 
-</div>
+  <section class="section fade-right">
+    <h2>Contact Me</h2>
+    <p>Fill out the form below to schedule a session:</p>
+    <form class="review-form">
+      <input type="text" placeholder="Name" required><br><br>
+      <input type="email" placeholder="Email" required><br><br>
+      <textarea placeholder="Message" required></textarea><br><br>
+      <button class="button" type="submit">Send</button>
+    </form>
+  </section>
 
-<footer>
-  © 2025 Matthew Zhu
-</footer>
+  <footer class="fade-up">
+    &copy; 2025 Chessdude07. All rights reserved.
+  </footer>
 
-<script>
-  document.querySelectorAll('.fade-up').forEach(el => el.classList.add('reveal'));
-</script>
+  <script>
+    const reveals = document.querySelectorAll('.fade-up, .fade-left, .fade-right, .scale-up');
 
+    function animateOnScroll() {
+      const triggerBottom = window.innerHeight * 0.85;
+
+      reveals.forEach(el => {
+        const top = el.getBoundingClientRect().top;
+        if(top < triggerBottom){
+          el.classList.add('reveal');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', animateOnScroll);
+    window.addEventListener('load', animateOnScroll);
+  </script>
 </body>
 </html>
