@@ -5,7 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tutoring | Chessdude07</title>
 <link rel="stylesheet" href="style.css" />
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
+  body {
+    font-family: 'Poppins', sans-serif;
+  }
+
   /* Review section star styles */
   .review .stars {
     color: gold;
@@ -13,27 +19,72 @@
     margin-bottom: 0.3rem;
     user-select: none;
   }
+
   /* Interactive stars for the form */
   .star-rating {
     font-size: 2rem;
     color: gray;
     cursor: pointer;
     user-select: none;
+    transition: color 0.2s ease;
   }
-  .star-rating.hovered,
   .star-rating.selected {
     color: gold;
   }
+
   /* Review container */
   #reviews-container {
     margin-top: 2rem;
   }
+
+  /* Adjusted review cards */
   .review {
-    border: 1px solid #ccc;
+    border-radius: 8px;
     padding: 1rem;
     margin-bottom: 1rem;
-    border-radius: 6px;
+    background-color: #f5f5f5; /* softer off-white */
+    color: #333; 
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  /* Inputs & textareas adjustments */
+  input[type="text"],
+  input[type="email"],
+  textarea {
+    width: 100%;
+    max-width: 500px;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
     background-color: #fafafa;
+    color: #333;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+  }
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  textarea:focus {
+    border-color: #f0c000;
+    box-shadow: 0 0 5px rgba(240,192,0,0.5);
+    outline: none;
+    background-color: #fff;
+  }
+
+  button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background-color: #f0c000;
+    color: #121212;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+  button:hover {
+    background-color: #d9a800;
   }
 </style>
 </head>
@@ -41,7 +92,7 @@
   <nav class="navbar">
     <div class="logo">Chessdude07</div>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
+      <li><a href="profile.html">Home</a></li>
       <li><a href="tutoring.html">Tutoring</a></li>
     </ul>
   </nav>
@@ -83,9 +134,9 @@
     <h2>Contact Me</h2>
     <p>Fill out the form below to schedule a session:</p>
     <form id="contact-form" class="review-form">
-      <input type="text" id="name" placeholder="Name" required /><br /><br />
-      <input type="email" id="email" placeholder="Email" required /><br /><br />
-      <textarea id="message" placeholder="Message" required></textarea><br /><br />
+      <input type="text" id="name" placeholder="Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <textarea id="message" placeholder="Message" required></textarea>
       <button class="button" type="submit">Send</button>
     </form>
   </section>
@@ -93,22 +144,20 @@
   <section class="section fade-up">
     <h2>Submit a Review</h2>
     <form id="review-form" class="review-form">
-      <input type="text" id="review-name" placeholder="Your Name" required /><br /><br />
+      <input type="text" id="review-name" placeholder="Your Name" required />
       <div id="star-container" style="margin-bottom: 10px;">
-        <!-- Stars inserted by JS -->
         <span class="star-rating" data-value="1">&#9734;</span>
         <span class="star-rating" data-value="2">&#9734;</span>
         <span class="star-rating" data-value="3">&#9734;</span>
         <span class="star-rating" data-value="4">&#9734;</span>
         <span class="star-rating" data-value="5">&#9734;</span>
       </div>
-      <textarea id="review-text" placeholder="Write your review here..." required></textarea><br /><br />
+      <textarea id="review-text" placeholder="Write your review here..." required></textarea>
       <button class="button" type="submit">Submit Review</button>
     </form>
 
     <div id="reviews-container">
       <h3>Reviews</h3>
-      <!-- Loaded reviews will appear here -->
     </div>
   </section>
 
@@ -119,29 +168,27 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 
   <script>
-    // Your Firebase config here (replace with your actual config)
+    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyD7WVCD-O23S5g9QZTfPRiUf63tu7bLaCM",
       authDomain: "personal-website-4889a.firebaseapp.com",
       projectId: "personal-website-4889a",
-      storageBucket: "personal-website-4889a.firebasestorage.app",
+      storageBucket: "personal-website-4889a.appspot.com",
       messagingSenderId: "884740731820",
       appId: "1:884740731820:web:057d078a088337dc660009",
       measurementId: "G-2NYM4HBJBT"
     };
 
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // Variables for review form stars
+    // Star rating logic
     const stars = document.querySelectorAll("#star-container .star-rating");
     let selectedRating = 0;
 
     stars.forEach((star) => {
       star.addEventListener("mouseover", () => {
-        const val = Number(star.dataset.value);
-        highlightStars(val);
+        highlightStars(Number(star.dataset.value));
       });
       star.addEventListener("mouseout", () => {
         highlightStars(selectedRating);
@@ -154,124 +201,81 @@
 
     function highlightStars(rating) {
       stars.forEach((star) => {
-        const starVal = Number(star.dataset.value);
-        if (starVal <= rating) {
-          star.classList.add("selected");
-        } else {
-          star.classList.remove("selected");
-        }
+        const val = Number(star.dataset.value);
+        star.classList.toggle("selected", val <= rating);
       });
     }
 
-    // Review form submission
+    // Review submission
     const reviewForm = document.getElementById("review-form");
     reviewForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const name = document.getElementById("review-name").value.trim();
       const text = document.getElementById("review-text").value.trim();
-      if (selectedRating === 0) {
-        alert("Please select a rating.");
-        return;
-      }
-      if (!name || !text) {
-        alert("Please fill out all fields.");
-        return;
-      }
 
-      db.collection("reviews")
-        .add({
-          name: name,
-          rating: selectedRating,
-          text: text,
-          created: new Date(),
-        })
-        .then(() => {
-          alert("Review submitted successfully!");
-          reviewForm.reset();
-          selectedRating = 0;
-          highlightStars(0);
-          loadReviews();
-        })
-        .catch((error) => {
-          console.error("Error adding review: ", error);
-          alert("Failed to submit review.");
-        });
+      if (!selectedRating) { alert("Please select a rating."); return; }
+      if (!name || !text) { alert("Please fill out all fields."); return; }
+
+      db.collection("reviews").add({
+        name, rating: selectedRating, text, created: new Date()
+      }).then(() => {
+        alert("Review submitted!");
+        reviewForm.reset();
+        selectedRating = 0;
+        highlightStars(0);
+        loadReviews();
+      }).catch(err => {
+        console.error("Error adding review:", err);
+        alert("Failed to submit review.");
+      });
     });
 
-    // Load reviews from Firestore and render
+    // Load reviews
     function renderStars(rating) {
       let starsHtml = "";
       for (let i = 1; i <= 5; i++) {
-        starsHtml += i <= rating ? "&#9733;" : "&#9734;"; // ★ or ☆
+        starsHtml += i <= rating ? "&#9733;" : "&#9734;";
       }
       return starsHtml;
     }
 
     function loadReviews() {
       const container = document.getElementById("reviews-container");
-      container.innerHTML = "<h3>Reviews</h3>"; // Reset container but keep heading
-
-      db.collection("reviews")
-        .orderBy("created", "desc")
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            const review = doc.data();
-            const date = review.created
-              ? review.created.toDate().toLocaleString()
-              : "";
-            const reviewElem = document.createElement("div");
-            reviewElem.classList.add("review");
-
-            reviewElem.innerHTML = `
-              <h4>${escapeHtml(review.name)}</h4>
-              <div class="stars">${renderStars(review.rating)}</div>
-              <p>${escapeHtml(review.text)}</p>
-              <small>${date}</small>
-            `;
-            container.appendChild(reviewElem);
-          });
-        })
-        .catch((error) => {
-          console.error("Error loading reviews: ", error);
+      container.innerHTML = "<h3>Reviews</h3>";
+      db.collection("reviews").orderBy("created", "desc").get().then(snapshot => {
+        snapshot.forEach(doc => {
+          const r = doc.data();
+          const date = r.created ? r.created.toDate().toLocaleString() : "";
+          const div = document.createElement("div");
+          div.classList.add("review");
+          div.innerHTML = `
+            <h4>${escapeHtml(r.name)}</h4>
+            <div class="stars">${renderStars(r.rating)}</div>
+            <p>${escapeHtml(r.text)}</p>
+            <small>${date}</small>
+          `;
+          container.appendChild(div);
         });
+      }).catch(console.error);
     }
 
-    // Simple escape to prevent HTML injection
     function escapeHtml(text) {
-      const map = {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#039;",
-      };
-      return text.replace(/[&<>"']/g, function (m) {
-        return map[m];
-      });
+      return text.replace(/[&<>"']/g, m => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+      })[m]);
     }
 
     // Scroll animations
-    const reveals = document.querySelectorAll(
-      ".fade-up, .fade-left, .fade-right, .scale-up"
-    );
-
+    const reveals = document.querySelectorAll(".fade-up, .fade-left, .fade-right, .scale-up");
     function animateOnScroll() {
       const triggerBottom = window.innerHeight * 0.85;
-
-      reveals.forEach((el) => {
-        const top = el.getBoundingClientRect().top;
-        if (top < triggerBottom) {
-          el.classList.add("reveal");
-        }
+      reveals.forEach(el => {
+        if (el.getBoundingClientRect().top < triggerBottom) el.classList.add("reveal");
       });
     }
 
-    window.addEventListener("scroll", animateOnScroll);
-    window.addEventListener("load", () => {
-      animateOnScroll();
-      loadReviews();
-    });
+    window.addEventListener('scroll', animateOnScroll);
+    window.addEventListener('load', () => { animateOnScroll(); loadReviews(); });
   </script>
 </body>
 </html>
