@@ -1,53 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tutoring | Chessdude07</title>
-<link rel="stylesheet" href="style.css">
-
-<!-- Font Awesome for stars -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Mq5P6+H23dU9m7OQHZF6A2i7XfFZuvbQ6Q9lqN9ZGHm6nFq9eFz1V8Frbw0r1p2Fb6sM+JcWZHqtM7d9gZJl9A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+<link rel="stylesheet" href="style.css" />
 <style>
-  /* Star rating */
+  /* Review section star styles */
+  .review .stars {
+    color: gold;
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+    user-select: none;
+  }
+  /* Interactive stars for the form */
   .star-rating {
-    display: flex;
-    gap: 5px;
-    font-size: 1.5rem;
+    font-size: 2rem;
+    color: gray;
     cursor: pointer;
+    user-select: none;
   }
-
-  .star-rating i {
-    color: #ccc;
-    transition: color 0.2s;
-  }
-
-  .star-rating i.active,
-  .star-rating i.hovered {
+  .star-rating.hovered,
+  .star-rating.selected {
     color: gold;
   }
-
-  .review-form input, .review-form textarea, .review-form button {
-    width: 100%;
-    max-width: 400px;
-    margin-bottom: 10px;
-    padding: 8px;
-    font-size: 1rem;
+  /* Review container */
+  #reviews-container {
+    margin-top: 2rem;
   }
-
-  .review-form button {
-    cursor: pointer;
-    background-color: #0077b5;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-  }
-
-  .review-form button:hover {
-    background-color: #005f8a;
+  .review {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    background-color: #fafafa;
   }
 </style>
 </head>
@@ -55,7 +41,7 @@
   <nav class="navbar">
     <div class="logo">Chessdude07</div>
     <ul class="nav-links">
-      <li><a href="profile.html">Home</a></li>
+      <li><a href="index.html">Home</a></li>
       <li><a href="tutoring.html">Tutoring</a></li>
     </ul>
   </nav>
@@ -96,89 +82,195 @@
   <section class="section fade-right">
     <h2>Contact Me</h2>
     <p>Fill out the form below to schedule a session:</p>
-    <form class="review-form">
-      <input type="text" placeholder="Name" required><br>
-      <input type="email" placeholder="Email" required><br>
-      <textarea placeholder="Message" required></textarea><br>
+    <form id="contact-form" class="review-form">
+      <input type="text" id="name" placeholder="Name" required /><br /><br />
+      <input type="email" id="email" placeholder="Email" required /><br /><br />
+      <textarea id="message" placeholder="Message" required></textarea><br /><br />
       <button class="button" type="submit">Send</button>
     </form>
   </section>
 
-  <!-- Reviews Section -->
   <section class="section fade-up">
-    <h2>Leave a Review</h2>
-    <form class="review-form" id="reviewForm">
-      <input type="text" placeholder="Your Name" required><br>
-      
-      <div class="star-rating" id="starRating">
-        <i class="fas fa-star" data-value="1"></i>
-        <i class="fas fa-star" data-value="2"></i>
-        <i class="fas fa-star" data-value="3"></i>
-        <i class="fas fa-star" data-value="4"></i>
-        <i class="fas fa-star" data-value="5"></i>
+    <h2>Submit a Review</h2>
+    <form id="review-form" class="review-form">
+      <input type="text" id="review-name" placeholder="Your Name" required /><br /><br />
+      <div id="star-container" style="margin-bottom: 10px;">
+        <!-- Stars inserted by JS -->
+        <span class="star-rating" data-value="1">&#9734;</span>
+        <span class="star-rating" data-value="2">&#9734;</span>
+        <span class="star-rating" data-value="3">&#9734;</span>
+        <span class="star-rating" data-value="4">&#9734;</span>
+        <span class="star-rating" data-value="5">&#9734;</span>
       </div>
-      <input type="hidden" id="rating" name="rating" value="0">
-      
-      <textarea placeholder="Your Review" required></textarea><br>
-      <button type="submit">Submit Review</button>
+      <textarea id="review-text" placeholder="Write your review here..." required></textarea><br /><br />
+      <button class="button" type="submit">Submit Review</button>
     </form>
+
+    <div id="reviews-container">
+      <h3>Reviews</h3>
+      <!-- Loaded reviews will appear here -->
+    </div>
   </section>
 
-  <footer class="fade-up">
-    &copy; 2025 Chessdude07. All rights reserved.
-  </footer>
+  <footer class="fade-up">&copy; 2025 Chessdude07. All rights reserved.</footer>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 
   <script>
-    // Scroll animations
-    const reveals = document.querySelectorAll('.fade-up, .fade-left, .fade-right, .scale-up');
-    function animateOnScroll() {
-      const triggerBottom = window.innerHeight * 0.85;
-      reveals.forEach(el => {
-        const top = el.getBoundingClientRect().top;
-        if(top < triggerBottom){
-          el.classList.add('reveal');
-        }
+    // Your Firebase config here (replace with your actual config)
+    const firebaseConfig = {
+      apiKey: "AIzaSyD7WVCD-O23S5g9QZTfPRiUf63tu7bLaCM",
+      authDomain: "personal-website-4889a.firebaseapp.com",
+      projectId: "personal-website-4889a",
+      storageBucket: "personal-website-4889a.firebasestorage.app",
+      messagingSenderId: "884740731820",
+      appId: "1:884740731820:web:057d078a088337dc660009",
+      measurementId: "G-2NYM4HBJBT"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Variables for review form stars
+    const stars = document.querySelectorAll("#star-container .star-rating");
+    let selectedRating = 0;
+
+    stars.forEach((star) => {
+      star.addEventListener("mouseover", () => {
+        const val = Number(star.dataset.value);
+        highlightStars(val);
       });
-    }
-    window.addEventListener('scroll', animateOnScroll);
-    window.addEventListener('load', animateOnScroll);
-
-    // Star rating functionality with hover
-    const stars = document.querySelectorAll('#starRating i');
-    const ratingInput = document.getElementById('rating');
-    let currentRating = 0;
-
-    stars.forEach(star => {
-      star.addEventListener('mouseover', () => {
-        const value = star.getAttribute('data-value');
-        stars.forEach(s => {
-          s.classList.toggle('hovered', s.getAttribute('data-value') <= value);
-        });
+      star.addEventListener("mouseout", () => {
+        highlightStars(selectedRating);
       });
-
-      star.addEventListener('mouseout', () => {
-        stars.forEach(s => {
-          s.classList.remove('hovered');
-        });
-      });
-
-      star.addEventListener('click', () => {
-        const value = star.getAttribute('data-value');
-        currentRating = value;
-        ratingInput.value = value;
-        stars.forEach(s => {
-          s.classList.toggle('active', s.getAttribute('data-value') <= value);
-        });
+      star.addEventListener("click", () => {
+        selectedRating = Number(star.dataset.value);
+        highlightStars(selectedRating);
       });
     });
 
-    // Optional: prevent form submission for demo
-    const reviewForm = document.getElementById('reviewForm');
-    reviewForm.addEventListener('submit', (e) => {
+    function highlightStars(rating) {
+      stars.forEach((star) => {
+        const starVal = Number(star.dataset.value);
+        if (starVal <= rating) {
+          star.classList.add("selected");
+        } else {
+          star.classList.remove("selected");
+        }
+      });
+    }
+
+    // Review form submission
+    const reviewForm = document.getElementById("review-form");
+    reviewForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      alert(`Thank you for your review! Rating: ${ratingInput.value} stars`);
-      reviewForm.reset();
-      stars.forEach(s => s.classList.remove('active'));
+      const name = document.getElementById("review-name").value.trim();
+      const text = document.getElementById("review-text").value.trim();
+      if (selectedRating === 0) {
+        alert("Please select a rating.");
+        return;
+      }
+      if (!name || !text) {
+        alert("Please fill out all fields.");
+        return;
+      }
+
+      db.collection("reviews")
+        .add({
+          name: name,
+          rating: selectedRating,
+          text: text,
+          created: new Date(),
+        })
+        .then(() => {
+          alert("Review submitted successfully!");
+          reviewForm.reset();
+          selectedRating = 0;
+          highlightStars(0);
+          loadReviews();
+        })
+        .catch((error) => {
+          console.error("Error adding review: ", error);
+          alert("Failed to submit review.");
+        });
+    });
+
+    // Load reviews from Firestore and render
+    function renderStars(rating) {
+      let starsHtml = "";
+      for (let i = 1; i <= 5; i++) {
+        starsHtml += i <= rating ? "&#9733;" : "&#9734;"; // ★ or ☆
+      }
+      return starsHtml;
+    }
+
+    function loadReviews() {
+      const container = document.getElementById("reviews-container");
+      container.innerHTML = "<h3>Reviews</h3>"; // Reset container but keep heading
+
+      db.collection("reviews")
+        .orderBy("created", "desc")
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            const review = doc.data();
+            const date = review.created
+              ? review.created.toDate().toLocaleString()
+              : "";
+            const reviewElem = document.createElement("div");
+            reviewElem.classList.add("review");
+
+            reviewElem.innerHTML = `
+              <h4>${escapeHtml(review.name)}</h4>
+              <div class="stars">${renderStars(review.rating)}</div>
+              <p>${escapeHtml(review.text)}</p>
+              <small>${date}</small>
+            `;
+            container.appendChild(reviewElem);
+          });
+        })
+        .catch((error) => {
+          console.error("Error loading reviews: ", error);
+        });
+    }
+
+    // Simple escape to prevent HTML injection
+    function escapeHtml(text) {
+      const map = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;",
+      };
+      return text.replace(/[&<>"']/g, function (m) {
+        return map[m];
+      });
+    }
+
+    // Scroll animations
+    const reveals = document.querySelectorAll(
+      ".fade-up, .fade-left, .fade-right, .scale-up"
+    );
+
+    function animateOnScroll() {
+      const triggerBottom = window.innerHeight * 0.85;
+
+      reveals.forEach((el) => {
+        const top = el.getBoundingClientRect().top;
+        if (top < triggerBottom) {
+          el.classList.add("reveal");
+        }
+      });
+    }
+
+    window.addEventListener("scroll", animateOnScroll);
+    window.addEventListener("load", () => {
+      animateOnScroll();
+      loadReviews();
     });
   </script>
 </body>
