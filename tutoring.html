@@ -5,12 +5,57 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tutoring | Chessdude07</title>
 <link rel="stylesheet" href="style.css">
+
+<!-- Font Awesome for stars -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Mq5P6+H23dU9m7OQHZF6A2i7XfFZuvbQ6Q9lqN9ZGHm6nFq9eFz1V8Frbw0r1p2Fb6sM+JcWZHqtM7d9gZJl9A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+  /* Star rating */
+  .star-rating {
+    display: flex;
+    gap: 5px;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+
+  .star-rating i {
+    color: #ccc;
+    transition: color 0.2s;
+  }
+
+  .star-rating i.active,
+  .star-rating i.hovered {
+    color: gold;
+  }
+
+  .review-form input, .review-form textarea, .review-form button {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 10px;
+    padding: 8px;
+    font-size: 1rem;
+  }
+
+  .review-form button {
+    cursor: pointer;
+    background-color: #0077b5;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+
+  .review-form button:hover {
+    background-color: #005f8a;
+  }
+</style>
 </head>
 <body>
   <nav class="navbar">
     <div class="logo">Chessdude07</div>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
+      <li><a href="profile.html">Home</a></li>
       <li><a href="tutoring.html">Tutoring</a></li>
     </ul>
   </nav>
@@ -52,10 +97,30 @@
     <h2>Contact Me</h2>
     <p>Fill out the form below to schedule a session:</p>
     <form class="review-form">
-      <input type="text" placeholder="Name" required><br><br>
-      <input type="email" placeholder="Email" required><br><br>
-      <textarea placeholder="Message" required></textarea><br><br>
+      <input type="text" placeholder="Name" required><br>
+      <input type="email" placeholder="Email" required><br>
+      <textarea placeholder="Message" required></textarea><br>
       <button class="button" type="submit">Send</button>
+    </form>
+  </section>
+
+  <!-- Reviews Section -->
+  <section class="section fade-up">
+    <h2>Leave a Review</h2>
+    <form class="review-form" id="reviewForm">
+      <input type="text" placeholder="Your Name" required><br>
+      
+      <div class="star-rating" id="starRating">
+        <i class="fas fa-star" data-value="1"></i>
+        <i class="fas fa-star" data-value="2"></i>
+        <i class="fas fa-star" data-value="3"></i>
+        <i class="fas fa-star" data-value="4"></i>
+        <i class="fas fa-star" data-value="5"></i>
+      </div>
+      <input type="hidden" id="rating" name="rating" value="0">
+      
+      <textarea placeholder="Your Review" required></textarea><br>
+      <button type="submit">Submit Review</button>
     </form>
   </section>
 
@@ -64,11 +129,10 @@
   </footer>
 
   <script>
+    // Scroll animations
     const reveals = document.querySelectorAll('.fade-up, .fade-left, .fade-right, .scale-up');
-
     function animateOnScroll() {
       const triggerBottom = window.innerHeight * 0.85;
-
       reveals.forEach(el => {
         const top = el.getBoundingClientRect().top;
         if(top < triggerBottom){
@@ -76,9 +140,46 @@
         }
       });
     }
-
     window.addEventListener('scroll', animateOnScroll);
     window.addEventListener('load', animateOnScroll);
+
+    // Star rating functionality with hover
+    const stars = document.querySelectorAll('#starRating i');
+    const ratingInput = document.getElementById('rating');
+    let currentRating = 0;
+
+    stars.forEach(star => {
+      star.addEventListener('mouseover', () => {
+        const value = star.getAttribute('data-value');
+        stars.forEach(s => {
+          s.classList.toggle('hovered', s.getAttribute('data-value') <= value);
+        });
+      });
+
+      star.addEventListener('mouseout', () => {
+        stars.forEach(s => {
+          s.classList.remove('hovered');
+        });
+      });
+
+      star.addEventListener('click', () => {
+        const value = star.getAttribute('data-value');
+        currentRating = value;
+        ratingInput.value = value;
+        stars.forEach(s => {
+          s.classList.toggle('active', s.getAttribute('data-value') <= value);
+        });
+      });
+    });
+
+    // Optional: prevent form submission for demo
+    const reviewForm = document.getElementById('reviewForm');
+    reviewForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert(`Thank you for your review! Rating: ${ratingInput.value} stars`);
+      reviewForm.reset();
+      stars.forEach(s => s.classList.remove('active'));
+    });
   </script>
 </body>
 </html>
