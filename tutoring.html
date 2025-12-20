@@ -50,6 +50,7 @@
     cursor: pointer;
     font-family: 'Poppins', sans-serif;
     font-size: 1rem;
+    margin-top: 0.5rem;
   }
 
   /* Review section */
@@ -60,7 +61,7 @@
     border-radius: 6px;
     padding: 1rem;
     margin-bottom: 1rem;
-    background-color: #222; /* less contrast than pure white */
+    background-color: #222; /* less contrast */
     color: #eee;
   }
   .review .stars {
@@ -88,6 +89,50 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+  /* Subject Cards with expandable qualifications */
+  .subject-card {
+    background-color: #1a1a1a;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+  }
+
+  .subject-card h3 {
+    margin-bottom: 0.3rem;
+  }
+
+  .level {
+    color: #aaa;
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .toggle-btn {
+    background: none;
+    border: none;
+    color: gold;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    padding: 0;
+  }
+
+  .toggle-btn:hover {
+    text-decoration: underline;
+  }
+
+  .details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    margin-top: 0.5rem;
+    color: #ddd;
+  }
+
+  .subject-card.open .details {
+    max-height: 300px;
+  }
 </style>
 <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -106,47 +151,62 @@
     <p>Learn chess or coding with personalized lessons!</p>
   </header>
 
+  <!-- Subjects & Qualifications Section -->
   <section class="section fade-up">
-    <h2>Tutoring Subjects</h2>
-    <div class="project-card">
-      <h3>Chess</h3>
-      <p>Beginner to Advanced Levels</p>
-    </div>
-    <div class="project-card">
-      <h3>Math</h3>
-      <p>Grade 1 to Grade 12 + Contest Math</p>
-    </div>
-    <div class="project-card">
-      <h3>Physics</h3>
-      <p>Grade 9 to Grade 12</p>
-    </div>
-    <div class="project-card">
-      <h3>Chemistry</h3>
-      <p>Grade 9 to Grade 12</p>
-    </div>
-    <div class="project-card">
-      <h3>Other Subjects</h3>
-      <p>Available upon request</p>
-    </div>
-  </section>
+    <h2>What I Tutor</h2>
 
-  <section class="section fade-left">
-    <h2>Qualifications</h2>
-    <div class="project-card">
-      <h3>Chess</h3>
-      <p>2000+ FIDE, 2200+ CFC, #1 in Ottawa for my age, Top 3 in Ontario for my age, 5-time Provincials and Nationals Competitor</p>
+    <div class="subject-card">
+      <h3>♟ Chess</h3>
+      <p class="level">Beginner → Advanced</p>
+      <button class="toggle-btn">View Qualifications</button>
+      <div class="details">
+        <p>
+          2000+ FIDE, 2200+ CFC<br>
+          #1 in Ottawa for my age<br>
+          Top 3 in Ontario for my age<br>
+          5-time Provincial & National Competitor
+        </p>
+      </div>
     </div>
-    <div class="project-card">
-      <h3>Math</h3>
-      <p>99 in Advanced Functions/Calculus and Vectors, IB 7 in HL Math, Recipient of Rene Decartes National Scholarship from the University of Waterloo</p>
+
+    <div class="subject-card">
+      <h3>📐 Math</h3>
+      <p class="level">Grade 1–12 + Contest Math</p>
+      <button class="toggle-btn">View Qualifications</button>
+      <div class="details">
+        <p>
+          99 in Advanced Functions & Calculus<br>
+          IB 7 in HL Math<br>
+          Recipient of René Descartes National Scholarship (University of Waterloo)<br>
+          CMO Repechage Qualifier, COMC Eastern Ontario Bronze Award, Eastern Ontario Grade 12 Silver Award<br>
+          3x AIME Qualifier<br>
+        </p>
+      </div>
     </div>
-    <div class="project-card">
-      <h3>Physics</h3>
-      <p>99 in Grade 11 Physics, 97 in Grade 12 Physics, IB 7 in HL Physics</p>
+
+    <div class="subject-card">
+      <h3>⚛ Physics</h3>
+      <p class="level">Grade 9–12</p>
+      <button class="toggle-btn">View Qualifications</button>
+      <div class="details">
+        <p>
+          99 in Grade 11 Physics<br>
+          97 in Grade 12 Physics<br>
+          IB 7 in HL Physics
+        </p>
+      </div>
     </div>
-    <div class="project-card">
-      <h3>Chemistry</h3>
-      <p>97 in Grade 12 Chemistry, IB 7 in SL Chemistry</p>
+
+    <div class="subject-card">
+      <h3>🧪 Chemistry</h3>
+      <p class="level">Grade 9–12</p>
+      <button class="toggle-btn">View Qualifications</button>
+      <div class="details">
+        <p>
+          97 in Grade 12 Chemistry<br>
+          IB 7 in SL Chemistry
+        </p>
+      </div>
     </div>
   </section>
 
@@ -199,7 +259,6 @@
       measurementId: "G-2NYM4HBJBT"
     };
 
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
@@ -210,7 +269,7 @@
     function highlightStars(rating) {
       stars.forEach(star => {
         const val = Number(star.dataset.value);
-        star.innerHTML = val <= rating ? "&#9733;" : "&#9734;"; // filled vs empty star
+        star.innerHTML = val <= rating ? "&#9733;" : "&#9734;";
       });
     }
 
@@ -249,7 +308,7 @@
       });
     });
 
-    // Load reviews from Firestore
+    // Load reviews
     function renderStars(rating) {
       return Array.from({length: 5}, (_, i) => i < rating ? "&#9733;" : "&#9734;").join("");
     }
@@ -290,6 +349,17 @@
     }
     window.addEventListener("scroll", animateOnScroll);
     window.addEventListener("load", () => { animateOnScroll(); loadReviews(); });
+
+    // Subject card toggle
+    document.querySelectorAll(".toggle-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const card = btn.parentElement;
+        card.classList.toggle("open");
+        btn.textContent = card.classList.contains("open")
+          ? "Hide Qualifications"
+          : "View Qualifications";
+      });
+    });
   </script>
 </body>
 </html>
