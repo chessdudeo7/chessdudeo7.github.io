@@ -18,12 +18,22 @@
     color: #eee;
   }
 
-  /* Project cards */
-  .project-card {
+  /* Project / Subject Cards */
+  .project-card, .subject-card {
     background-color: #1a1a1a;
-    padding: 1rem;
+    padding: 1.2rem;
     margin-bottom: 1rem;
-    border-radius: 6px;
+    border-radius: 8px;
+  }
+
+  .subject-card h3 {
+    margin-bottom: 0.3rem;
+  }
+
+  .level {
+    color: #aaa;
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
   }
 
   /* Forms */
@@ -61,7 +71,7 @@
     border-radius: 6px;
     padding: 1rem;
     margin-bottom: 1rem;
-    background-color: #222; /* less contrast */
+    background-color: #222;
     color: #eee;
   }
   .review .stars {
@@ -71,7 +81,7 @@
     user-select: none;
   }
 
-  /* Star rating form */
+  /* Star rating */
   .star-rating {
     font-size: 2rem;
     color: gold;
@@ -90,24 +100,7 @@
     transform: translateY(0);
   }
 
-  /* Subject Cards with expandable qualifications */
-  .subject-card {
-    background-color: #1a1a1a;
-    padding: 1.2rem;
-    margin-bottom: 1rem;
-    border-radius: 8px;
-  }
-
-  .subject-card h3 {
-    margin-bottom: 0.3rem;
-  }
-
-  .level {
-    color: #aaa;
-    font-size: 0.95rem;
-    margin-bottom: 0.6rem;
-  }
-
+  /* Toggle subject details */
   .toggle-btn {
     background: none;
     border: none;
@@ -117,11 +110,7 @@
     font-size: 0.9rem;
     padding: 0;
   }
-
-  .toggle-btn:hover {
-    text-decoration: underline;
-  }
-
+  .toggle-btn:hover { text-decoration: underline; }
   .details {
     max-height: 0;
     overflow: hidden;
@@ -129,13 +118,18 @@
     margin-top: 0.5rem;
     color: #ddd;
   }
-
   .subject-card.open .details {
     max-height: 300px;
   }
 </style>
 <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
+<script>
+  (function(){ emailjs.init("YOUR_EMAILJS_USER_ID"); })(); // Replace with your EmailJS user ID
+</script>
 </head>
 <body>
   <nav class="navbar">
@@ -148,10 +142,10 @@
 
   <header class="hero fade-up">
     <h1>Tutoring Services</h1>
-    <p>Learn chess or coding with personalized lessons!</p>
+    <p>Learn chess or get ahead in school with personalized lessons!</p>
   </header>
 
-  <!-- Subjects & Qualifications Section -->
+  <!-- Subjects & Qualifications -->
   <section class="section fade-up">
     <h2>What I Tutor</h2>
 
@@ -177,9 +171,8 @@
         <p>
           99 in Advanced Functions & Calculus<br>
           IB 7 in HL Math<br>
-          Recipient of René Descartes National Scholarship (University of Waterloo)<br>
-          CMO Repechage Qualifier, COMC Eastern Ontario Bronze Award, Eastern Ontario Grade 12 Silver Award<br>
-          3x AIME Qualifier<br>
+          René Descartes Scholarship (University of Waterloo)<br>
+          3x AIME Qualifier
         </p>
       </div>
     </div>
@@ -210,6 +203,7 @@
     </div>
   </section>
 
+  <!-- Contact Me with EmailJS -->
   <section class="section fade-right">
     <h2>Contact Me</h2>
     <p>Fill out the form below to schedule a session:</p>
@@ -221,6 +215,7 @@
     </form>
   </section>
 
+  <!-- Submit a Review -->
   <section class="section fade-up">
     <h2>Submit a Review</h2>
     <form id="review-form" class="review-form">
@@ -238,7 +233,6 @@
 
     <div id="reviews-container">
       <h3>Reviews</h3>
-      <!-- Loaded reviews will appear here -->
     </div>
   </section>
 
@@ -262,21 +256,47 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
+    // Contact form using EmailJS
+    const contactForm = document.getElementById("contact-form");
+    contactForm.addEventListener("submit", function(e){
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const message = document.getElementById("message").value.trim();
+
+      if(!name || !email || !message){
+        alert("Please fill out all fields.");
+        return;
+      }
+
+      emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+        from_name: name,
+        from_email: email,
+        message: message
+      })
+      .then(function(response){
+        alert("Message sent successfully!");
+        contactForm.reset();
+      }, function(error){
+        console.error("Failed to send email:", error);
+        alert("Failed to send message. Please try again later.");
+      });
+    });
+
     // Review stars interaction
     const stars = document.querySelectorAll("#star-container .star-rating");
     let selectedRating = 0;
-
-    function highlightStars(rating) {
-      stars.forEach(star => {
+    function highlightStars(rating){
+      stars.forEach(star=>{
         const val = Number(star.dataset.value);
         star.innerHTML = val <= rating ? "&#9733;" : "&#9734;";
       });
     }
-
-    stars.forEach(star => {
-      star.addEventListener("mouseover", () => highlightStars(Number(star.dataset.value)));
-      star.addEventListener("mouseout", () => highlightStars(selectedRating));
-      star.addEventListener("click", () => {
+    stars.forEach(star=>{
+      star.addEventListener("mouseover", ()=>highlightStars(Number(star.dataset.value)));
+      star.addEventListener("mouseout", ()=>highlightStars(selectedRating));
+      star.addEventListener("click", ()=>{
         selectedRating = Number(star.dataset.value);
         highlightStars(selectedRating);
       });
@@ -284,46 +304,45 @@
 
     // Submit review
     const reviewForm = document.getElementById("review-form");
-    reviewForm.addEventListener("submit", e => {
+    reviewForm.addEventListener("submit", e=>{
       e.preventDefault();
       const name = document.getElementById("review-name").value.trim();
       const text = document.getElementById("review-text").value.trim();
-      if (selectedRating === 0) { alert("Please select a rating."); return; }
-      if (!name || !text) { alert("Please fill out all fields."); return; }
+      if(selectedRating===0){ alert("Please select a rating."); return; }
+      if(!name || !text){ alert("Please fill out all fields."); return; }
 
       db.collection("reviews").add({
         name: name,
         rating: selectedRating,
         text: text,
         created: new Date(),
-      }).then(() => {
+      }).then(()=>{
         alert("Review submitted successfully!");
         reviewForm.reset();
-        selectedRating = 0;
+        selectedRating=0;
         highlightStars(0);
         loadReviews();
-      }).catch(error => {
+      }).catch(error=>{
         console.error("Error adding review: ", error);
         alert("Failed to submit review.");
       });
     });
 
-    // Load reviews
-    function renderStars(rating) {
-      return Array.from({length: 5}, (_, i) => i < rating ? "&#9733;" : "&#9734;").join("");
+    function renderStars(rating){
+      return Array.from({length:5},(_,i)=>i<rating?"&#9733;":"&#9734;").join("");
     }
 
-    function loadReviews() {
+    function loadReviews(){
       const container = document.getElementById("reviews-container");
-      container.innerHTML = "<h3>Reviews</h3>";
-      db.collection("reviews").orderBy("created", "desc").get()
-        .then(snapshot => {
-          snapshot.forEach(doc => {
+      container.innerHTML="<h3>Reviews</h3>";
+      db.collection("reviews").orderBy("created","desc").get()
+        .then(snapshot=>{
+          snapshot.forEach(doc=>{
             const review = doc.data();
             const date = review.created ? review.created.toDate().toLocaleString() : "";
             const reviewElem = document.createElement("div");
             reviewElem.classList.add("review");
-            reviewElem.innerHTML = `
+            reviewElem.innerHTML=`
               <h4>${escapeHtml(review.name)}</h4>
               <div class="stars">${renderStars(review.rating)}</div>
               <p>${escapeHtml(review.text)}</p>
@@ -334,30 +353,28 @@
         }).catch(console.error);
     }
 
-    function escapeHtml(text) {
-      const map = { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;" };
-      return text.replace(/[&<>"']/g, m => map[m]);
+    function escapeHtml(text){
+      const map = {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"};
+      return text.replace(/[&<>"']/g,m=>map[m]);
     }
 
     // Scroll animations
-    const reveals = document.querySelectorAll(".fade-up, .fade-left, .fade-right, .scale-up");
-    function animateOnScroll() {
-      const triggerBottom = window.innerHeight * 0.85;
-      reveals.forEach(el => {
-        if(el.getBoundingClientRect().top < triggerBottom) el.classList.add("reveal");
+    const reveals=document.querySelectorAll(".fade-up,.fade-left,.fade-right,.scale-up");
+    function animateOnScroll(){
+      const triggerBottom=window.innerHeight*0.85;
+      reveals.forEach(el=>{
+        if(el.getBoundingClientRect().top<triggerBottom) el.classList.add("reveal");
       });
     }
-    window.addEventListener("scroll", animateOnScroll);
-    window.addEventListener("load", () => { animateOnScroll(); loadReviews(); });
+    window.addEventListener("scroll",animateOnScroll);
+    window.addEventListener("load",()=>{ animateOnScroll(); loadReviews(); });
 
-    // Subject card toggle
-    document.querySelectorAll(".toggle-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const card = btn.parentElement;
+    // Toggle subject qualifications
+    document.querySelectorAll(".toggle-btn").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const card=btn.parentElement;
         card.classList.toggle("open");
-        btn.textContent = card.classList.contains("open")
-          ? "Hide Qualifications"
-          : "View Qualifications";
+        btn.textContent=card.classList.contains("open") ? "Hide Qualifications" : "View Qualifications";
       });
     });
   </script>
