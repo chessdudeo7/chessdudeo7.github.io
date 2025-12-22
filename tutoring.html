@@ -62,6 +62,11 @@
     font-size: 1rem;
     margin-top: 0.5rem;
   }
+  /* Disabled button style */
+  .review-form button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 
   /* Review section */
   #reviews-container {
@@ -128,14 +133,14 @@
 <!-- EmailJS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
 <script>
-  (function(){ emailjs.init("YOUR_EMAILJS_USER_ID"); })(); // Replace with your EmailJS user ID
+  (function(){ emailjs.init("2wiA-HEMgM41TWBjJ"); })();
 </script>
 </head>
 <body>
   <nav class="navbar">
     <div class="logo">Chessdude07</div>
     <ul class="nav-links">
-      <li><a href="profile.html">Home</a></li>
+      <li><a href="index.html">Home</a></li>
       <li><a href="tutoring.html">Tutoring</a></li>
     </ul>
   </nav>
@@ -256,8 +261,10 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // Contact form using EmailJS
+    // Contact form using EmailJS with button disable on send
     const contactForm = document.getElementById("contact-form");
+    const sendButton = contactForm.querySelector("button");
+
     contactForm.addEventListener("submit", function(e){
       e.preventDefault();
 
@@ -270,7 +277,11 @@
         return;
       }
 
-      emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+      // Disable button and show sending text
+      sendButton.disabled = true;
+      sendButton.textContent = "Sending...";
+
+      emailjs.send("service_0xxrfnr", "template_82nwl6d", {
         from_name: name,
         from_email: email,
         message: message
@@ -278,9 +289,15 @@
       .then(function(response){
         alert("Message sent successfully!");
         contactForm.reset();
-      }, function(error){
+      })
+      .catch(function(error){
         console.error("Failed to send email:", error);
         alert("Failed to send message. Please try again later.");
+      })
+      .finally(() => {
+        // Re-enable button and reset text
+        sendButton.disabled = false;
+        sendButton.textContent = "Send";
       });
     });
 
@@ -367,7 +384,10 @@
       });
     }
     window.addEventListener("scroll",animateOnScroll);
-    window.addEventListener("load",()=>{ animateOnScroll(); loadReviews(); });
+    window.addEventListener("load",()=>{
+      animateOnScroll();
+      loadReviews();
+    });
 
     // Toggle subject qualifications
     document.querySelectorAll(".toggle-btn").forEach(btn=>{
