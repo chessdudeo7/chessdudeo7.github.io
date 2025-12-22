@@ -80,6 +80,33 @@
     background: orange;
     transform: translateY(-2px);
   }
+
+  /* GitHub repo buttons */
+  .repo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.6rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 5px;
+    background: #1a1a1a;
+    color: #ccc;
+    text-decoration: none;
+    font-size: 0.9rem;
+    border: 1px solid #333;
+    transition: all 0.25s ease;
+  }
+
+  .repo-link i {
+    font-size: 1rem;
+  }
+
+  .repo-link:hover {
+    background: #222;
+    color: gold;
+    border-color: gold;
+    transform: translateY(-2px);
+  }
 </style>
 </head>
 
@@ -100,15 +127,14 @@
   <h1 id="hero-text"></h1>
   <p>CS student | Developer | Tech Enthusiast</p>
 
-  <!-- SOCIAL ICONS -->
   <div class="social-links">
-    <a href="https://github.com/YOUR_GITHUB" target="_blank" aria-label="GitHub">
+    <a href="https://github.com/chessdudeo7" target="_blank" aria-label="GitHub">
       <i class="fab fa-github"></i>
     </a>
-    <a href="https://linkedin.com/in/YOUR_LINKEDIN" target="_blank" aria-label="LinkedIn">
+    <a href="https://www.linkedin.com/in/matthew-zhu-9b6079319" target="_blank" aria-label="LinkedIn">
       <i class="fab fa-linkedin"></i>
     </a>
-    <a href="mailto:youremail@example.com" aria-label="Email">
+    <a href="mailto:matthewzhu99@gmail.com" aria-label="Email">
       <i class="fas fa-envelope"></i>
     </a>
   </div>
@@ -117,11 +143,11 @@
 <!-- ABOUT -->
 <section class="section fade-up">
   <h2>About Me</h2>
-  <p>
-    I'm a computer science student passionate about building clean, efficient software
-    and helping others learn. Competitive chess sharpened my analytical thinking,
-    and I bring that mindset into development and teaching.
-  </p>
+  <ul>
+    <li>1A Computer Science student at the University of Waterloo</li>
+    <li>Passionate about web development and programming</li>
+    <li>Competitive chess player striving to become a national master</li>
+  </ul>
 </section>
 
 <!-- SKILLS -->
@@ -131,21 +157,28 @@
     <li>Web Development: HTML, CSS, JavaScript</li>
     <li>Python Programming</li>
     <li>Firebase & Client-Side Architecture</li>
-    <li>Chess Strategy & Analysis</li>
-    <li>Teaching & Tutoring</li>
   </ul>
 </section>
 
 <!-- PROJECTS -->
 <section class="section fade-right">
-  <h2>Experience & Projects</h2>
+  <h2>Projects</h2>
 
   <div class="project-card">
-    <h3>♟ Chess Development</h3>
+    <h3>♟ Chess4All</h3>
     <p>
       Built chess-related tools, analysis workflows,
       and learning systems for improvement-focused training.
     </p>
+
+    <a
+      href="https://github.com/chessdudeo7/Chess4All"
+      target="_blank"
+      class="repo-link"
+    >
+      <i class="fab fa-github"></i>
+      View on GitHub
+    </a>
   </div>
 
   <div class="project-card">
@@ -154,6 +187,15 @@
       Designed responsive websites with modern UI, animations,
       and interactive features.
     </p>
+
+    <a
+      href="https://github.com/chessdudeo7"
+      target="_blank"
+      class="repo-link"
+    >
+      <i class="fab fa-github"></i>
+      View on GitHub
+    </a>
   </div>
 </section>
 
