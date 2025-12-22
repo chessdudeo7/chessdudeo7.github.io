@@ -4,9 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Profile | Chessdude07</title>
+
 <link rel="stylesheet" href="style.css">
+
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 <style>
-  /* Optional: cursor effect for typing animation */
+  /* Typing cursor */
   #hero-text::after {
     content: '|';
     animation: blink 0.7s infinite;
@@ -17,84 +22,201 @@
     0%, 50%, 100% { opacity: 1; }
     25%, 75% { opacity: 0; }
   }
+
+  /* Scroll progress bar */
+  #progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    width: 0%;
+    background: linear-gradient(90deg, gold, orange);
+    z-index: 1000;
+  }
+
+  /* Social icons */
+  .social-links {
+    margin-top: 1.2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+  }
+
+  .social-links a {
+    color: #aaa;
+    font-size: 1.4rem;
+    transition: transform 0.25s ease, color 0.25s ease;
+  }
+
+  .social-links a:hover {
+    transform: translateY(-4px) scale(1.1);
+    color: gold;
+  }
+
+  /* Hover lift for cards */
+  .project-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  }
+
+  /* CTA buttons */
+  .button {
+    display: inline-block;
+    margin-top: 0.8rem;
+    padding: 0.7rem 1.4rem;
+    border-radius: 6px;
+    background: gold;
+    color: #111;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .button:hover {
+    background: orange;
+    transform: translateY(-2px);
+  }
 </style>
 </head>
+
 <body>
-  <nav class="navbar">
-    <div class="logo">Chessdude07</div>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="tutoring.html">Tutoring</a></li>
-    </ul>
-  </nav>
 
-  <header class="hero fade-up">
-    <h1 id="hero-text"></h1>
-    <p>CS student | Developer | Tech Enthusiast</p>
-  </header>
+<div id="progress-bar"></div>
 
-  <section class="section fade-up">
-    <h2>My Skills</h2>
-    <ul>
-      <li>Web Development: HTML, CSS, JavaScript</li>
-      <li>Python Programming</li>
-      <li>Chess Strategy & Analysis</li>
-      <li>Teaching & Tutoring</li>
-    </ul>
-  </section>
+<nav class="navbar">
+  <div class="logo">Chessdude07</div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="tutoring.html">Tutoring</a></li>
+  </ul>
+</nav>
 
-  <section class="section fade-right">
-    <h2>Experience</h2>
-    <div class="project-card">
-      <h3>Chess Projects</h3>
-      <p>Developed chess apps and interactive boards for learning.</p>
-    </div>
-    <div class="project-card">
-      <h3>Web Projects</h3>
-      <p>Built responsive websites with animations and modern design.</p>
-    </div>
-  </section>
+<!-- HERO -->
+<header class="hero fade-up">
+  <h1 id="hero-text"></h1>
+  <p>CS student | Developer | Tech Enthusiast</p>
 
-  <section class="section fade-left">
-    <h2>Hobbies</h2>
-    <p>When not coding or teaching, I enjoy playing chess and exploring new tech.</p>
-  </section>
+  <!-- SOCIAL ICONS -->
+  <div class="social-links">
+    <a href="https://github.com/YOUR_GITHUB" target="_blank" aria-label="GitHub">
+      <i class="fab fa-github"></i>
+    </a>
+    <a href="https://linkedin.com/in/YOUR_LINKEDIN" target="_blank" aria-label="LinkedIn">
+      <i class="fab fa-linkedin"></i>
+    </a>
+    <a href="mailto:youremail@example.com" aria-label="Email">
+      <i class="fas fa-envelope"></i>
+    </a>
+  </div>
+</header>
 
-  <footer class="fade-up">
-    &copy; Matthew Zhu 2025. All rights reserved.
-  </footer>
+<!-- ABOUT -->
+<section class="section fade-up">
+  <h2>About Me</h2>
+  <p>
+    I'm a computer science student passionate about building clean, efficient software
+    and helping others learn. Competitive chess sharpened my analytical thinking,
+    and I bring that mindset into development and teaching.
+  </p>
+</section>
 
-  <script>
-    // Scroll animations
-    const reveals = document.querySelectorAll('.fade-up, .fade-left, .fade-right, .scale-up');
-    function animateOnScroll() {
-      const triggerBottom = window.innerHeight * 0.85;
-      reveals.forEach(el => {
-        const top = el.getBoundingClientRect().top;
-        if(top < triggerBottom){
-          el.classList.add('reveal');
-        }
-      });
-    }
-    window.addEventListener('scroll', animateOnScroll);
-    window.addEventListener('load', animateOnScroll);
+<!-- SKILLS -->
+<section class="section fade-up">
+  <h2>My Skills</h2>
+  <ul>
+    <li>Web Development: HTML, CSS, JavaScript</li>
+    <li>Python Programming</li>
+    <li>Firebase & Client-Side Architecture</li>
+    <li>Chess Strategy & Analysis</li>
+    <li>Teaching & Tutoring</li>
+  </ul>
+</section>
 
-    // Typing animation for hero text
-    const heroText = "Hi, I'm Matthew Zhu";
-    const heroElement = document.getElementById('hero-text');
-    let charIndex = 0;
+<!-- PROJECTS -->
+<section class="section fade-right">
+  <h2>Experience & Projects</h2>
 
-    function typeHeroText() {
-      if (charIndex < heroText.length) {
-        heroElement.textContent += heroText[charIndex];
-        charIndex++;
-        setTimeout(typeHeroText, 100); // adjust speed (ms)
+  <div class="project-card">
+    <h3>♟ Chess Development</h3>
+    <p>
+      Built chess-related tools, analysis workflows,
+      and learning systems for improvement-focused training.
+    </p>
+  </div>
+
+  <div class="project-card">
+    <h3>💻 Web Development</h3>
+    <p>
+      Designed responsive websites with modern UI, animations,
+      and interactive features.
+    </p>
+  </div>
+</section>
+
+<!-- HIGHLIGHTS -->
+<section class="section fade-left">
+  <h2>Highlights</h2>
+  <ul>
+    <li>2000+ FIDE / 2200+ CFC Chess Rating</li>
+    <li>Top provincial & national placements</li>
+    <li>Strong academic performance in math & science</li>
+  </ul>
+</section>
+
+<!-- CTA -->
+<section class="section fade-up">
+  <h2>Tutoring</h2>
+  <p>
+    I offer personalized tutoring in chess, math, physics,
+    and chemistry — focused on real understanding.
+  </p>
+  <a href="tutoring.html" class="button">View Tutoring Services</a>
+</section>
+
+<footer class="fade-up">
+  &copy; Matthew Zhu 2025. All rights reserved.
+</footer>
+
+<script>
+  // Scroll animations
+  const reveals = document.querySelectorAll('.fade-up, .fade-left, .fade-right, .scale-up');
+  function animateOnScroll() {
+    const triggerBottom = window.innerHeight * 0.85;
+    reveals.forEach(el => {
+      if (el.getBoundingClientRect().top < triggerBottom) {
+        el.classList.add('reveal');
       }
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      typeHeroText();
     });
-  </script>
+  }
+  window.addEventListener('scroll', animateOnScroll);
+  window.addEventListener('load', animateOnScroll);
+
+  // Typing animation
+  const heroText = "Hi, I'm Matthew Zhu";
+  const heroElement = document.getElementById('hero-text');
+  let charIndex = 0;
+
+  function typeHeroText() {
+    if (charIndex < heroText.length) {
+      heroElement.textContent += heroText[charIndex];
+      charIndex++;
+      setTimeout(typeHeroText, 90);
+    }
+  }
+  window.addEventListener('DOMContentLoaded', typeHeroText);
+
+  // Scroll progress bar
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / scrollHeight) * 100;
+    document.getElementById('progress-bar').style.width = progress + '%';
+  });
+</script>
+
 </body>
 </html>
