@@ -1,391 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Profile | Matthew Zhu</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio | Matthew Zhu</title>
 
-<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<!-- Font Awesome Icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /* Page-Specific Styles */
+    .hero-text::after {
+      content: '|';
+      animation: blink 0.8s infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
 
-<style>
-/* ================= THEME VARIABLES ================= */
-html {
-  --bg: #0f0f0f;
-  --text: #f5f5f5;
-  --card: #1b1b1b;
-  --accent: #ffd700;
-  --accent-soft: #ffb700;
-  --muted: #aaa;
-  background: var(--bg);
-  color: var(--text);
-}
+    /* Resume Section */
+    .resume-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
 
-html.light {
-  --bg: #ffffff;
-  --text: #111111;
-  --card: #f5f5f5;
-  --accent: #ffd700;
-  --accent-soft: #ffb700;
-  --muted: #555;
-}
+    /* Experience Timeline */
+    .timeline-item {
+      border-left: 2px solid var(--accent-1);
+      padding-left: 20px;
+      margin-bottom: 30px;
+      position: relative;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 0;
+      width: 10px;
+      height: 10px;
+      background: var(--accent-2);
+      border-radius: 50%;
+    }
+    .timeline-date {
+      color: var(--accent-2);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+      display: block;
+    }
 
-body, section, header, footer, nav {
-  background: transparent;
-  color: var(--text);
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
-a {
-  color: var(--text);
-  text-decoration: none;
-}
-
-a:hover {
-  color: var(--accent);
-}
-
-/* ================= PROGRESS BAR ================= */
-#progress-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 4px;
-  width: 0%;
-  background: linear-gradient(90deg, var(--accent), var(--accent-soft));
-  z-index: 1000;
-}
-
-/* ================= NAVBAR ================= */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1.5rem;
-  height: 64px;
-  position: relative;
-  z-index: 10;
-}
-
-.logo {
-  font-weight: 600;
-  font-size: 1.2rem;
-}
-
-.nav-group {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-}
-
-.nav-links {
-  display: flex;
-  gap: 1.2rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.nav-links a {
-  color: var(--accent);
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.nav-links a:hover {
-  opacity: 0.85;
-}
-
-#theme-toggle {
-  background: none;
-  border: none;
-  color: var(--accent);
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-
-/* ================= HERO ================= */
-#hero-text::after {
-  content: '|';
-  animation: blink 0.8s infinite;
-}
-
-@keyframes blink {
-  50% { opacity: 0; }
-}
-
-/* ================= SECTIONS ================= */
-.fade-up, .fade-left, .fade-right {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.7s ease;
-}
-
-.fade-left { transform: translateX(-30px); }
-.fade-right { transform: translateX(30px); }
-
-.reveal { opacity: 1; transform: translate(0); }
-
-/* ================= SOCIAL LINKS ================= */
-.social-links {
-  display: flex;
-  gap: 1.2rem;
-  justify-content: center;
-  margin-top: 1rem;
-}
-
-.social-links a {
-  color: var(--muted);
-  font-size: 1.4rem;
-  transition: transform 0.25s ease, color 0.25s ease;
-}
-
-.social-links a:hover {
-  color: var(--accent);
-  transform: translateY(-4px);
-}
-
-/* ================= STATS ================= */
-.stats {
-  display: flex;
-  justify-content: space-around;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-.stat h3 {
-  font-size: 2.2rem;
-  color: var(--accent);
-}
-
-/* ================= SKILL BARS ================= */
-.skill {
-  margin-bottom: 1rem;
-}
-
-.bar {
-  height: 10px;
-  background: #1b1b1b;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-html.light .bar {
-  background: #f5f5f5;
-}
-
-.bar div {
-  height: 100%;
-  width: 0;
-  background: linear-gradient(90deg, var(--accent), var(--accent-soft));
-  transition: width 1.2s ease;
-}
-
-/* ================= CARDS ================= */
-.project-card, .section {
-  background: var(--card);
-  backdrop-filter: blur(10px);
-  border-radius: 10px;
-  padding: 1.2rem;
-  margin-bottom: 1.2rem;
-  border: 1px solid rgba(255,255,255,0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.project-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-}
-
-/* ================= BUTTONS ================= */
-.button, .repo-link {
-  display: inline-block;
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
-  margin-top: 0.6rem;
-  font-weight: 600;
-  border: 1px solid var(--accent);
-  background: var(--accent);
-  color: #111;
-  transition: all 0.2s ease;
-}
-
-.button:hover, .repo-link:hover {
-  background: var(--accent-soft);
-  color: #111;
-  transform: translateY(-2px);
-}
-</style>
+    /* Coursework Grid */
+    .course-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .course-tag {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      transition: all 0.2s ease;
+    }
+    .course-tag:hover {
+      background: var(--accent-1);
+      color: white;
+      border-color: var(--accent-1);
+    }
+  </style>
 </head>
 
 <body>
 
-<div id="progress-bar"></div>
-
-<!-- ================= NAVBAR ================= -->
 <nav class="navbar">
-  <div class="logo">Matthew Zhu</div>
-  <div class="nav-group">
-    <ul class="nav-links">
-      <li><a href="index.html">Profile</a></li>
-      <li><a href="tutoring.html">Tutoring</a></li>
-    </ul>
-    <button id="theme-toggle" aria-label="Toggle theme"></button>
+  <div class="logo">
+    <a href="index.html">Matthew Zhu</a>
   </div>
+  <ul class="nav-links">
+    <li><a href="index.html">Portfolio</a></li>
+    <li><a href="tutoring.html">Tutoring</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
 </nav>
 
-<!-- ================= HERO ================= -->
 <header class="hero fade-up">
-  <h1 id="hero-text"></h1>
-  <p>CS Student | Developer | Tech Enthusiast</p>
-
-  <div class="social-links">
-    <a href="https://github.com/chessdudeo7" target="_blank"><i class="fab fa-github"></i></a>
-    <a href="https://www.linkedin.com/in/matthew-zhu-9b6079319" target="_blank"><i class="fab fa-linkedin"></i></a>
-    <a href="mailto:matthewzhu99@gmail.com"><i class="fas fa-envelope"></i></a>
+  <h1 class="hero-text" id="typing-text"></h1>
+  <p>CS Student @ UWaterloo | Full Stack Developer | Chess Master</p>
+  
+  <div class="hero-links" style="margin-top: 20px;">
+    <a href="https://github.com/chessdudeo7" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+    <a href="https://www.linkedin.com/in/matthew-zhu-9b6079319" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
   </div>
 </header>
 
-<!-- ================= ABOUT ME ================= -->
+<section class="section fade-up">
+  <div class="project-card resume-box">
+    <div>
+      <h2 style="margin-bottom: 5px; border: none;">Resume</h2>
+      <p>Check out my experience, education, and technical skills.</p>
+    </div>
+    <a href="resume.pdf" target="_blank" class="button">
+      <i class="fas fa-download"></i> Download CV
+    </a>
+  </div>
+</section>
+
 <section class="section fade-up">
   <h2>About Me</h2>
-  <ul>
-    <li>1A Computer Science student at the University of Waterloo</li>
-    <li>Passionate about web development and programming</li>
-    <li>Competitive chess player aiming for the International Master title</li>
-  </ul>
+  <p>
+    I am a 1A Computer Science student at the <strong>University of Waterloo</strong>. 
+    I bridge the gap between complex algorithms and user-friendly applications. 
+    When I'm not coding, I'm competing nationally in chess or tutoring the next generation of STEM students.
+  </p>
 </section>
 
-<!-- ================= STATS ================= -->
-<section class="section fade-up stats">
-  <div class="stat"><h3 data-target="2000">0</h3><p>FIDE Rating</p></div>
-  <div class="stat"><h3 data-target="10">0</h3><p>Projects</p></div>
-  <div class="stat"><h3 data-target="5">0</h3><p>Years Coding</p></div>
-</section>
-
-<!-- ================= SKILLS ================= -->
-<section class="section fade-up">
-  <h2>My Skills</h2>
-  <div class="skill">
-    <span>HTML / CSS / JavaScript</span>
-    <div class="bar"><div data-width="90%"></div></div>
-  </div>
-  <div class="skill">
-    <span>Python</span>
-    <div class="bar"><div data-width="85%"></div></div>
-  </div>
-  <div class="skill">
-    <span>Firebase / Architecture</span>
-    <div class="bar"><div data-width="75%"></div></div>
-  </div>
-</section>
-
-<!-- ================= PROJECTS ================= -->
 <section class="section fade-right">
-  <h2>Projects</h2>
+  <h2>Experience</h2>
+  
+  <div class="timeline-item">
+    <span class="timeline-date">Sept 2024 - Present</span>
+    <h3>Computer Science Student</h3>
+    <p>University of Waterloo</p>
+    <p>Dean's Honours List. Focusing on Algorithm Design and Software Engineering.</p>
+  </div>
+
+  <div class="timeline-item">
+    <span class="timeline-date">2020 - Present</span>
+    <h3>Private Tutor</h3>
+    <p>Self-Employed</p>
+    <p>Mentored 20+ students in Advanced Functions, Calculus, Physics, and Competitive Chess.</p>
+  </div>
+
+  <div class="timeline-item">
+    <span class="timeline-date">2023</span>
+    <h3>Provincial Chess Competitor</h3>
+    <p>Ontario Chess Association</p>
+    <p>Ranked Top 3 in Ontario (Age Category). 2000+ FIDE Rating.</p>
+  </div>
+</section>
+
+<section class="section fade-up">
+  <h2>Technical Skills</h2>
+  
+  <div style="margin-bottom: 30px;">
+    <div style="margin-bottom: 15px;">
+      <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+        <span>Python / Django</span>
+        <span>90%</span>
+      </div>
+      <div style="background:rgba(255,255,255,0.1); height:6px; border-radius:3px;">
+        <div style="width:90%; height:100%; background:var(--accent-1); border-radius:3px;"></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+      <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+        <span>JavaScript / HTML / CSS</span>
+        <span>85%</span>
+      </div>
+      <div style="background:rgba(255,255,255,0.1); height:6px; border-radius:3px;">
+        <div style="width:85%; height:100%; background:var(--accent-2); border-radius:3px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Relevant Coursework</h3>
+  <div class="course-grid">
+    <span class="course-tag">CS 135: Functional Programming</span>
+    <span class="course-tag">MATH 135: Algebra</span>
+    <span class="course-tag">MATH 137: Calculus I</span>
+    <span class="course-tag">CS 136: Data Abstraction</span>
+    <span class="course-tag">Object-Oriented Design</span>
+  </div>
+</section>
+
+<section class="section fade-up">
+  <h2>Featured Projects</h2>
 
   <div class="project-card">
     <h3>♟ Chess4All</h3>
-    <p>Chess training tools and analysis workflows.</p>
-    <a class="repo-link" href="https://github.com/chessdudeo7/Chess4All" target="_blank">
-      <i class="fab fa-github"></i> GitHub
-    </a>
+    <p style="color:var(--accent-2); font-size:0.9rem; margin-bottom:10px;">Python • PyGame • Stockfish API</p>
+    <p>A comprehensive chess training tool featuring analysis workflows, opening explorers, and tactic puzzles.</p>
+    <div style="margin-top:15px;">
+      <a href="https://github.com/chessdudeo7/Chess4All" class="button" style="padding: 8px 16px; font-size: 0.9rem;">View on GitHub</a>
+    </div>
   </div>
 
-  <div class="project-card">
+  <div class="project-card" style="margin-top: 20px;">
     <h3>💻 OTMaC Website</h3>
-    <p>Promotional website for Ottawa Math Team Contest.</p>
-    <a class="repo-link" href="https://github.com/chessdudeo7" target="_blank">
-      <i class="fab fa-github"></i> GitHub
-    </a>
+    <p style="color:var(--accent-2); font-size:0.9rem; margin-bottom:10px;">HTML • CSS • JS</p>
+    <p>The official promotional website for the Ottawa Math Team Contest, serving hundreds of student participants.</p>
+    <div style="margin-top:15px;">
+      <a href="https://github.com/chessdudeo7" class="button" style="padding: 8px 16px; font-size: 0.9rem;">View on GitHub</a>
+    </div>
   </div>
 </section>
 
-<!-- ================= TUTORING ================= -->
-<section class="section fade-up">
-  <h2>Tutoring</h2>
-  <p>I offer tutoring in chess, math, physics, and chemistry.</p>
-  <a href="tutoring.html" class="button">View Tutoring</a>
+<section id="contact" class="section fade-up" style="text-align: center;">
+  <h2>Get In Touch</h2>
+  <p style="margin-bottom: 20px;">Looking for an internship or a tutor? Feel free to reach out.</p>
+  <a href="mailto:matthewzhu99@gmail.com" class="button">matthewzhu99@gmail.com</a>
 </section>
 
-<!-- ================= FOOTER ================= -->
-<footer class="fade-up">
-  &copy; Matthew Zhu 2025
+<footer>
+  &copy; 2025 Matthew Zhu. Built with Glassmorphism.
 </footer>
 
 <script>
-/* Progress bar */
-window.addEventListener('scroll', () => {
-  const h = document.documentElement;
-  document.getElementById('progress-bar').style.width =
-    (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100 + '%';
-});
-
-/* Intersection Observer */
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('reveal');
-      observer.unobserve(e.target);
-
-      if (e.target.dataset.width)
-        e.target.style.width = e.target.dataset.width;
-
-      if (e.target.dataset.target)
-        animateCounter(e.target);
+  /* Typing Effect */
+  const text = "Hi, I'm Matthew Zhu";
+  const speed = 100;
+  let i = 0;
+  
+  function typeWriter() {
+    if (i < text.length) {
+      document.getElementById("typing-text").innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typeWriter, speed);
     }
-  });
-}, { threshold: 0.2 });
-
-document.querySelectorAll(
-  '.fade-up, .fade-left, .fade-right, .bar div, .stat h3'
-).forEach(el => observer.observe(el));
-
-/* Counter animation */
-function animateCounter(el) {
-  let cur = 0;
-  const target = +el.dataset.target;
-  const step = target / 60;
-
-  (function update() {
-    cur += step;
-    if (cur < target) {
-      el.textContent = Math.floor(cur);
-      requestAnimationFrame(update);
-    } else {
-      el.textContent = target;
-    }
-  })();
-}
-
-/* Hero typing */
-const heroText = "Hi, I'm Matthew Zhu";
-let i = 0;
-(function type() {
-  if (i < heroText.length) {
-    document.getElementById('hero-text').textContent += heroText[i++];
-    setTimeout(type, 80);
   }
-})();
 
-/* Theme toggle with icon sync */
-const toggle = document.getElementById('theme-toggle');
-const root = document.documentElement;
+  /* Scroll Animations */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('reveal');
+      }
+    });
+  });
 
-function updateThemeIcon() {
-  toggle.innerHTML = root.classList.contains('light')
-    ? '<i class="fas fa-sun"></i>'
-    : '<i class="fas fa-moon"></i>';
-}
+  const hiddenElements = document.querySelectorAll('.fade-up, .fade-right');
+  hiddenElements.forEach((el) => observer.observe(el));
 
-toggle.addEventListener('click', () => {
-  root.classList.toggle('light');
-  updateThemeIcon();
-});
-
-updateThemeIcon();
+  window.onload = typeWriter;
 </script>
 
 </body>
