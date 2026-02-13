@@ -1,368 +1,446 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tutoring | Matthew Zhu</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    /* CSS Variables for easy theme switching */
-    :root {
-      --bg-gradient: linear-gradient(135deg, #e0f7fa, #e1bee7);
-      --text-color: #333;
-      --nav-bg: #673ab7;
-      --nav-text: #ffffff;
-      --section-bg: #ffffff;
-      --footer-bg: #f3e5f5;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tutoring | Chessdude07</title>
+<link rel="stylesheet" href="style.css" />
+<style>
+  /* ================= THEME VARIABLES ================= */
+  html {
+    --bg: #0f0f0f;
+    --text: #f5f5f5;
+    --card: #1b1b1b;
+    --accent: #ffd700; /* gold accent like main page */
+    --muted: #aaa;
+    --button-bg: transparent;
+    --button-border: #ffd700;
+    --button-hover: #ffd700;
+    background: var(--bg);
+    color: var(--text);
+    transition: background 0.3s ease, color 0.3s ease;
+  }
 
-    /* Example of how you would define Dark Mode (add .dark-mode class to body) */
-    body.dark-mode {
-      --bg-gradient: #121212;
-      --text-color: #f0f0f0;
-      --nav-bg: #1f1f1f;
-      --nav-text: #bb86fc; /* Purple accent for dark mode logo/links */
-      --section-bg: #1e1e1e;
-      --footer-bg: #000000;
-    }
+  html.light {
+    --bg: #ffffff;
+    --text: #111111;
+    --card: #f5f5f5;
+    --accent: #ffb700;
+    --muted: #555;
+    --button-bg: transparent;
+    --button-border: #ffb700;
+    --button-hover: #ffb700;
+  }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+  body, section, header, footer, nav {
+    background: transparent;
+    color: var(--text);
+    font-family: 'Poppins', sans-serif;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
 
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: var(--bg-gradient);
-      color: var(--text-color);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      transition: background 0.3s, color 0.3s;
-    }
+  a {
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
 
-    /* Navbar styling */
-    nav.navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 32px;
-      background-color: var(--nav-bg);
-      color: var(--nav-text);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      transition: background-color 0.3s;
-    }
+  a:hover {
+    color: var(--accent);
+  }
 
-    nav .logo {
-      font-weight: 700;
-      font-size: 1.8rem;
-      font-family: 'Poppins', sans-serif; /* Explicitly set font */
-      color: var(--nav-text); /* Now controlled by the theme variable */
-    }
+  /* ================= NAVBAR ================= */
+  nav.navbar {
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center;
+    padding: 1rem 2rem;       /* same as main page */
+    position: relative;
+    z-index: 10;
+    height: 64px;             /* force same height as main page */
+  }
 
-    nav ul.nav-links {
-      list-style: none;
-      display: flex;
-      gap: 24px;
-    }
+  .logo {
+    position: absolute;
+    left: 2rem;               /* match main page */
+    font-weight: 600;
+    font-size: 1.2rem;        /* match main page */
+    line-height: 64px;        /* vertically center */
+  }
 
-    nav ul.nav-links li a {
-      color: var(--nav-text);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1rem;
-      transition: color 0.3s ease;
-    }
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    margin-right: 0.5rem; /* space between last link and toggle */
+    font-weight: 500;
+    font-size: 1rem;
+  }
 
-    nav ul.nav-links li a:hover {
-      color: #b39ddb;
-    }
+  #theme-toggle {
+    background: none;
+    border: none;
+    color: var(--accent);
+    font-size: 1.3rem;
+    cursor: pointer;
+    margin-left: 0.5rem;
+  }
 
-    .container {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
+  /* ================= PROGRESS BAR ================= */
+  #progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    width: 0%;
+    background: linear-gradient(90deg, #ffd700, #ffb700);
+    z-index: 1000;
+  }
 
-    .section {
-      margin-bottom: 40px;
-    }
+  /* ================= HERO & SECTIONS ================= */
+  .hero {
+    padding: 6rem 2rem 3rem;
+    text-align: center;
+    font-weight: 400;
+  }
 
-    h2 {
-      color: #673ab7;
-      margin-bottom: 16px;
-    }
+  .section {
+    padding: 2rem;
+    max-width: 1000px;
+    margin: auto;
+  }
 
-    p {
-      line-height: 1.6;
-    }
+  footer {
+    padding: 2rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
 
-    ul {
-      padding-left: 20px;
-      line-height: 1.8;
-    }
+  /* ================= CARDS ================= */
+  .project-card, .subject-card {
+    background-color: var(--card);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(10px);
+  }
 
-    /* Fixed Button Font */
-    .button {
-      display: inline-block;
-      margin-top: 20px;
-      background-color: #673ab7;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-family: 'Poppins', sans-serif; /* Fixed font */
-      font-weight: 600;
-      transition: background 0.3s ease;
-      border: none;
-      cursor: pointer;
-    }
+  .subject-card h3 {
+    margin-bottom: 0.4rem;
+    font-size: 1.1rem;
+  }
 
-    .button:hover {
-      background-color: #5e35b1;
-    }
+  .level {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+  }
 
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: var(--footer-bg);
-      margin-top: auto;
-      font-size: 0.9em;
-      color: #555;
-    }
+  /* ================= BUTTONS ================= */
+  .review-form button,
+  .toggle-btn {
+    background: var(--button-bg);
+    border: 2px solid var(--button-border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    font-family: 'Poppins', sans-serif;
+  }
 
-    .review-section {
-      display: flex;
-      flex-direction: row;
-      gap: 40px;
-      flex-wrap: wrap;
-    }
+  .review-form button:hover,
+  .toggle-btn:hover {
+    color: var(--accent);
+    border-color: var(--button-hover);
+    transform: translateY(-2px);
+  }
 
-    .review-list, .review-form {
-      flex: 1 1 400px;
-      background: var(--section-bg);
-      padding: 20px;
-      border-radius: 10px;
-      color: var(--text-color);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
+  .review-form button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 
-    /* Fixed Input/Textarea/Button Font Inheritance */
-    input, textarea, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-family: 'Poppins', sans-serif; /* Explicitly forced font */
-    }
+  /* ================= FORMS ================= */
+  .review-form input,
+  .review-form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #333;
+    font-size: 1rem;
+    background-color: var(--card);
+    color: var(--text);
+    resize: vertical;
+    transition: border 0.2s ease, background 0.2s ease;
+  }
 
-    .stars {
-      display: flex;
-      flex-direction: row;
-      font-size: 24px;
-      margin-top: 5px;
-      cursor: pointer;
-      user-select: none;
-    }
+  html.light .review-form input,
+  html.light .review-form textarea {
+    border: 1px solid #ccc;
+  }
 
-    .stars span {
-      color: #bbb;
-      transition: color 0.2s ease;
-    }
+  /* ================= REVIEW SECTION ================= */
+  #reviews-container {
+    margin-top: 2rem;
+  }
 
-    .stars span.hovered,
-    .stars span.selected {
-      color: #ffc107;
-    }
+  .review {
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: var(--card);
+    color: var(--text);
+  }
 
-    .button:disabled {
-      background-color: #ccc;
-      color: #666;
-      cursor: not-allowed;
-    }
+  .review .stars {
+    color: gold;
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+    user-select: none;
+  }
 
-    @media (max-width: 600px) {
-      nav.navbar {
-        flex-direction: column;
-        gap: 12px;
-      }
-      nav ul.nav-links {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 12px;
-      }
-    }
-  </style>
+  .star-rating {
+    font-size: 2rem;
+    color: gold;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* ================= SCROLL ANIMATIONS ================= */
+  .fade-up, .fade-left, .fade-right, .scale-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease-out;
+  }
+
+  .fade-left { transform: translateX(-30px); }
+  .fade-right { transform: translateX(30px); }
+  .reveal { opacity: 1; transform: translate(0); }
+
+  /* ================= TOGGLE DETAILS ================= */
+  .toggle-btn {
+    display: inline-block;
+    margin-top: 0.5rem;
+  }
+
+  .details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    margin-top: 0.5rem;
+    color: var(--text);
+  }
+
+  .subject-card.open .details {
+    max-height: 300px;
+  }
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
+<script>
+  (function(){ emailjs.init("2wiA-HEMgM41TWBjJ"); })();
+</script>
 </head>
 <body>
+<div id="progress-bar"></div>
 
-    <nav class="navbar">
-      <div class="logo">Matthew Zhu</div>
-      <ul class="nav-links">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#resume">Resume</a></li>
-          <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
+<nav class="navbar">
+  <div class="logo">Chessdude07</div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="tutoring.html">Tutoring</a></li>
+  </ul>
+  <button id="theme-toggle"><i class="fas fa-moon"></i></button>
+</nav>
 
-  <div class="container">
-    <section class="section">
-        <h2>About Me</h2>
-        <p>Hi! I'm Matthew Zhu, a first year Computer Science Student at the University of Waterloo. I graduated from Merivale High School's Class of 2025 as a student in the International Baccalaureate (IB) Programme. I love tutoring students and my specialty is in STEM subjects, particularly mathematics.</p>
-        <br>
-        <p>I am also a competitive chess player, having played for almost 2/3 of my life. I compete frequently at the national/international level and have been coaching for some time. I love playing the game and look forward to fostering the next generation of young players.</p>
-    </section>
+<header class="hero fade-up">
+  <h1>Tutoring Services</h1>
+  <p>Learn chess or get ahead in school with personalized lessons!</p>
+</header>
 
-    <section class="section">
-        <h2>My Vision</h2>
-        <p>I'm passionate about helping students reach their full potential. Whether you're struggling to grasp a concept or aiming to get ahead, I offer tailored sessions to meet your needs in a clear and engaging way.</p>
-    </section>
-
-    <section class="section">
-      <h2>Subjects I Tutor</h2>
-      <ul>
-        <li>Chess (Beginner to Advanced)
-            <ul>
-                <li>2200+ CFC, 2050+ FIDE</li>
-                <li>Top Three in Ontario from Gr.9-Gr.12</li>
-            </ul>
-        </li>
-        <li>Mathematics (Grade 1 to Grade 12)</li>
-        <li>Physics & Chemistry (Grade 9 to Grade 12)</li>
-      </ul>
-    </section>
-
-    <section class="section" id="reviews">
-      <h2>Student/Parent Reviews</h2>
-      <div class="review-section">
-        <div class="review-list" id="review-list">
-          <p>No reviews yet. Be the first!</p>
-        </div>
-
-        <div class="review-form">
-          <h3>Leave a Review</h3>
-          <label for="review-name">Your Name (optional):</label>
-          <input type="text" id="review-name" placeholder="Your name" />
-
-          <label>Rating:</label>
-          <div id="star-rating" class="stars">
-            <span data-value="1">&#9733;</span>
-            <span data-value="2">&#9733;</span>
-            <span data-value="3">&#9733;</span>
-            <span data-value="4">&#9733;</span>
-            <span data-value="5">&#9733;</span>
-          </div>
-
-          <label for="review-text">Your Review:</label>
-          <textarea id="review-text" rows="4" placeholder="Write your review here..."></textarea>
-
-          <button id="submit-review" class="button" disabled>Submit Review</button>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Session Info & Availability</h2>
-      <p>I offer both in-person and online sessions. Pricing and time slots are available upon request.</p>
-      <a href="mailto:matthewzhu99@gmail.com" class="button">Contact Me</a>
-    </section>
+<section class="section fade-up">
+  <h2>What I Tutor</h2>
+  <div class="subject-card">
+    <h3>♟ Chess</h3>
+    <p class="level">Beginner → Advanced</p>
+    <button class="toggle-btn">View Qualifications</button>
+    <div class="details">
+      <p>2000+ FIDE, 2200+ CFC<br>#1 in Ottawa for my age<br>Top 3 in Ontario for my age<br>5-time Provincial & National Competitor</p>
+    </div>
   </div>
+  <div class="subject-card">
+    <h3>📐 Math</h3>
+    <p class="level">Grade 1–12 + Contest Math</p>
+    <button class="toggle-btn">View Qualifications</button>
+    <div class="details">
+      <p>99 in Advanced Functions & Calculus<br>IB 7 in HL Math<br>René Descartes Scholarship<br>3x AIME Qualifier</p>
+    </div>
+  </div>
+  <div class="subject-card">
+    <h3>⚛ Physics</h3>
+    <p class="level">Grade 9–12</p>
+    <button class="toggle-btn">View Qualifications</button>
+    <div class="details">
+      <p>99 in Grade 11 Physics<br>97 in Grade 12 Physics<br>IB 7 in HL Physics</p>
+    </div>
+  </div>
+  <div class="subject-card">
+    <h3>🧪 Chemistry</h3>
+    <p class="level">Grade 9–12</p>
+    <button class="toggle-btn">View Qualifications</button>
+    <div class="details">
+      <p>97 in Grade 12 Chemistry<br>IB 7 in SL Chemistry</p>
+    </div>
+  </div>
+</section>
 
-  <footer>
-    &copy; 2025 Matthew Zhu. All rights reserved.
-  </footer>
+<section class="section fade-right">
+  <h2>Contact Me</h2>
+  <p>Fill out the form below to schedule a session:</p>
+  <form id="contact-form" class="review-form">
+    <input type="text" id="name" placeholder="Name" required />
+    <input type="email" id="email" placeholder="Email" required />
+    <textarea id="message" placeholder="Message" rows="4" required></textarea>
+    <button type="submit">Send</button>
+  </form>
+</section>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+<section class="section fade-up">
+  <h2>Submit a Review</h2>
+  <form id="review-form" class="review-form">
+    <input type="text" id="review-name" placeholder="Your Name" required />
+    <div id="star-container" style="margin-bottom: 10px;">
+      <span class="star-rating" data-value="1">&#9734;</span>
+      <span class="star-rating" data-value="2">&#9734;</span>
+      <span class="star-rating" data-value="3">&#9734;</span>
+      <span class="star-rating" data-value="4">&#9734;</span>
+      <span class="star-rating" data-value="5">&#9734;</span>
+    </div>
+    <textarea id="review-text" placeholder="Write your review here..." rows="4" required></textarea>
+    <button type="submit">Submit Review</button>
+  </form>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyD7WVCD-O23S5g9QZTfPRiUf63tu7bLaCM",
-      authDomain: "personal-website-4889a.firebaseapp.com",
-      projectId: "personal-website-4889a",
-      storageBucket: "personal-website-4889a.appspot.com",
-      messagingSenderId: "884740731820",
-      appId: "1:884740731820:web:057d078a088337dc660009",
-      measurementId: "G-2NYM4HBJBT"
-    };
+  <div id="reviews-container">
+    <h3>Reviews</h3>
+  </div>
+</section>
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+<footer class="fade-up">&copy; 2025 Chessdude07. All rights reserved.</footer>
 
-    const reviewList = document.getElementById('review-list');
-    const submitBtn = document.getElementById('submit-review');
-    const reviewText = document.getElementById('review-text');
-    const reviewName = document.getElementById('review-name');
-    const stars = document.querySelectorAll('#star-rating span');
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
 
-    let selectedRating = 0;
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    document.getElementById('progress-bar').style.width =
+      (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100 + '%';
+  });
 
-    function updateSubmitButtonState() {
-      const textFilled = reviewText.value.trim().length > 0;
-      const ratingSelected = selectedRating > 0;
-      submitBtn.disabled = !(textFilled && ratingSelected);
-    }
+  // Theme toggle
+  const toggle = document.getElementById('theme-toggle');
+  toggle.addEventListener('click', () => {
+    document.documentElement.classList.toggle('light');
+    toggle.innerHTML = document.documentElement.classList.contains('light') 
+      ? '<i class="fas fa-sun"></i>' 
+      : '<i class="fas fa-moon"></i>';
+  });
 
-    stars.forEach((star, idx) => {
-      star.addEventListener('mouseover', () => {
-        stars.forEach((s, i) => s.classList.toggle('hovered', i <= idx));
-      });
-      star.addEventListener('mouseout', () => {
-        stars.forEach(s => s.classList.remove('hovered'));
-      });
-      star.addEventListener('click', () => {
-        selectedRating = idx + 1;
-        stars.forEach((s, i) => s.classList.toggle('selected', i < selectedRating));
-        updateSubmitButtonState();
-      });
+  // Toggle subject qualifications
+  document.querySelectorAll(".toggle-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const card = btn.parentElement;
+      card.classList.toggle("open");
+      btn.textContent = card.classList.contains("open") ? "Hide Qualifications" : "View Qualifications";
     });
+  });
 
-    reviewText.addEventListener('input', updateSubmitButtonState);
+  // Firebase setup
+  const firebaseConfig = {
+    apiKey: "AIzaSyD7WVCD-O23S5g9QZTfPRiUf63tu7bLaCM",
+    authDomain: "personal-website-4889a.firebaseapp.com",
+    projectId: "personal-website-4889a",
+    storageBucket: "personal-website-4889a.firebasestorage.app",
+    messagingSenderId: "884740731820",
+    appId: "1:884740731820:web:057d078a088337dc660009",
+    measurementId: "G-2NYM4HBJBT"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-    submitBtn.addEventListener('click', async () => {
-      const text = reviewText.value.trim();
-      const name = reviewName.value.trim() || "Anonymous";
-      try {
-        await addDoc(collection(db, "reviews"), {
-          name, rating: selectedRating, text, created: serverTimestamp()
-        });
-        reviewText.value = '';
-        reviewName.value = '';
-        selectedRating = 0;
-        stars.forEach(s => s.classList.remove('selected'));
-        updateSubmitButtonState();
-        loadReviews();
-      } catch (e) { console.error("Error: ", e); }
-    });
+  // Contact form
+  const contactForm = document.getElementById("contact-form");
+  const sendButton = contactForm.querySelector("button");
+  contactForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const message = document.getElementById("message").value.trim();
+    if(!name || !email || !message){ alert("Please fill out all fields."); return; }
+    sendButton.disabled = true;
+    sendButton.textContent = "Sending...";
+    emailjs.send("service_0xxrfnr","template_82nwl6d",{from_name:name,from_email:email,message:message})
+    .then(()=>{alert("Message sent!"); contactForm.reset();})
+    .catch(()=>{alert("Failed to send message.");})
+    .finally(()=>{sendButton.disabled=false; sendButton.textContent="Send";});
+  });
 
-    async function loadReviews() {
-      reviewList.innerHTML = "";
-      const snapshot = await getDocs(collection(db, "reviews"));
-      const reviews = snapshot.docs.map(doc => doc.data());
-      if (reviews.length === 0) {
-        reviewList.innerHTML = "<p>No reviews yet. Be the first!</p>";
-        return;
-      }
-      reviews.sort((a, b) => b.created?.seconds - a.created?.seconds);
-      reviews.forEach(r => {
-        const item = document.createElement("div");
-        item.innerHTML = `
-          <p><strong>${r.name}</strong></p>
-          <p style="color: #ffc107;">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</p>
-          <p>${r.text}</p>
-          <hr style="margin: 10px 0; border: 0; border-top: 1px solid #eee;" />
-        `;
-        reviewList.appendChild(item);
-      });
-    }
-    loadReviews();
-  </script>
+  // Review stars
+  const stars = document.querySelectorAll("#star-container .star-rating");
+  let selectedRating = 0;
+  function highlightStars(r){ stars.forEach(s=>s.innerHTML=Number(s.dataset.value)<=r?"&#9733;":"&#9734;"); }
+  stars.forEach(star=>{
+    star.addEventListener("mouseover",()=>highlightStars(Number(star.dataset.value)));
+    star.addEventListener("mouseout",()=>highlightStars(selectedRating));
+    star.addEventListener("click",()=>{ selectedRating=Number(star.dataset.value); highlightStars(selectedRating); });
+  });
+
+  // Submit review
+  const reviewForm = document.getElementById("review-form");
+  reviewForm.addEventListener("submit", e=>{
+    e.preventDefault();
+    const name=document.getElementById("review-name").value.trim();
+    const text=document.getElementById("review-text").value.trim();
+    if(selectedRating===0){ alert("Select rating."); return; }
+    if(!name || !text){ alert("Fill all fields."); return; }
+    db.collection("reviews").add({name,rating:selectedRating,text,created:new Date()})
+      .then(()=>{ reviewForm.reset(); selectedRating=0; highlightStars(0); loadReviews(); })
+      .catch(()=>{ alert("Failed to submit review."); });
+  });
+
+  function renderStars(r){ return Array.from({length:5},(_,i)=>i<r?"&#9733;":"&#9734;").join(""); }
+  function loadReviews(){
+    const container=document.getElementById("reviews-container");
+    container.innerHTML="<h3>Reviews</h3>";
+    db.collection("reviews").orderBy("created","desc").get()
+      .then(snapshot=>{ snapshot.forEach(doc=>{
+        const review=doc.data();
+        const date = review.created ? review.created.toDate().toLocaleString() : "";
+        const div = document.createElement("div");
+        div.classList.add("review");
+        div.innerHTML=`<h4>${escapeHtml(review.name)}</h4><div class="stars">${renderStars(review.rating)}</div><p>${escapeHtml(review.text)}</p><small>${date}</small>`;
+        container.appendChild(div);
+      }); })
+      .catch(console.error);
+  }
+  function escapeHtml(text){ const map={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}; return text.replace(/[&<>"']/g,m=>map[m]); }
+
+  // Scroll animations
+  const reveals=document.querySelectorAll(".fade-up,.fade-left,.fade-right,.scale-up");
+  function animateOnScroll(){ const triggerBottom=window.innerHeight*0.85; reveals.forEach(el=>{ if(el.getBoundingClientRect().top<triggerBottom) el.classList.add("reveal"); }); }
+  window.addEventListener("scroll", animateOnScroll);
+  animateOnScroll();
+  loadReviews();
+});
+</script>
 </body>
 </html>

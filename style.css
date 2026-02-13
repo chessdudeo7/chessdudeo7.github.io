@@ -1,0 +1,258 @@
+/* =======================
+   Variables
+======================= */
+:root {
+  --bg-a: #071029;
+  --bg-b: #07193a;
+  --accent-1: #7c3aed;
+  --accent-2: #06b6d4;
+  --muted: #9fb0c8;
+  --card: rgba(255, 255, 255, 0.04);
+  --glass: rgba(255, 255, 255, 0.03);
+  --focus: 3px solid rgba(124, 58, 237, 0.22);
+}
+
+/* =======================
+   Global Reset
+======================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  color: #e6eef8;
+  scroll-behavior: smooth;
+  background: linear-gradient(120deg, var(--bg-a), var(--bg-b));
+  background-size: 400% 400%;
+  animation: gradientShift 14s ease infinite;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes gradientShift {
+  0% { background-position:0% 50%; }
+  50% { background-position:100% 50%; }
+  100% { background-position:0% 50%; }
+}
+
+/* =======================
+   Navbar
+======================= */
+nav.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 28px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), transparent);
+  backdrop-filter: blur(6px);
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+nav .logo {
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+
+nav ul.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+nav ul.nav-links li a {
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color .22s ease;
+}
+
+nav ul.nav-links li a:hover,
+nav ul.nav-links li a:focus {
+  color: var(--accent-1);
+  outline: none;
+}
+
+/* =======================
+   Headers
+======================= */
+header.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 72px 20px 36px;
+}
+
+header.hero h1 {
+  font-size: 3.2rem;
+  color: var(--accent-1);
+  margin-bottom: 8px;
+}
+
+header.hero p {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: var(--muted);
+}
+
+.hero-links a {
+  display: inline-block;
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  margin: 0 8px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+
+.hero-links a:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(9,11,28,0.5);
+}
+
+/* =======================
+   Sections
+======================= */
+.section {
+  max-width: 980px;
+  margin: 0 auto 56px;
+  padding: 0 20px;
+}
+
+.section h2 {
+  font-size: 2rem;
+  color: var(--accent-1);
+  margin-bottom: 18px;
+  font-weight: 700;
+  border-bottom: 3px solid rgba(124,58,237,0.12);
+  display: inline-block;
+  padding-bottom: 6px;
+}
+
+.section p, .section li {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+ul {
+  padding-left: 20px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+
+/* =======================
+   Cards & Sliders
+======================= */
+.project-card, .review-list, .review-form, .slide {
+  background: var(--card);
+  padding: 18px 22px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 8px 20px rgba(2,6,23,0.45);
+  transition: transform .28s ease, box-shadow .28s ease;
+}
+
+.project-card:hover, .slide:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(2,6,23,0.6);
+}
+
+.slider-container {
+  position: relative;
+  max-width: 980px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+}
+
+.slider {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 16px;
+  padding-bottom: 10px;
+}
+
+.slide-btn {
+  background: var(--card);
+  border: none;
+  font-size: 1.5rem;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 8px;
+  margin: 0 4px;
+  box-shadow: 0 6px 15px rgba(2,6,23,0.45);
+  transition: transform .2s ease;
+}
+
+.slide-btn:hover {
+  transform: translateY(-3px);
+}
+
+/* =======================
+   Buttons
+======================= */
+.button {
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+  color: white;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+
+.button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(9,11,28,0.5);
+}
+
+.button:disabled {
+  background-color: #6b7280;
+  color: #e6eef8;
+  cursor: not-allowed;
+}
+
+/* =======================
+   Footer
+======================= */
+footer {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* =======================
+   Scroll Animations
+======================= */
+.fade-up { opacity: 0; transform: translateY(20px); transition: all .6s ease-out; }
+.fade-left { opacity: 0; transform: translateX(-20px); transition: all .6s ease-out; }
+.fade-right { opacity: 0; transform: translateX(20px); transition: all .6s ease-out; }
+.scale-up { opacity: 0; transform: scale(0.95); transition: all .6s ease-out; }
+
+.reveal { opacity: 1; transform: none; }
+
+/* =======================
+   Responsive
+======================= */
+@media(max-width:600px){
+  nav.navbar { flex-direction: column; gap: 8px; }
+  nav ul.nav-links { flex-wrap: wrap; justify-content: center; gap: 10px; }
+  header.hero h1 { font-size: 2.4rem; }
+  header.hero p { font-size: 1rem; }
+}
