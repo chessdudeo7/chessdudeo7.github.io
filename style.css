@@ -256,3 +256,41 @@ footer {
   header.hero h1 { font-size: 2.4rem; }
   header.hero p { font-size: 1rem; }
 }
+
+/* =======================
+   Tutoring Page Specifics
+======================= */
+.details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+  color: var(--muted);
+  margin-top: 10px;
+  font-size: 0.95rem;
+  border-left: 2px solid var(--accent-1);
+  padding-left: 15px;
+}
+
+.subject-card.open .details {
+  max-height: 300px;
+}
+
+.star-rating {
+  font-size: 2rem;
+  color: var(--accent-2);
+  cursor: pointer;
+  user-select: none;
+  margin-right: 5px;
+}
+
+.stars {
+  color: var(--accent-2);
+  margin-bottom: 5px;
+  font-size: 1.2rem;
+}
+
+/* Ensure Logo link looks like the logo text */
+.logo a {
+  text-decoration: none;
+  color: inherit;
+}

@@ -1,298 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tutoring | Chessdude07</title>
-<link rel="stylesheet" href="style.css" />
-<style>
-  /* ================= THEME VARIABLES ================= */
-  html {
-    --bg: #0f0f0f;
-    --text: #f5f5f5;
-    --card: #1b1b1b;
-    --accent: #ffd700; /* gold accent like main page */
-    --muted: #aaa;
-    --button-bg: transparent;
-    --button-border: #ffd700;
-    --button-hover: #ffd700;
-    background: var(--bg);
-    color: var(--text);
-    transition: background 0.3s ease, color 0.3s ease;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tutoring | Matthew Zhu</title>
+  
+  <link rel="stylesheet" href="style.css" />
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-  html.light {
-    --bg: #ffffff;
-    --text: #111111;
-    --card: #f5f5f5;
-    --accent: #ffb700;
-    --muted: #555;
-    --button-bg: transparent;
-    --button-border: #ffb700;
-    --button-hover: #ffb700;
-  }
+  <style>
+    /* Page-specific styles not found in style.css 
+       (Specific to the Tutoring/Review logic)
+    */
+    .subject-card {
+      margin-bottom: 20px;
+    }
 
-  body, section, header, footer, nav {
-    background: transparent;
-    color: var(--text);
-    font-family: 'Poppins', sans-serif;
-    transition: background 0.3s ease, color 0.3s ease;
-  }
+    .details {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      color: var(--muted);
+      margin-top: 10px;
+      font-size: 0.95rem;
+      border-left: 2px solid var(--accent-1);
+      padding-left: 15px;
+    }
 
-  a {
-    color: var(--text);
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
+    .subject-card.open .details {
+      max-height: 300px;
+    }
 
-  a:hover {
-    color: var(--accent);
-  }
+    .toggle-btn {
+      background: transparent;
+      border: 1px solid var(--accent-1);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
 
-  /* ================= NAVBAR ================= */
-  nav.navbar {
-    display: flex;
-    justify-content: flex-end; 
-    align-items: center;
-    padding: 1rem 2rem;       /* same as main page */
-    position: relative;
-    z-index: 10;
-    height: 64px;             /* force same height as main page */
-  }
+    .toggle-btn:hover {
+      background: var(--accent-1);
+    }
 
-  .logo {
-    position: absolute;
-    left: 2rem;               /* match main page */
-    font-weight: 600;
-    font-size: 1.2rem;        /* match main page */
-    line-height: 64px;        /* vertically center */
-  }
+    /* Star Rating Styling */
+    .star-rating {
+      font-size: 2rem;
+      color: var(--accent-2);
+      cursor: pointer;
+      user-select: none;
+      margin-right: 5px;
+    }
 
-  .nav-links {
-    display: flex;
-    gap: 1.5rem;
-    margin-right: 0.5rem; /* space between last link and toggle */
-    font-weight: 500;
-    font-size: 1rem;
-  }
+    .stars {
+      color: var(--accent-2);
+      margin-bottom: 5px;
+      font-size: 1.2rem;
+    }
 
-  #theme-toggle {
-    background: none;
-    border: none;
-    color: var(--accent);
-    font-size: 1.3rem;
-    cursor: pointer;
-    margin-left: 0.5rem;
-  }
+    /* Form Overrides to match theme */
+    input, textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      font-family: 'Poppins', sans-serif;
+    }
 
-  /* ================= PROGRESS BAR ================= */
-  #progress-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 4px;
-    width: 0%;
-    background: linear-gradient(90deg, #ffd700, #ffb700);
-    z-index: 1000;
-  }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent-1);
+    }
 
-  /* ================= HERO & SECTIONS ================= */
-  .hero {
-    padding: 6rem 2rem 3rem;
-    text-align: center;
-    font-weight: 400;
-  }
+    .review {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: var(--glass);
+      border-radius: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
 
-  .section {
-    padding: 2rem;
-    max-width: 1000px;
-    margin: auto;
-  }
+    .review h4 {
+      color: var(--accent-1);
+      margin-bottom: 5px;
+    }
 
-  footer {
-    padding: 2rem;
-    text-align: center;
-    font-size: 0.9rem;
-    color: var(--muted);
-  }
+    .review small {
+      color: var(--muted);
+      display: block;
+      margin-top: 8px;
+      font-size: 0.8rem;
+    }
+  </style>
 
-  /* ================= CARDS ================= */
-  .project-card, .subject-card {
-    background-color: var(--card);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    backdrop-filter: blur(10px);
-  }
-
-  .subject-card h3 {
-    margin-bottom: 0.4rem;
-    font-size: 1.1rem;
-  }
-
-  .level {
-    color: var(--muted);
-    font-size: 0.95rem;
-    margin-bottom: 0.8rem;
-  }
-
-  /* ================= BUTTONS ================= */
-  .review-form button,
-  .toggle-btn {
-    background: var(--button-bg);
-    border: 2px solid var(--button-border);
-    color: var(--text);
-    border-radius: 6px;
-    padding: 0.6rem 1.2rem;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: all 0.2s ease;
-    font-family: 'Poppins', sans-serif;
-  }
-
-  .review-form button:hover,
-  .toggle-btn:hover {
-    color: var(--accent);
-    border-color: var(--button-hover);
-    transform: translateY(-2px);
-  }
-
-  .review-form button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-
-  /* ================= FORMS ================= */
-  .review-form input,
-  .review-form textarea {
-    width: 100%;
-    padding: 0.8rem;
-    margin-bottom: 0.5rem;
-    border-radius: 6px;
-    border: 1px solid #333;
-    font-size: 1rem;
-    background-color: var(--card);
-    color: var(--text);
-    resize: vertical;
-    transition: border 0.2s ease, background 0.2s ease;
-  }
-
-  html.light .review-form input,
-  html.light .review-form textarea {
-    border: 1px solid #ccc;
-  }
-
-  /* ================= REVIEW SECTION ================= */
-  #reviews-container {
-    margin-top: 2rem;
-  }
-
-  .review {
-    border-radius: 6px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    background-color: var(--card);
-    color: var(--text);
-  }
-
-  .review .stars {
-    color: gold;
-    font-size: 1.2rem;
-    margin-bottom: 0.3rem;
-    user-select: none;
-  }
-
-  .star-rating {
-    font-size: 2rem;
-    color: gold;
-    cursor: pointer;
-    user-select: none;
-  }
-
-  /* ================= SCROLL ANIMATIONS ================= */
-  .fade-up, .fade-left, .fade-right, .scale-up {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.6s ease-out;
-  }
-
-  .fade-left { transform: translateX(-30px); }
-  .fade-right { transform: translateX(30px); }
-  .reveal { opacity: 1; transform: translate(0); }
-
-  /* ================= TOGGLE DETAILS ================= */
-  .toggle-btn {
-    display: inline-block;
-    margin-top: 0.5rem;
-  }
-
-  .details {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease;
-    margin-top: 0.5rem;
-    color: var(--text);
-  }
-
-  .subject-card.open .details {
-    max-height: 300px;
-  }
-</style>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
-<script>
-  (function(){ emailjs.init("2wiA-HEMgM41TWBjJ"); })();
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
+  <script>(function(){ emailjs.init("2wiA-HEMgM41TWBjJ"); })();</script>
 </head>
 <body>
-<div id="progress-bar"></div>
 
 <nav class="navbar">
-  <div class="logo">Chessdude07</div>
+  <div class="logo">
+    <a href="index.html" style="text-decoration: none; color: inherit;">Matthew Zhu</a>
+  </div>
   <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html">Profile</a></li>
     <li><a href="tutoring.html">Tutoring</a></li>
   </ul>
-  <button id="theme-toggle"><i class="fas fa-moon"></i></button>
 </nav>
 
 <header class="hero fade-up">
   <h1>Tutoring Services</h1>
-  <p>Learn chess or get ahead in school with personalized lessons!</p>
+  <p>Elevate your chess game or master STEM with personalized 1-on-1 lessons.</p>
 </header>
 
 <section class="section fade-up">
   <h2>What I Tutor</h2>
-  <div class="subject-card">
+  
+  <div class="project-card subject-card">
     <h3>♟ Chess</h3>
-    <p class="level">Beginner → Advanced</p>
+    <p style="color: var(--accent-2); font-weight: 600;">Beginner → Advanced</p>
     <button class="toggle-btn">View Qualifications</button>
     <div class="details">
       <p>2000+ FIDE, 2200+ CFC<br>#1 in Ottawa for my age<br>Top 3 in Ontario for my age<br>5-time Provincial & National Competitor</p>
     </div>
   </div>
-  <div class="subject-card">
+
+  <div class="project-card subject-card">
     <h3>📐 Math</h3>
-    <p class="level">Grade 1–12 + Contest Math</p>
+    <p style="color: var(--accent-2); font-weight: 600;">Grade 1–12 + Contest Math</p>
     <button class="toggle-btn">View Qualifications</button>
     <div class="details">
       <p>99 in Advanced Functions & Calculus<br>IB 7 in HL Math<br>René Descartes Scholarship<br>3x AIME Qualifier</p>
     </div>
   </div>
-  <div class="subject-card">
+
+  <div class="project-card subject-card">
     <h3>⚛ Physics</h3>
-    <p class="level">Grade 9–12</p>
+    <p style="color: var(--accent-2); font-weight: 600;">Grade 9–12</p>
     <button class="toggle-btn">View Qualifications</button>
     <div class="details">
       <p>99 in Grade 11 Physics<br>97 in Grade 12 Physics<br>IB 7 in HL Physics</p>
     </div>
   </div>
-  <div class="subject-card">
+
+  <div class="project-card subject-card">
     <h3>🧪 Chemistry</h3>
-    <p class="level">Grade 9–12</p>
+    <p style="color: var(--accent-2); font-weight: 600;">Grade 9–12</p>
     <button class="toggle-btn">View Qualifications</button>
     <div class="details">
       <p>97 in Grade 12 Chemistry<br>IB 7 in SL Chemistry</p>
@@ -302,12 +164,11 @@
 
 <section class="section fade-right">
   <h2>Contact Me</h2>
-  <p>Fill out the form below to schedule a session:</p>
   <form id="contact-form" class="review-form">
     <input type="text" id="name" placeholder="Name" required />
     <input type="email" id="email" placeholder="Email" required />
-    <textarea id="message" placeholder="Message" rows="4" required></textarea>
-    <button type="submit">Send</button>
+    <textarea id="message" placeholder="Describe what you're looking for..." rows="4" required></textarea>
+    <button type="submit" class="button">Send Message</button>
   </form>
 </section>
 
@@ -315,56 +176,31 @@
   <h2>Submit a Review</h2>
   <form id="review-form" class="review-form">
     <input type="text" id="review-name" placeholder="Your Name" required />
-    <div id="star-container" style="margin-bottom: 10px;">
+    <div id="star-container" style="margin-bottom: 15px;">
       <span class="star-rating" data-value="1">&#9734;</span>
       <span class="star-rating" data-value="2">&#9734;</span>
       <span class="star-rating" data-value="3">&#9734;</span>
       <span class="star-rating" data-value="4">&#9734;</span>
       <span class="star-rating" data-value="5">&#9734;</span>
     </div>
-    <textarea id="review-text" placeholder="Write your review here..." rows="4" required></textarea>
-    <button type="submit">Submit Review</button>
+    <textarea id="review-text" placeholder="How was your session?" rows="4" required></textarea>
+    <button type="submit" class="button">Submit Review</button>
   </form>
 
-  <div id="reviews-container">
-    <h3>Reviews</h3>
-  </div>
+  <div id="reviews-container" style="margin-top: 40px;">
+    <h3>Recent Reviews</h3>
+    </div>
 </section>
 
 <footer class="fade-up">&copy; 2025 Chessdude07. All rights reserved.</footer>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
 
 <script>
 window.addEventListener("DOMContentLoaded", () => {
-  // Progress bar
-  window.addEventListener('scroll', () => {
-    const h = document.documentElement;
-    document.getElementById('progress-bar').style.width =
-      (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100 + '%';
-  });
-
-  // Theme toggle
-  const toggle = document.getElementById('theme-toggle');
-  toggle.addEventListener('click', () => {
-    document.documentElement.classList.toggle('light');
-    toggle.innerHTML = document.documentElement.classList.contains('light') 
-      ? '<i class="fas fa-sun"></i>' 
-      : '<i class="fas fa-moon"></i>';
-  });
-
-  // Toggle subject qualifications
-  document.querySelectorAll(".toggle-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const card = btn.parentElement;
-      card.classList.toggle("open");
-      btn.textContent = card.classList.contains("open") ? "Hide Qualifications" : "View Qualifications";
-    });
-  });
-
-  // Firebase setup
+  
+  // 1. Firebase Initialization
   const firebaseConfig = {
     apiKey: "AIzaSyD7WVCD-O23S5g9QZTfPRiUf63tu7bLaCM",
     authDomain: "personal-website-4889a.firebaseapp.com",
@@ -377,7 +213,16 @@ window.addEventListener("DOMContentLoaded", () => {
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  // Contact form
+  // 2. Toggle Qualifications Logic
+  document.querySelectorAll(".toggle-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const card = btn.parentElement;
+      card.classList.toggle("open");
+      btn.textContent = card.classList.contains("open") ? "Hide Qualifications" : "View Qualifications";
+    });
+  });
+
+  // 3. Contact Form Submission (EmailJS)
   const contactForm = document.getElementById("contact-form");
   const sendButton = contactForm.querySelector("button");
   contactForm.addEventListener("submit", function(e){
@@ -385,61 +230,124 @@ window.addEventListener("DOMContentLoaded", () => {
     const name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();
     const message = document.getElementById("message").value.trim();
-    if(!name || !email || !message){ alert("Please fill out all fields."); return; }
+    
     sendButton.disabled = true;
     sendButton.textContent = "Sending...";
-    emailjs.send("service_0xxrfnr","template_82nwl6d",{from_name:name,from_email:email,message:message})
-    .then(()=>{alert("Message sent!"); contactForm.reset();})
-    .catch(()=>{alert("Failed to send message.");})
-    .finally(()=>{sendButton.disabled=false; sendButton.textContent="Send";});
+    
+    emailjs.send("service_0xxrfnr","template_82nwl6d",{
+      from_name: name,
+      from_email: email,
+      message: message
+    })
+    .then(() => {
+      alert("Message sent successfully!");
+      contactForm.reset();
+    })
+    .catch((err) => {
+      alert("Failed to send message. Please try again.");
+      console.error(err);
+    })
+    .finally(() => {
+      sendButton.disabled = false;
+      sendButton.textContent = "Send Message";
+    });
   });
 
-  // Review stars
+  // 4. Star Rating Logic
   const stars = document.querySelectorAll("#star-container .star-rating");
   let selectedRating = 0;
-  function highlightStars(r){ stars.forEach(s=>s.innerHTML=Number(s.dataset.value)<=r?"&#9733;":"&#9734;"); }
-  stars.forEach(star=>{
-    star.addEventListener("mouseover",()=>highlightStars(Number(star.dataset.value)));
-    star.addEventListener("mouseout",()=>highlightStars(selectedRating));
-    star.addEventListener("click",()=>{ selectedRating=Number(star.dataset.value); highlightStars(selectedRating); });
+
+  function highlightStars(rating) {
+    stars.forEach(star => {
+      star.innerHTML = Number(star.dataset.value) <= rating ? "&#9733;" : "&#9734;";
+    });
+  }
+
+  stars.forEach(star => {
+    star.addEventListener("mouseover", () => highlightStars(Number(star.dataset.value)));
+    star.addEventListener("mouseout", () => highlightStars(selectedRating));
+    star.addEventListener("click", () => {
+      selectedRating = Number(star.dataset.value);
+      highlightStars(selectedRating);
+    });
   });
 
-  // Submit review
+  // 5. Submit Review Logic (Firebase)
   const reviewForm = document.getElementById("review-form");
-  reviewForm.addEventListener("submit", e=>{
+  reviewForm.addEventListener("submit", e => {
     e.preventDefault();
-    const name=document.getElementById("review-name").value.trim();
-    const text=document.getElementById("review-text").value.trim();
-    if(selectedRating===0){ alert("Select rating."); return; }
-    if(!name || !text){ alert("Fill all fields."); return; }
-    db.collection("reviews").add({name,rating:selectedRating,text,created:new Date()})
-      .then(()=>{ reviewForm.reset(); selectedRating=0; highlightStars(0); loadReviews(); })
-      .catch(()=>{ alert("Failed to submit review."); });
+    const name = document.getElementById("review-name").value.trim();
+    const text = document.getElementById("review-text").value.trim();
+    
+    if(selectedRating === 0) {
+      alert("Please select a star rating.");
+      return;
+    }
+
+    db.collection("reviews").add({
+      name: name,
+      rating: selectedRating,
+      text: text,
+      created: new Date()
+    })
+    .then(() => {
+      reviewForm.reset();
+      selectedRating = 0;
+      highlightStars(0);
+      loadReviews();
+    })
+    .catch(err => {
+      alert("Error submitting review.");
+      console.error(err);
+    });
   });
 
-  function renderStars(r){ return Array.from({length:5},(_,i)=>i<r?"&#9733;":"&#9734;").join(""); }
-  function loadReviews(){
-    const container=document.getElementById("reviews-container");
-    container.innerHTML="<h3>Reviews</h3>";
-    db.collection("reviews").orderBy("created","desc").get()
-      .then(snapshot=>{ snapshot.forEach(doc=>{
-        const review=doc.data();
-        const date = review.created ? review.created.toDate().toLocaleString() : "";
+  // 6. Load Reviews Logic
+  function renderStars(rating) {
+    return Array.from({length: 5}, (_, i) => i < rating ? "&#9733;" : "&#9734;").join("");
+  }
+
+  function escapeHtml(text) {
+    const map = {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"};
+    return text.replace(/[&<>"']/g, m => map[m]);
+  }
+
+  function loadReviews() {
+    const container = document.getElementById("reviews-container");
+    container.innerHTML = "<h3>Recent Reviews</h3>";
+    
+    db.collection("reviews").orderBy("created", "desc").get().then(snapshot => {
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const dateStr = data.created ? data.created.toDate().toLocaleDateString() : "";
         const div = document.createElement("div");
         div.classList.add("review");
-        div.innerHTML=`<h4>${escapeHtml(review.name)}</h4><div class="stars">${renderStars(review.rating)}</div><p>${escapeHtml(review.text)}</p><small>${date}</small>`;
+        div.innerHTML = `
+          <h4>${escapeHtml(data.name)}</h4>
+          <div class="stars">${renderStars(data.rating)}</div>
+          <p>${escapeHtml(data.text)}</p>
+          <small>${dateStr}</small>
+        `;
         container.appendChild(div);
-      }); })
-      .catch(console.error);
+      });
+    });
   }
-  function escapeHtml(text){ const map={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}; return text.replace(/[&<>"']/g,m=>map[m]); }
 
-  // Scroll animations
-  const reveals=document.querySelectorAll(".fade-up,.fade-left,.fade-right,.scale-up");
-  function animateOnScroll(){ const triggerBottom=window.innerHeight*0.85; reveals.forEach(el=>{ if(el.getBoundingClientRect().top<triggerBottom) el.classList.add("reveal"); }); }
+  // 7. Scroll Reveal Logic
+  const reveals = document.querySelectorAll(".fade-up, .fade-left, .fade-right, .scale-up");
+  function animateOnScroll() {
+    const triggerBottom = window.innerHeight * 0.9;
+    reveals.forEach(el => {
+      const top = el.getBoundingClientRect().top;
+      if (top < triggerBottom) {
+        el.classList.add("reveal");
+      }
+    });
+  }
+
   window.addEventListener("scroll", animateOnScroll);
-  animateOnScroll();
-  loadReviews();
+  animateOnScroll(); // Initial check
+  loadReviews();     // Initial load
 });
 </script>
 </body>
