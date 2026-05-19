@@ -122,7 +122,6 @@
       transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.4s ease;
       opacity: 0;
       transform: translateY(24px);
-      cursor: default;
     }
     .proj-card.visible {
       opacity: 1;
@@ -162,11 +161,38 @@
       justify-content: space-between;
       gap: 10px;
     }
-    .card-icon {
+
+    /* Clickable icon */
+    .card-icon-link {
       font-size: 1.8rem;
       line-height: 1;
       flex-shrink: 0;
+      text-decoration: none;
+      display: inline-block;
+      transition: transform 0.2s ease, filter 0.2s ease;
+      cursor: pointer;
+      position: relative;
     }
+    .card-icon-link:hover {
+      transform: scale(1.25) rotate(-6deg);
+      filter: drop-shadow(0 0 8px rgba(6,182,212,0.6));
+    }
+    .card-icon-link::after {
+      content: "View page →";
+      position: absolute;
+      bottom: -22px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.62rem;
+      font-family: 'Poppins', sans-serif;
+      color: var(--accent-2);
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+    }
+    .card-icon-link:hover::after { opacity: 1; }
+
     .card-badges {
       display: flex;
       gap: 6px;
@@ -186,10 +212,10 @@
       color: #c4b5fd;
       border: 1px solid rgba(124,58,237,0.35);
     }
-    .badge-wip {
-      background: rgba(245,158,11,0.18);
-      color: #fcd34d;
-      border: 1px solid rgba(245,158,11,0.3);
+    .badge-live {
+      background: rgba(16,185,129,0.18);
+      color: #6ee7b7;
+      border: 1px solid rgba(16,185,129,0.3);
     }
 
     .card-title {
@@ -263,12 +289,6 @@
       background: rgba(255,255,255,0.1);
       color: white;
     }
-    .btn-disabled {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.06);
-      color: rgba(255,255,255,0.2);
-      cursor: not-allowed;
-    }
 
     /* ── Modal ── */
     .modal-overlay {
@@ -306,7 +326,8 @@
     }
     .modal-close {
       position: absolute;
-      top: 16px; right: 20px;
+      top: 16px;
+      right: 20px;
       background: none;
       border: none;
       color: var(--muted);
@@ -315,10 +336,23 @@
       transition: color 0.2s;
     }
     .modal-close:hover { color: white; }
-    .modal h2 { color: var(--accent-1); margin-bottom: 10px; font-size: 1.5rem; }
-    .modal p { color: var(--muted); line-height: 1.7; font-size: 0.97rem; margin-bottom: 16px; }
+    .modal h2 {
+      color: var(--accent-1);
+      margin-bottom: 10px;
+      font-size: 1.5rem;
+    }
+    .modal p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.97rem;
+      margin-bottom: 16px;
+    }
     .modal .tech-tags { margin-bottom: 24px; }
-    .modal-links { display: flex; gap: 12px; flex-wrap: wrap; }
+    .modal-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
     .modal-stat-row {
       display: flex;
       gap: 20px;
@@ -334,8 +368,16 @@
       flex: 1;
       min-width: 80px;
     }
-    .modal-stat-val { font-size: 1.3rem; font-weight: 700; color: var(--accent-2); }
-    .modal-stat-key { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+    .modal-stat-val {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--accent-2);
+    }
+    .modal-stat-key {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
 
     /* ── Empty state ── */
     .empty-state {
@@ -345,7 +387,12 @@
       color: var(--muted);
       display: none;
     }
-    .empty-state i { font-size: 3rem; margin-bottom: 16px; opacity: 0.4; }
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      opacity: 0.4;
+      display: block;
+    }
     .empty-state p { font-size: 1rem; }
 
     /* ── Responsive ── */
@@ -385,8 +432,8 @@
       <div class="stat-label">Languages</div>
     </div>
     <div class="stat">
-      <div class="stat-number" id="count-commits">0</div>
-      <div class="stat-label">GitHub Stars</div>
+      <div class="stat-number" id="count-tech">0</div>
+      <div class="stat-label">Technologies Used</div>
     </div>
   </div>
 </header>
@@ -408,7 +455,7 @@
     <div class="card-strip strip-purple"></div>
     <div class="card-body">
       <div class="card-header">
-        <span class="card-icon">♟</span>
+        <a class="card-icon-link" href="project-knightmare.html" title="View KnightMare page">♟</a>
         <div class="card-badges">
           <span class="badge badge-featured">Featured</span>
         </div>
@@ -423,8 +470,12 @@
       </div>
     </div>
     <div class="card-footer">
-      <a href="https://github.com/chessdudeo7/ChessHacks" target="_blank" class="card-btn btn-primary"><i class="fab fa-github"></i> GitHub</a>
-      <button class="card-btn btn-secondary" onclick="openModal('knightmare')"><i class="fas fa-info-circle"></i> Details</button>
+      <a href="https://github.com/chessdudeo7/ChessHacks" target="_blank" class="card-btn btn-primary">
+        <i class="fab fa-github"></i> GitHub
+      </a>
+      <button class="card-btn btn-secondary" onclick="openModal('knightmare')">
+        <i class="fas fa-info-circle"></i> Details
+      </button>
     </div>
   </article>
 
@@ -433,7 +484,7 @@
     <div class="card-strip strip-cyan"></div>
     <div class="card-body">
       <div class="card-header">
-        <span class="card-icon">♟</span>
+        <a class="card-icon-link" href="project-chess4all.html" title="View Chess4All page">♟</a>
         <div class="card-badges">
           <span class="badge badge-featured">Featured</span>
         </div>
@@ -448,8 +499,12 @@
       </div>
     </div>
     <div class="card-footer">
-      <a href="https://github.com/chessdudeo7/Chess4All" target="_blank" class="card-btn btn-primary"><i class="fab fa-github"></i> GitHub</a>
-      <button class="card-btn btn-secondary" onclick="openModal('chess4all')"><i class="fas fa-info-circle"></i> Details</button>
+      <a href="https://github.com/chessdudeo7/Chess4All" target="_blank" class="card-btn btn-primary">
+        <i class="fab fa-github"></i> GitHub
+      </a>
+      <button class="card-btn btn-secondary" onclick="openModal('chess4all')">
+        <i class="fas fa-info-circle"></i> Details
+      </button>
     </div>
   </article>
 
@@ -458,7 +513,7 @@
     <div class="card-strip strip-green"></div>
     <div class="card-body">
       <div class="card-header">
-        <span class="card-icon">💻</span>
+        <a class="card-icon-link" href="project-otmac.html" title="View OTMaC page">💻</a>
         <div class="card-badges"></div>
       </div>
       <h3 class="card-title">OTMaC Website</h3>
@@ -470,19 +525,23 @@
       </div>
     </div>
     <div class="card-footer">
-      <a href="https://github.com/OTMaC/otmac.github.io" target="_blank" class="card-btn btn-primary"><i class="fab fa-github"></i> GitHub</a>
-      <button class="card-btn btn-secondary" onclick="openModal('otmac')"><i class="fas fa-info-circle"></i> Details</button>
+      <a href="https://github.com/OTMaC/otmac.github.io" target="_blank" class="card-btn btn-primary">
+        <i class="fab fa-github"></i> GitHub
+      </a>
+      <button class="card-btn btn-secondary" onclick="openModal('otmac')">
+        <i class="fas fa-info-circle"></i> Details
+      </button>
     </div>
   </article>
 
-  <!-- Personal Website -->
+  <!-- Personal Portfolio -->
   <article class="proj-card" data-tags="web" data-id="portfolio">
     <div class="card-strip strip-orange"></div>
     <div class="card-body">
       <div class="card-header">
-        <span class="card-icon">🌐</span>
+        <a class="card-icon-link" href="project-portfolio.html" title="View Portfolio page">🌐</a>
         <div class="card-badges">
-          <span class="badge badge-wip">Live</span>
+          <span class="badge badge-live">Live</span>
         </div>
       </div>
       <h3 class="card-title">Personal Portfolio</h3>
@@ -496,8 +555,12 @@
       </div>
     </div>
     <div class="card-footer">
-      <a href="https://github.com/chessdudeo7" target="_blank" class="card-btn btn-primary"><i class="fab fa-github"></i> GitHub</a>
-      <button class="card-btn btn-secondary" onclick="openModal('portfolio')"><i class="fas fa-info-circle"></i> Details</button>
+      <a href="https://github.com/chessdudeo7" target="_blank" class="card-btn btn-primary">
+        <i class="fab fa-github"></i> GitHub
+      </a>
+      <button class="card-btn btn-secondary" onclick="openModal('portfolio')">
+        <i class="fas fa-info-circle"></i> Details
+      </button>
     </div>
   </article>
 
@@ -526,195 +589,221 @@
 </footer>
 
 <script>
-/* ── Project data for modals ── */
-const projectData = {
-  knightmare: {
-    title: "KnightMare — ChessHacks",
-    desc: "An AI chess engine built for ChessHacks, trained on over 100,000 grandmaster games. The model uses a neural network implemented in PyTorch to evaluate board positions and predict the best move in any given state. Leverages Modal for scalable cloud-based GPU training, dramatically cutting training time. This was my first deep dive into ML pipelines and reinforcement learning concepts applied to games.",
-    stats: [
-      { val: "100K+", key: "Games Trained" },
-      { val: "PyTorch", key: "Framework" },
-      { val: "Cloud", key: "GPU Training" },
-    ],
-    tags: ["Python", "PyTorch", "Modal", "ML", "Neural Networks"],
-    github: "https://github.com/chessdudeo7/ChessHacks",
-    demo: null,
-  },
-  chess4all: {
-    title: "Chess4All",
-    desc: "A full-featured chess training platform designed for players of all levels. Contains 30+ structured endgame study pages covering rook endgames, pawn structures, king & pawn endings and more. Features interactive puzzles with a hint system and a searchable database of annotated master games. Firebase powers user authentication and real-time puzzle completion tracking.",
-    stats: [
-      { val: "30+", key: "Study Pages" },
-      { val: "Firebase", key: "Backend" },
-      { val: "All Levels", key: "Audience" },
-    ],
-    tags: ["HTML", "CSS", "JavaScript", "Firebase"],
-    github: "https://github.com/chessdudeo7/Chess4All",
-    demo: null,
-  },
-  otmac: {
-    title: "OTMaC Website",
-    desc: "The official web presence for the Ottawa Math Team Contest, a regional math competition for high school students. Built to provide clear information about contest logistics, rules, and past papers, as well as preparation resources and registration. Designed to be clean and accessible for students and parents alike.",
-    stats: [
-      { val: "Ottawa", key: "Region" },
-      { val: "Open", key: "Source" },
-      { val: "Students", key: "Audience" },
-    ],
-    tags: ["HTML", "CSS", "JavaScript"],
-    github: "https://github.com/OTMaC/otmac.github.io",
-    demo: "https://otmac.github.io",
-  },
-  portfolio: {
-    title: "Personal Portfolio Website",
-    desc: "This portfolio — built entirely from scratch without any CSS frameworks. Features a custom dark design system with CSS variables, animated scroll reveals using IntersectionObserver, a Firebase Firestore-powered review system with live star ratings, and an EmailJS-integrated contact form. Every component was hand-coded to match a cohesive aesthetic.",
-    stats: [
-      { val: "Vanilla", key: "Stack" },
-      { val: "Firebase", key: "Reviews" },
-      { val: "Live", key: "Status" },
-    ],
-    tags: ["HTML", "CSS", "JavaScript", "Firebase", "EmailJS"],
-    github: "https://github.com/chessdudeo7",
-    demo: null,
-  },
-};
+  /* ── Project data for modals ── */
+  const projectData = {
+    knightmare: {
+      title: "KnightMare — ChessHacks",
+      desc: "An AI chess engine built for ChessHacks, trained on over 100,000 grandmaster games. The model uses a neural network implemented in PyTorch to evaluate board positions and predict the best move. Leverages Modal for scalable cloud-based GPU training, dramatically cutting training time.",
+      stats: [
+        { val: "100K+", key: "Games Trained" },
+        { val: "PyTorch", key: "Framework" },
+        { val: "Cloud", key: "GPU Training" },
+      ],
+      tags: ["Python", "PyTorch", "Modal", "ML", "Neural Networks"],
+      github: "https://github.com/chessdudeo7/ChessHacks",
+      page: "project-knightmare.html",
+      demo: null,
+    },
+    chess4all: {
+      title: "Chess4All",
+      desc: "A full-featured chess training platform designed for players of all levels. Contains 30+ structured endgame study pages, interactive puzzles with a hint system, and a searchable database of annotated master games. Firebase powers user authentication and real-time puzzle completion tracking.",
+      stats: [
+        { val: "30+", key: "Study Pages" },
+        { val: "Firebase", key: "Backend" },
+        { val: "All Levels", key: "Audience" },
+      ],
+      tags: ["HTML", "CSS", "JavaScript", "Firebase"],
+      github: "https://github.com/chessdudeo7/Chess4All",
+      page: "project-chess4all.html",
+      demo: null,
+    },
+    otmac: {
+      title: "OTMaC Website",
+      desc: "The official web presence for the Ottawa Math Team Contest, a regional math competition for high school students. Built to provide clear information about contest logistics, rules, past papers, and preparation resources. Designed to be accessible for students and parents alike.",
+      stats: [
+        { val: "Ottawa", key: "Region" },
+        { val: "Open", key: "Source" },
+        { val: "Live", key: "Status" },
+      ],
+      tags: ["HTML", "CSS", "JavaScript"],
+      github: "https://github.com/OTMaC/otmac.github.io",
+      page: "project-otmac.html",
+      demo: "https://otmac.github.io",
+    },
+    portfolio: {
+      title: "Personal Portfolio Website",
+      desc: "This portfolio — built entirely from scratch without any CSS frameworks. Features a custom dark design system with CSS variables, animated scroll reveals using IntersectionObserver, a Firebase Firestore-powered review system with live star ratings, and an EmailJS-integrated contact form.",
+      stats: [
+        { val: "Vanilla", key: "Stack" },
+        { val: "Firebase", key: "Reviews" },
+        { val: "Live", key: "Status" },
+      ],
+      tags: ["HTML", "CSS", "JavaScript", "Firebase", "EmailJS"],
+      github: "https://github.com/chessdudeo7",
+      page: "project-portfolio.html",
+      demo: null,
+    },
+  };
 
-/* ── Modal logic ── */
-function openModal(id) {
-  const d = projectData[id];
-  if (!d) return;
-  document.getElementById("modal-title").textContent = d.title;
-  document.getElementById("modal-desc").textContent = d.desc;
+  /* ── Modal logic ── */
+  function openModal(id) {
+    const d = projectData[id];
+    if (!d) return;
 
-  const statsEl = document.getElementById("modal-stats");
-  statsEl.innerHTML = d.stats.map(s => `
-    <div class="modal-stat">
-      <div class="modal-stat-val">${s.val}</div>
-      <div class="modal-stat-key">${s.key}</div>
-    </div>
-  `).join("");
+    document.getElementById("modal-title").textContent = d.title;
+    document.getElementById("modal-desc").textContent = d.desc;
 
-  document.getElementById("modal-tags").innerHTML = d.tags.map(t =>
-    `<span class="tech-tag">${t}</span>`).join("");
+    document.getElementById("modal-stats").innerHTML = d.stats.map(s => `
+      <div class="modal-stat">
+        <div class="modal-stat-val">${s.val}</div>
+        <div class="modal-stat-key">${s.key}</div>
+      </div>
+    `).join("");
 
-  const linksEl = document.getElementById("modal-links");
-  linksEl.innerHTML = `<a href="${d.github}" target="_blank" class="card-btn btn-primary" style="flex:0 0 auto; padding:10px 22px;"><i class="fab fa-github"></i> View on GitHub</a>`;
-  if (d.demo) {
-    linksEl.innerHTML += `<a href="${d.demo}" target="_blank" class="card-btn btn-secondary" style="flex:0 0 auto; padding:10px 22px;"><i class="fas fa-external-link-alt"></i> Live Demo</a>`;
-  }
+    document.getElementById("modal-tags").innerHTML = d.tags
+      .map(t => `<span class="tech-tag">${t}</span>`).join("");
 
-  document.getElementById("modal-overlay").classList.add("open");
-  document.body.style.overflow = "hidden";
-}
-function closeModal() {
-  document.getElementById("modal-overlay").classList.remove("open");
-  document.body.style.overflow = "";
-}
-function closeModalOnBg(e) {
-  if (e.target === document.getElementById("modal-overlay")) closeModal();
-}
-document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
-
-/* ── Filter logic ── */
-const pills = document.querySelectorAll(".filter-pill");
-const cards = document.querySelectorAll(".proj-card");
-const emptyState = document.getElementById("empty-state");
-
-pills.forEach(pill => {
-  pill.addEventListener("click", () => {
-    pills.forEach(p => p.classList.remove("active"));
-    pill.classList.add("active");
-    const filter = pill.dataset.filter;
-    let visible = 0;
-    cards.forEach(card => {
-      const tags = card.dataset.tags || "";
-      const show = filter === "all" || tags.split(" ").includes(filter);
-      card.classList.toggle("hidden", !show);
-      if (show) visible++;
-    });
-    emptyState.style.display = visible === 0 ? "block" : "none";
-  });
-});
-
-/* ── Scroll reveal ── */
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
-    if (entry.isIntersecting) {
-      setTimeout(() => entry.target.classList.add("visible"), i * 80);
-      observer.unobserve(entry.target);
+    const linksEl = document.getElementById("modal-links");
+    linksEl.innerHTML = `
+      <a href="${d.github}" target="_blank" class="card-btn btn-primary" style="flex:0 0 auto;padding:10px 22px;">
+        <i class="fab fa-github"></i> View on GitHub
+      </a>
+      <a href="${d.page}" class="card-btn btn-secondary" style="flex:0 0 auto;padding:10px 22px;">
+        <i class="fas fa-arrow-right"></i> Full Page
+      </a>
+    `;
+    if (d.demo) {
+      linksEl.innerHTML += `
+        <a href="${d.demo}" target="_blank" class="card-btn btn-secondary" style="flex:0 0 auto;padding:10px 22px;">
+          <i class="fas fa-external-link-alt"></i> Live Demo
+        </a>
+      `;
     }
+
+    document.getElementById("modal-overlay").classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() {
+    document.getElementById("modal-overlay").classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  function closeModalOnBg(e) {
+    if (e.target === document.getElementById("modal-overlay")) closeModal();
+  }
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeModal();
   });
-}, { threshold: 0.1 });
 
-cards.forEach(c => observer.observe(c));
+  /* ── Filter logic ── */
+  const pills = document.querySelectorAll(".filter-pill");
+  const cards = document.querySelectorAll(".proj-card");
+  const emptyState = document.getElementById("empty-state");
 
-/* ── Animated counters ── */
-function animateCount(el, target, suffix = "") {
-  let start = 0;
-  const duration = 1200;
-  const step = 16;
-  const increment = target / (duration / step);
-  const timer = setInterval(() => {
-    start += increment;
-    if (start >= target) { start = target; clearInterval(timer); }
-    el.textContent = Math.floor(start) + suffix;
-  }, step);
-}
-
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    animateCount(document.getElementById("count-total"), 4);
-    animateCount(document.getElementById("count-langs"), 7);
-    animateCount(document.getElementById("count-commits"), 12);
-  }, 400);
-});
-
-/* ── Starfield canvas ── */
-(function() {
-  const canvas = document.getElementById("bg-canvas");
-  const ctx = canvas.getContext("2d");
-  let stars = [];
-
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  function initStars(n) {
-    stars = Array.from({ length: n }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 1.2 + 0.3,
-      speed: Math.random() * 0.25 + 0.05,
-      opacity: Math.random() * 0.6 + 0.2,
-    }));
-  }
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    stars.forEach(s => {
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(180, 200, 255, ${s.opacity})`;
-      ctx.fill();
-      s.y += s.speed;
-      if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; }
+  pills.forEach(pill => {
+    pill.addEventListener("click", () => {
+      pills.forEach(p => p.classList.remove("active"));
+      pill.classList.add("active");
+      const filter = pill.dataset.filter;
+      let visible = 0;
+      cards.forEach(card => {
+        const tags = card.dataset.tags || "";
+        const show = filter === "all" || tags.split(" ").includes(filter);
+        card.classList.toggle("hidden", !show);
+        if (show) visible++;
+      });
+      emptyState.style.display = visible === 0 ? "block" : "none";
     });
-    requestAnimationFrame(draw);
+  });
+
+  /* ── Scroll reveal ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add("visible"), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  cards.forEach(c => observer.observe(c));
+
+  /* ── Animated counters ── */
+  function animateCount(el, target) {
+    let start = 0;
+    const duration = 1200;
+    const step = 16;
+    const increment = target / (duration / step);
+    const timer = setInterval(() => {
+      start += increment;
+      if (start >= target) { start = target; clearInterval(timer); }
+      el.textContent = Math.floor(start);
+    }, step);
   }
 
-  resize();
-  initStars(140);
-  draw();
-  window.addEventListener("resize", () => { resize(); initStars(140); });
-})();
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      animateCount(document.getElementById("count-total"), 4);
+      animateCount(document.getElementById("count-langs"), 7);
+      animateCount(document.getElementById("count-tech"), 9);
+    }, 400);
+  });
 
-/* ── Hero fade-up ── */
-document.querySelector(".projects-hero").style.opacity = "0";
-document.querySelector(".projects-hero").style.transform = "translateY(18px)";
-setTimeout(() => {
-  const hero = document.querySelector(".projects-hero");
-  hero.style.transition = "all 0.7s ease-out";
-  hero.style.opacity = "1";
-  hero.style.transform = "translateY(0)";
-}, 100);
+  /* ── Hero fade-up ── */
+  document.querySelector(".projects-hero").style.opacity = "0";
+  document.querySelector(".projects-hero").style.transform = "translateY(18px)";
+  setTimeout(() => {
+    const hero = document.querySelector(".projects-hero");
+    hero.style.transition = "all 0.7s ease-out";
+    hero.style.opacity = "1";
+    hero.style.transform = "translateY(0)";
+  }, 100);
+
+  /* ── Starfield canvas ── */
+  (function () {
+    const canvas = document.getElementById("bg-canvas");
+    const ctx = canvas.getContext("2d");
+    let stars = [];
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function initStars(n) {
+      stars = Array.from({ length: n }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.2 + 0.3,
+        speed: Math.random() * 0.25 + 0.05,
+        opacity: Math.random() * 0.6 + 0.2,
+      }));
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(s => {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(180, 200, 255, ${s.opacity})`;
+        ctx.fill();
+        s.y += s.speed;
+        if (s.y > canvas.height) {
+          s.y = 0;
+          s.x = Math.random() * canvas.width;
+        }
+      });
+      requestAnimationFrame(draw);
+    }
+
+    resize();
+    initStars(140);
+    draw();
+    window.addEventListener("resize", () => { resize(); initStars(140); });
+  })();
 </script>
+
 </body>
 </html>

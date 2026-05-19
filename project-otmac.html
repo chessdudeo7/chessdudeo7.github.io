@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>OTMaC Website | Matthew Zhu</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <style>
+    body { overflow-x: hidden; }
+    #bg-canvas { position:fixed;inset:0;z-index:0;pointer-events:none; }
+    nav,main,footer { position:relative;z-index:1; }
+
+    .proj-hero {
+      min-height: 42vh;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center;
+      padding: 90px 24px 48px; position: relative; z-index: 1;
+    }
+    .proj-hero-icon {
+      font-size: 5rem; margin-bottom: 18px;
+      animation: floatIcon 3.5s ease-in-out infinite;
+      filter: drop-shadow(0 0 22px rgba(16,185,129,0.5));
+    }
+    @keyframes floatIcon { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-12px);} }
+    .proj-hero h1 {
+      font-size: 3.2rem; font-weight: 700;
+      background: linear-gradient(100deg, #10b981, #34d399, var(--accent-2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; margin-bottom: 10px; line-height: 1.15;
+    }
+    .proj-hero .tagline { font-size:1.1rem;color:var(--muted);max-width:560px;margin:0 auto 28px;line-height:1.65; }
+    .hero-pill-row { display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:32px; }
+    .hero-pill {
+      background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3);
+      color: #6ee7b7; padding: 5px 14px; border-radius: 999px;
+      font-size: 0.82rem; font-weight: 600; font-family: 'JetBrains Mono', monospace;
+    }
+    .hero-actions { display:flex;gap:14px;flex-wrap:wrap;justify-content:center; }
+    .btn-hero-primary {
+      background: linear-gradient(90deg,#10b981,var(--accent-2));
+      color: white; padding:13px 28px; border-radius:10px; font-weight:700;
+      text-decoration:none; font-size:0.95rem; display:flex; align-items:center;
+      gap:8px; transition:transform 0.22s,box-shadow 0.22s;
+    }
+    .btn-hero-primary:hover { transform:translateY(-4px);box-shadow:0 12px 28px rgba(16,185,129,0.35); }
+    .btn-hero-ghost {
+      background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15);
+      color:var(--muted); padding:13px 28px; border-radius:10px; font-weight:700;
+      text-decoration:none; font-size:0.95rem; display:flex; align-items:center;
+      gap:8px; transition:all 0.22s;
+    }
+    .btn-hero-ghost:hover { background:rgba(255,255,255,0.1);color:white; }
+
+    .stat-ribbon {
+      display:flex;justify-content:center;flex-wrap:wrap;
+      max-width:760px;margin:0 auto 64px;
+      border:1px solid rgba(255,255,255,0.07);border-radius:14px;
+      overflow:hidden;background:rgba(255,255,255,0.02);
+    }
+    .ribbon-stat { flex:1;min-width:120px;padding:22px 20px;text-align:center;border-right:1px solid rgba(255,255,255,0.06); }
+    .ribbon-stat:last-child { border-right:none; }
+    .ribbon-val { font-size:1.7rem;font-weight:700;color:#34d399;font-family:'JetBrains Mono',monospace; }
+    .ribbon-key { font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-top:4px; }
+
+    .proj-content { max-width:860px;margin:0 auto;padding:0 24px 80px;display:flex;flex-direction:column;gap:40px; }
+    .proj-section {
+      background:var(--card);border:1px solid rgba(255,255,255,0.06);
+      border-radius:16px;padding:32px;box-shadow:0 8px 30px rgba(2,6,23,0.45);
+      opacity:0;transform:translateY(22px);transition:opacity 0.55s ease,transform 0.55s ease;
+    }
+    .proj-section.reveal { opacity:1;transform:translateY(0); }
+    .proj-section h2 { font-size:1.3rem;font-weight:700;color:#34d399;margin-bottom:16px;display:flex;align-items:center;gap:10px; }
+    .proj-section h2 i { font-size:1rem;opacity:0.8; }
+    .proj-section p { color:var(--muted);line-height:1.75;font-size:0.97rem;margin-bottom:12px; }
+    .proj-section p:last-child { margin-bottom:0; }
+
+    .tech-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px; }
+    .tech-item {
+      background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);
+      border-radius:10px;padding:14px 16px;display:flex;align-items:center;
+      gap:10px;transition:border-color 0.2s,background 0.2s;
+    }
+    .tech-item:hover { border-color:#10b981;background:rgba(16,185,129,0.08); }
+    .tech-item .dot { width:8px;height:8px;border-radius:50%;flex-shrink:0; }
+    .dot-green{background:#10b981;} .dot-cyan{background:var(--accent-2);} .dot-purple{background:var(--accent-1);}
+    .tech-item span { font-size:0.88rem;font-weight:600;color:#e6eef8;font-family:'JetBrains Mono',monospace; }
+
+    .feature-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px; }
+    .feature-card {
+      background:rgba(16,185,129,0.05);border:1px solid rgba(16,185,129,0.15);
+      border-radius:12px;padding:20px;transition:border-color 0.2s,transform 0.2s;
+    }
+    .feature-card:hover { border-color:#10b981;transform:translateY(-3px); }
+    .feature-card .f-icon { font-size:1.6rem;margin-bottom:10px; }
+    .feature-card h4 { font-size:0.95rem;font-weight:700;color:#e6eef8;margin-bottom:6px; }
+    .feature-card p { font-size:0.85rem;color:var(--muted);margin:0;line-height:1.55; }
+
+    .build-timeline { display:flex;flex-direction:column;gap:0; }
+    .bt-item { display:flex;gap:20px;position:relative; }
+    .bt-item:not(:last-child)::after { content:'';position:absolute;left:15px;top:32px;bottom:-16px;width:2px;background:linear-gradient(to bottom,#10b981,transparent); }
+    .bt-dot { width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#10b981,var(--accent-2));flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:white;margin-top:2px; }
+    .bt-body { padding-bottom:28px; }
+    .bt-body h4 { font-size:1rem;font-weight:700;color:#e6eef8;margin-bottom:4px; }
+    .bt-body p { font-size:0.88rem;color:var(--muted);line-height:1.6;margin:0; }
+
+    .challenge-list { display:flex;flex-direction:column;gap:12px; }
+    .challenge-item { background:rgba(255,255,255,0.03);border-left:3px solid #10b981;border-radius:0 10px 10px 0;padding:14px 18px; }
+    .challenge-item h4 { font-size:0.95rem;font-weight:700;color:#e6eef8;margin-bottom:4px; }
+    .challenge-item p { font-size:0.88rem;color:var(--muted);margin:0;line-height:1.6; }
+
+    .back-link { display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;font-size:0.9rem;font-weight:600;margin:24px 24px 0;position:relative;z-index:1;transition:color 0.2s; }
+    .back-link:hover { color:#34d399; }
+
+    @media(max-width:600px){
+      .proj-hero h1{font-size:2.2rem;}
+      .stat-ribbon{flex-direction:column;}
+      .ribbon-stat{border-right:none;border-bottom:1px solid rgba(255,255,255,0.06);}
+      .ribbon-stat:last-child{border-bottom:none;}
+    }
+  </style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<nav class="navbar">
+  <div class="logo"><a href="index.html">Matthew Zhu</a></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Profile</a></li>
+    <li><a href="projects.html" style="color:var(--accent-1);">Projects</a></li>
+    <li><a href="tutoring.html">Tutoring</a></li>
+    <li><a href="tutoring.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<a href="projects.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Projects</a>
+
+<header class="proj-hero">
+  <div class="proj-hero-icon">💻</div>
+  <h1>OTMaC Website</h1>
+  <p class="tagline">The official promotional website for the Ottawa Math Team Contest — providing students with contest details, registration, and preparation resources.</p>
+  <div class="hero-pill-row">
+    <span class="hero-pill">HTML</span>
+    <span class="hero-pill">CSS</span>
+    <span class="hero-pill">JavaScript</span>
+    <span class="hero-pill">Open Source</span>
+    <span class="hero-pill">Ottawa</span>
+  </div>
+  <div class="hero-actions">
+    <a href="https://github.com/OTMaC/otmac.github.io" target="_blank" class="btn-hero-primary"><i class="fab fa-github"></i> View on GitHub</a>
+    <a href="https://otmac.github.io" target="_blank" class="btn-hero-ghost"><i class="fas fa-external-link-alt"></i> Live Site</a>
+  </div>
+</header>
+
+<div style="max-width:760px;margin:0 auto;padding:0 24px;position:relative;z-index:1;">
+  <div class="stat-ribbon">
+    <div class="ribbon-stat"><div class="ribbon-val">Ottawa</div><div class="ribbon-key">Region</div></div>
+    <div class="ribbon-stat"><div class="ribbon-val">Open</div><div class="ribbon-key">Source</div></div>
+    <div class="ribbon-stat"><div class="ribbon-val">Live</div><div class="ribbon-key">Status</div></div>
+    <div class="ribbon-stat"><div class="ribbon-val">2024</div><div class="ribbon-key">Year Built</div></div>
+  </div>
+</div>
+
+<main class="proj-content">
+
+  <div class="proj-section">
+    <h2><i class="fas fa-lightbulb"></i> Overview</h2>
+    <p>The Ottawa Math Team Contest (OTMaC) is a regional math competition for high school students in the Ottawa area. As one of the organizers, I built and maintain the official website to serve as the primary public face of the contest.</p>
+    <p>The site needed to be clean, accessible, and informative — giving students, parents, and teachers a single place to learn about the contest, find preparation materials, and register their teams.</p>
+  </div>
+
+  <div class="proj-section">
+    <h2><i class="fas fa-stars"></i> Features</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="f-icon">📋</div>
+        <h4>Contest Information</h4>
+        <p>Clear breakdown of contest format, rules, eligibility, scoring, and important dates for the current year.</p>
+      </div>
+      <div class="feature-card">
+        <div class="f-icon">📚</div>
+        <h4>Preparation Resources</h4>
+        <p>Links to past papers, recommended resources, and topic guides to help students prepare effectively.</p>
+      </div>
+      <div class="feature-card">
+        <div class="f-icon">📝</div>
+        <h4>Registration</h4>
+        <p>Simple registration flow for team sign-ups, with confirmation and contact information for organizers.</p>
+      </div>
+      <div class="feature-card">
+        <div class="f-icon">📣</div>
+        <h4>Announcements</h4>
+        <p>News section for updates on contest logistics, results, and future events.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="proj-section">
+    <h2><i class="fas fa-wrench"></i> Tech Stack</h2>
+    <div class="tech-grid">
+      <div class="tech-item"><span class="dot dot-green"></span><span>HTML5</span></div>
+      <div class="tech-item"><span class="dot dot-green"></span><span>CSS3</span></div>
+      <div class="tech-item"><span class="dot dot-cyan"></span><span>JavaScript</span></div>
+      <div class="tech-item"><span class="dot dot-purple"></span><span>GitHub Pages</span></div>
+    </div>
+  </div>
+
+  <div class="proj-section">
+    <h2><i class="fas fa-list-check"></i> How It Was Built</h2>
+    <div class="build-timeline">
+      <div class="bt-item">
+        <div class="bt-dot">1</div>
+        <div class="bt-body">
+          <h4>Requirements Gathering</h4>
+          <p>Worked with the OTMaC organizing team to identify what information the site needed to communicate and what the target audience — mostly high school students and their teachers — would expect.</p>
+        </div>
+      </div>
+      <div class="bt-item">
+        <div class="bt-dot">2</div>
+        <div class="bt-body">
+          <h4>Design & Layout</h4>
+          <p>Designed a clean, readable layout with a clear visual hierarchy. Prioritized mobile responsiveness since many students would access the site on phones.</p>
+        </div>
+      </div>
+      <div class="bt-item">
+        <div class="bt-dot">3</div>
+        <div class="bt-body">
+          <h4>Content Structure</h4>
+          <p>Organized all contest content into logical sections — About, Format, Registration, Resources, and Contact — and wrote the copy in a tone appropriate for the audience.</p>
+        </div>
+      </div>
+      <div class="bt-item" style="padding-bottom:0;">
+        <div class="bt-dot">4</div>
+        <div class="bt-body" style="padding-bottom:0;">
+          <h4>GitHub Pages Deployment</h4>
+          <p>Deployed the site under the OTMaC GitHub organization using GitHub Pages, making it easy for other organizers to contribute updates via pull requests.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="proj-section">
+    <h2><i class="fas fa-mountain"></i> Challenges</h2>
+    <div class="challenge-list">
+      <div class="challenge-item">
+        <h4>Designing for a Broad Audience</h4>
+        <p>The site needed to clearly communicate to students, parents, and teachers simultaneously — different audiences with different needs — without feeling cluttered or confusing.</p>
+      </div>
+      <div class="challenge-item">
+        <h4>Maintainability</h4>
+        <p>Since multiple organizers might update the site over time, the code needed to be clean, well-commented, and easy to edit even for people who aren't experienced web developers.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="proj-section">
+    <h2><i class="fas fa-star"></i> What I Learned</h2>
+    <p>This project sharpened my ability to design for a real, non-technical audience rather than just for myself. It also gave me experience with collaborative open-source workflows via GitHub — writing clean, readable code and managing a repository that others contribute to. It's rewarding to see a site I built being actively used by students across Ottawa every year.</p>
+  </div>
+
+</main>
+
+<footer>&copy; 2026 Matthew Zhu. All rights reserved.</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add("reveal"); obs.unobserve(e.target); } });
+  }, {threshold:0.1});
+  document.querySelectorAll(".proj-section").forEach(s => obs.observe(s));
+
+  (function(){
+    const canvas = document.getElementById("bg-canvas");
+    const ctx = canvas.getContext("2d");
+    let nodes = [];
+    function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+    function init(n){
+      nodes = Array.from({length:n},()=>({
+        x:Math.random()*canvas.width, y:Math.random()*canvas.height,
+        vx:(Math.random()-0.5)*0.4, vy:(Math.random()-0.5)*0.4,
+        r:Math.random()*1.5+0.5, opacity:Math.random()*0.5+0.15
+      }));
+    }
+    function draw(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      for(let i=0;i<nodes.length;i++){
+        for(let j=i+1;j<nodes.length;j++){
+          const dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y;
+          const dist=Math.sqrt(dx*dx+dy*dy);
+          if(dist<120){
+            ctx.beginPath();
+            ctx.strokeStyle=`rgba(16,185,129,${0.1*(1-dist/120)})`;
+            ctx.lineWidth=0.8;
+            ctx.moveTo(nodes[i].x,nodes[i].y);
+            ctx.lineTo(nodes[j].x,nodes[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      nodes.forEach(n=>{
+        ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(180,240,210,${n.opacity})`;ctx.fill();
+        n.x+=n.vx;n.y+=n.vy;
+        if(n.x<0||n.x>canvas.width)n.vx*=-1;
+        if(n.y<0||n.y>canvas.height)n.vy*=-1;
+      });
+      requestAnimationFrame(draw);
+    }
+    resize();init(70);draw();
+    window.addEventListener("resize",()=>{resize();init(70);});
+  })();
+</script>
+</body>
+</html>
