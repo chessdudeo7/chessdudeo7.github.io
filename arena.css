@@ -1,0 +1,581 @@
+/* ==========================================================================
+   ARENA — Matthew Zhu's collection.
+   A full-screen game client, not a page: player banner, tab bar, a deck you
+   actually build. Colour is systemic — rarity IS the palette, so tier reads
+   at a glance before you've read a single word.
+   ========================================================================== */
+
+:root {
+  /* Stadium at night */
+  --bg:      #0C0F24;
+  --bg-2:    #141A3C;
+  --bg-3:    #1C2350;
+  --panel:   rgba(12, 15, 36, 0.82);
+  --edge:    rgba(150, 172, 255, 0.16);
+  --edge-2:  rgba(150, 172, 255, 0.07);
+
+  --fg:      #EDF0FF;
+  --fg-2:    #A3ACD6;
+  --fg-3:    #6C74A4;
+
+  /* Rarity — functional colour, not decoration */
+  --common:  #7C93B0;
+  --rare:    #F0A03C;
+  --epic:    #B45CE0;
+  --legend:  #FFD34D;
+
+  /* Currencies */
+  --elixir:  #D845C8;
+  --gold:    #F5C542;
+  --crown:   #4FC3F7;
+
+  --display: "Lilita One", system-ui, sans-serif;
+  --body:    "Rubik", system-ui, sans-serif;
+
+  --deck-h: 104px;
+  --nav-h: 62px;
+  --ease: cubic-bezier(0.2, 0.75, 0.3, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+
+body {
+  background:
+    radial-gradient(120% 70% at 50% -10%, #2A2170 0%, transparent 60%),
+    radial-gradient(90% 60% at 50% 110%, #102A5E 0%, transparent 62%),
+    var(--bg);
+  background-attachment: fixed;
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.55;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+:focus-visible { outline: 3px solid var(--crown); outline-offset: 2px; }
+::selection { background: var(--elixir); color: #fff; }
+
+.dsp {
+  font-family: var(--display);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  -webkit-text-stroke: 0.6px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45);
+}
+
+/* --------------------------------------------------------------------------
+   Shell
+   -------------------------------------------------------------------------- */
+#app {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   Player banner
+   -------------------------------------------------------------------------- */
+#banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  background: linear-gradient(180deg, rgba(38, 32, 106, 0.9), rgba(14, 18, 46, 0.9));
+  border-bottom: 2px solid var(--edge);
+  backdrop-filter: blur(8px);
+}
+
+.king {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(160deg, #3B47A8, #232A72);
+  border: 2px solid var(--gold);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.45), inset 0 2px 0 rgba(255, 255, 255, 0.18);
+}
+
+.king svg { width: 30px; height: 30px; }
+
+.king-lvl {
+  position: absolute;
+  bottom: -9px;
+  left: 50%;
+  translate: -50% 0;
+  font-family: var(--display);
+  font-size: 11px;
+  line-height: 1;
+  padding: 3px 7px;
+  background: var(--gold);
+  color: #3A2A00;
+  border: 2px solid #8C6A00;
+}
+
+.who { min-width: 0; flex: 1; }
+
+.who h1 {
+  font-family: var(--display);
+  font-size: clamp(19px, 3.4vw, 27px);
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+.who .arena {
+  font-size: 11.5px;
+  color: var(--fg-2);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.who .arena b { color: var(--crown); font-weight: 500; }
+
+.counters { display: flex; gap: 8px; flex: 0 0 auto; }
+
+.counter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  background: rgba(6, 8, 24, 0.66);
+  border: 2px solid var(--edge);
+  font-family: var(--display);
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.counter svg { width: 15px; height: 15px; }
+.counter.gold  { color: var(--gold); }
+.counter.crown { color: var(--crown); }
+
+/* --------------------------------------------------------------------------
+   Stage
+   -------------------------------------------------------------------------- */
+#stage { overflow-y: auto; overflow-x: hidden; padding: 18px 16px 22px; scrollbar-width: thin; }
+.view { display: none; }
+.view.on { display: block; }
+
+.tier-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0 11px;
+}
+
+.tier-head:first-child { margin-top: 0; }
+
+.tier-head h2 {
+  font-family: var(--display);
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--t);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+.tier-head .bar { flex: 1; height: 2px; background: linear-gradient(90deg, var(--t), transparent); opacity: 0.5; }
+.tier-head .n { font-size: 11px; color: var(--fg-3); }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  gap: 11px;
+}
+
+/* --------------------------------------------------------------------------
+   Cards
+   -------------------------------------------------------------------------- */
+.card {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  padding: 3px;
+  background: linear-gradient(165deg, var(--r1), var(--r2));
+  border: 2px solid rgba(0, 0, 0, 0.55);
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.22);
+  cursor: pointer;
+  transition: translate 0.14s var(--ease), box-shadow 0.14s var(--ease);
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+
+.card:hover { translate: 0 -4px; box-shadow: 0 9px 0 rgba(0, 0, 0, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.22); }
+.card:active { translate: 0 1px; box-shadow: 0 3px 0 rgba(0, 0, 0, 0.4); }
+
+.card-inner {
+  height: 100%;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  background: linear-gradient(180deg, rgba(10, 13, 34, 0.25), rgba(8, 10, 28, 0.72));
+  border: 1px solid rgba(0, 0, 0, 0.35);
+}
+
+.card-art { display: grid; place-items: center; overflow: hidden; }
+.card-art svg { width: 46%; height: 46%; opacity: 0.95; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.55)); }
+
+.card-name {
+  font-family: var(--display);
+  font-size: 10.5px;
+  line-height: 1.15;
+  text-align: center;
+  padding: 5px 4px 6px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.72));
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* Elixir badge */
+.pip {
+  position: absolute;
+  top: -7px;
+  left: -7px;
+  z-index: 3;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 34% 30%, #F58AE6, var(--elixir));
+  border: 2px solid #4B0F45;
+  border-radius: 50%;
+  font-family: var(--display);
+  font-size: 13px;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
+}
+
+.lvl {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  z-index: 3;
+  font-family: var(--display);
+  font-size: 9px;
+  line-height: 1;
+  padding: 2px 5px;
+  background: rgba(0, 0, 0, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: var(--fg-2);
+}
+
+.in-deck {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 3;
+  width: 17px;
+  height: 17px;
+  display: grid;
+  place-items: center;
+  background: var(--crown);
+  border: 1px solid #05304A;
+  color: #04283D;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+/* Legendary shine */
+.card.legendary { background: conic-gradient(from 210deg, #FFE99A, #7CE7FF, #C79BFF, #FFD34D, #FFE99A); }
+
+.card.legendary::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, 0.42) 48%, transparent 58%);
+  background-size: 260% 100%;
+  animation: shine 4.5s linear infinite;
+}
+
+@keyframes shine {
+  0%   { background-position: 190% 0; }
+  55%  { background-position: -60% 0; }
+  100% { background-position: -60% 0; }
+}
+
+/* --------------------------------------------------------------------------
+   Deck strip
+   -------------------------------------------------------------------------- */
+#deckbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  background: linear-gradient(180deg, rgba(20, 26, 60, 0.94), rgba(10, 13, 34, 0.96));
+  border-top: 2px solid var(--edge);
+  backdrop-filter: blur(8px);
+  height: var(--deck-h);
+}
+
+.deck-slots { display: flex; gap: 5px; flex: 1; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.deck-slots::-webkit-scrollbar { display: none; }
+
+.slot {
+  position: relative;
+  flex: 0 0 auto;
+  width: 58px;
+  aspect-ratio: 3 / 4;
+  background: rgba(6, 8, 24, 0.7);
+  border: 2px dashed var(--edge);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.slot.filled { border-style: solid; background: linear-gradient(165deg, var(--r1), var(--r2)); padding: 2px; }
+.slot.filled .slot-in { height: 100%; width: 100%; display: grid; place-items: center; background: rgba(8, 10, 28, 0.62); }
+.slot svg { width: 24px; height: 24px; }
+.slot .empty-x { color: var(--fg-3); font-size: 17px; }
+
+.avg {
+  flex: 0 0 auto;
+  text-align: center;
+  padding: 7px 12px;
+  background: rgba(6, 8, 24, 0.7);
+  border: 2px solid var(--elixir);
+}
+
+.avg-n { font-family: var(--display); font-size: 21px; line-height: 1; color: var(--elixir); }
+.avg-l { font-size: 9px; color: var(--fg-3); letter-spacing: 0.09em; text-transform: uppercase; margin-top: 3px; }
+
+/* --------------------------------------------------------------------------
+   Tab bar — this replaces navigation entirely
+   -------------------------------------------------------------------------- */
+#tabs {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  height: var(--nav-h);
+  background: linear-gradient(180deg, #232B66, #141A3C);
+  border-top: 2px solid var(--edge);
+}
+
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-family: var(--display);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  color: var(--fg-3);
+  border-top: 3px solid transparent;
+  transition: color 0.15s var(--ease), background 0.15s var(--ease);
+}
+
+.tab svg { width: 21px; height: 21px; }
+.tab:hover { color: var(--fg-2); background: rgba(255, 255, 255, 0.05); }
+
+.tab[aria-current="true"] {
+  color: var(--gold);
+  border-top-color: var(--gold);
+  background: rgba(245, 197, 66, 0.09);
+}
+
+/* --------------------------------------------------------------------------
+   Inspect overlay
+   -------------------------------------------------------------------------- */
+#inspect {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(4, 6, 18, 0.86);
+  backdrop-filter: blur(9px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s var(--ease);
+}
+
+#inspect.on { opacity: 1; pointer-events: auto; }
+
+.sheet {
+  width: min(560px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+  background: linear-gradient(180deg, var(--bg-3), var(--bg-2));
+  border: 3px solid var(--r1);
+  box-shadow: 0 16px 0 rgba(0, 0, 0, 0.45);
+  padding: 20px;
+  scale: 0.96;
+  transition: scale 0.2s var(--ease);
+}
+
+#inspect.on .sheet { scale: 1; }
+
+.sheet-top { display: flex; gap: 16px; align-items: flex-start; }
+
+.sheet-card {
+  position: relative;
+  width: 112px;
+  flex: 0 0 auto;
+  aspect-ratio: 3 / 4;
+  padding: 3px;
+  background: linear-gradient(165deg, var(--r1), var(--r2));
+  border: 2px solid rgba(0, 0, 0, 0.55);
+}
+
+.sheet-head { min-width: 0; flex: 1; }
+.sheet-head h3 { font-family: var(--display); font-size: 23px; line-height: 1.1; text-shadow: 0 2px 0 rgba(0,0,0,.5); }
+
+.sheet-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+
+.tag {
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1px solid var(--edge);
+  color: var(--fg-2);
+}
+
+.tag.rarity { border-color: var(--r1); color: var(--r1); font-weight: 500; }
+
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 14px; }
+
+.stat {
+  background: rgba(6, 8, 24, 0.6);
+  border: 1px solid var(--edge-2);
+  padding: 8px 6px;
+  text-align: center;
+}
+
+.stat-n { font-family: var(--display); font-size: 17px; line-height: 1; color: var(--fg); }
+.stat-l { font-size: 8.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-3); margin-top: 4px; }
+
+.sheet-body { margin-top: 16px; color: var(--fg-2); font-size: 14px; line-height: 1.62; }
+.sheet-body strong { color: var(--fg); font-weight: 500; }
+
+.sheet-btns { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 17px; }
+
+.btn {
+  font-family: var(--display);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  padding: 10px 18px;
+  background: linear-gradient(180deg, #3D49B4, #29317E);
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.42), inset 0 2px 0 rgba(255, 255, 255, 0.2);
+  color: #fff;
+  transition: translate 0.12s var(--ease), box-shadow 0.12s var(--ease);
+}
+
+.btn:hover { translate: 0 -2px; box-shadow: 0 6px 0 rgba(0, 0, 0, 0.42), inset 0 2px 0 rgba(255, 255, 255, 0.2); }
+.btn:active { translate: 0 2px; box-shadow: 0 2px 0 rgba(0, 0, 0, 0.42); }
+.btn-gold { background: linear-gradient(180deg, #FFD960, #D69A0B); color: #3A2A00; }
+.btn-elixir { background: linear-gradient(180deg, #E866D6, #A32A93); }
+.btn-ghost { background: rgba(255, 255, 255, 0.06); box-shadow: 0 4px 0 rgba(0, 0, 0, 0.35); }
+
+/* --------------------------------------------------------------------------
+   Trophy road
+   -------------------------------------------------------------------------- */
+.road { display: grid; gap: 0; max-width: 720px; margin: 0 auto; }
+
+.milestone {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  position: relative;
+  padding-bottom: 22px;
+}
+
+.milestone::before {
+  content: "";
+  position: absolute;
+  left: 36px;
+  top: 34px;
+  bottom: -4px;
+  width: 3px;
+  background: linear-gradient(180deg, var(--gold), rgba(245, 197, 66, 0.14));
+}
+
+.milestone:last-child::before { display: none; }
+
+.ms-node {
+  width: 74px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  font-family: var(--display);
+  font-size: 13px;
+  background: linear-gradient(180deg, #2C357F, #1A2050);
+  border: 2px solid var(--gold);
+  color: var(--gold);
+  position: relative;
+  z-index: 1;
+}
+
+.ms-body { padding-top: 2px; }
+.ms-body h3 { font-family: var(--display); font-size: 15px; line-height: 1.2; }
+.ms-body p { font-size: 13px; color: var(--fg-2); margin-top: 3px; }
+
+/* --------------------------------------------------------------------------
+   Profile view
+   -------------------------------------------------------------------------- */
+.prof { max-width: 620px; margin: 0 auto; }
+
+.prof-block {
+  background: var(--panel);
+  border: 2px solid var(--edge);
+  padding: 18px;
+  margin-bottom: 11px;
+}
+
+.prof-block h3 {
+  font-family: var(--display);
+  font-size: 14px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 9px;
+}
+
+.prof-block p { color: var(--fg-2); font-size: 14.5px; }
+.prof-block p + p { margin-top: 0.8em; }
+.prof-block strong { color: var(--fg); font-weight: 500; }
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 620px) {
+  :root { --deck-h: 92px; --nav-h: 56px; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
+  .counter { padding: 5px 8px; font-size: 11px; }
+  .king { width: 44px; height: 44px; }
+  .slot { width: 48px; }
+  .sheet-top { flex-direction: column; align-items: center; text-align: center; }
+  .sheet-head h3 { font-size: 20px; }
+  .sheet-tags { justify-content: center; }
+  .milestone { grid-template-columns: 60px minmax(0, 1fr); }
+  .ms-node { width: 60px; }
+  .milestone::before { left: 29px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .card.legendary::after { display: none; }
+}

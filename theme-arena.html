@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Matthew Zhu — Arena</title>
+<meta name="description" content="Matthew Zhu — Computer Science at Waterloo, software engineering intern at Ciena, Canadian chess National Master. Projects, experience and skills as a card collection.">
+<meta name="theme-color" content="#0C0F24">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="arena.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="s-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+    <rect x="6" y="6" width="12" height="12"/><rect x="9.5" y="9.5" width="5" height="5" fill="currentColor" stroke="none"/>
+    <path d="M9 6V2M15 6V2M9 22v-4M15 22v-4M6 9H2M6 15H2M22 9h-4M22 15h-4"/>
+  </symbol>
+  <symbol id="s-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+    <circle cx="7" cy="8" r="3.2"/><circle cx="17" cy="8" r="3.2"/><circle cx="12" cy="16.5" r="3.4"/>
+    <path d="M9.4 9.7l1.4 4M14.6 9.7l-1.4 4M10 8h4"/>
+  </symbol>
+  <symbol id="s-rook" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M5 3h3v2h2.5V3h3v2H16V3h3v5l-2 2v6l2 4v1H5v-1l2-4v-6L5 8z"/>
+  </symbol>
+  <symbol id="s-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+    <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 3 2.6 15 0 18M12 3c-2.6 3-2.6 15 0 18"/>
+  </symbol>
+  <symbol id="s-sigma" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+    <path d="M18 4H6l6 8-6 8h12"/>
+  </symbol>
+  <symbol id="s-trophy" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M7 3h10v5a5 5 0 01-4 4.9V16h3v3H8v-3h3v-3.1A5 5 0 017 8z"/>
+    <path d="M5 4h2v4a3 3 0 01-2-3zM19 4h-2v4a3 3 0 002-3z"/>
+  </symbol>
+  <symbol id="s-crown" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M3 8l3.5 3L12 4l5.5 7L21 8l-2 11H5z"/>
+  </symbol>
+  <symbol id="s-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round">
+    <path d="M4 4h6a2 2 0 012 2v14a2 2 0 00-2-2H4zM20 4h-6a2 2 0 00-2 2v14a2 2 0 012-2h6z"/>
+  </symbol>
+  <symbol id="s-wrench" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round">
+    <path d="M15.5 3a5.5 5.5 0 00-5 7.7L3 18.2 5.8 21l7.5-7.5A5.5 5.5 0 0020.5 6l-3 3-2.5-2.5 3-3A5.5 5.5 0 0015.5 3z"/>
+  </symbol>
+  <symbol id="s-video" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round">
+    <rect x="2.5" y="6" width="13" height="12"/><path d="M15.5 10.5L21.5 7v10l-6-3.5z"/>
+  </symbol>
+</defs></svg>
+
+<div id="app">
+
+  <header id="banner">
+    <div class="king">
+      <svg><use href="#s-crown"></use></svg>
+      <span class="king-lvl">LV 19</span>
+    </div>
+    <div class="who">
+      <h1 class="dsp">Matthew Zhu</h1>
+      <div class="arena">
+        <span>Arena 7 &#183; <b>Ciena Internship</b></span>
+        <span>&#183;</span>
+        <span>Waterloo CS &#8217;29</span>
+      </div>
+    </div>
+    <div class="counters">
+      <span class="counter gold"><svg><use href="#s-trophy"></use></svg><span id="c-trophy">0</span></span>
+      <span class="counter crown"><svg><use href="#s-cpu"></use></svg><span id="c-cards">0</span></span>
+    </div>
+  </header>
+
+  <main id="stage">
+    <section class="view on" id="v-collection"></section>
+
+    <section class="view" id="v-deck">
+      <div class="prof">
+        <div class="prof-block">
+          <h3>Battle Deck</h3>
+          <p>The eight cards I&#8217;d lead with. Tap any card in the collection to swap it in,
+          or tap a filled slot in the bar below to drop it. Average elixir updates as you go.</p>
+        </div>
+        <div class="grid" id="deck-grid"></div>
+      </div>
+    </section>
+
+    <section class="view" id="v-road">
+      <div class="road" id="road"></div>
+    </section>
+
+    <section class="view" id="v-profile">
+      <div class="prof">
+        <div class="prof-block">
+          <h3>Player Bio</h3>
+          <p>Computer Science at the University of Waterloo, class of 2029, currently a
+          <strong>software engineering intern at Ciena</strong> in Ottawa &#8212; porting an 1,800-line C
+          optical-planning model to Rust and rebuilding its neural networks in HuggingFace Candle
+          so inference runs on hardware a decade older than the model.</p>
+          <p>Chess came first. Canadian <strong>National Master</strong>, Team Canada at the 2019 World
+          Cadet Championships. A decade of it taught me the habit that transfers cleanest to
+          engineering: understand the position before you touch a piece.</p>
+          <p><strong>Open to co-op terms in 2027.</strong></p>
+        </div>
+        <div class="prof-block">
+          <h3>Challenge Me</h3>
+          <div class="sheet-btns" style="margin-top:4px;">
+            <a class="btn btn-gold" href="mailto:m49zhu@uwaterloo.ca">Email</a>
+            <a class="btn" href="MATTHEW_ZHU_SWE.pdf">Resume &#183; SWE</a>
+            <a class="btn" href="MATTHEW_ZHU_MLE.pdf">Resume &#183; MLE</a>
+            <a class="btn btn-ghost" href="https://github.com/chessdudeo7">GitHub</a>
+            <a class="btn btn-ghost" href="https://www.linkedin.com/in/matthewzhu99">LinkedIn</a>
+            <a class="btn btn-ghost" href="tutoring.html">Tutoring</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="deckbar">
+    <div class="deck-slots" id="slots"></div>
+    <div class="avg"><div class="avg-n" id="avg">0.0</div><div class="avg-l">Avg elixir</div></div>
+  </div>
+
+  <nav id="tabs" aria-label="Sections"></nav>
+</div>
+
+<div id="inspect" role="dialog" aria-modal="true" aria-label="Card details">
+  <div class="sheet" id="sheet"></div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var YEAR = 2026;
+
+  /* Rarity is the palette: tier reads before a single word does. */
+  var RARITY = {
+    common:    { r1: "#8FA6C4", r2: "#56698A", label: "Common" },
+    rare:      { r1: "#F5B45A", r2: "#B9722A", label: "Rare" },
+    epic:      { r1: "#C77BEA", r2: "#7B39A8", label: "Epic" },
+    legendary: { r1: "#FFD34D", r2: "#C79A18", label: "Legendary" }
+  };
+
+  function C(id, name, rar, elixir, since, icon, type, body, stats, links) {
+    return { id: id, name: name, rar: rar, elixir: elixir, since: since, icon: icon,
+             type: type, body: body || "", stats: stats || null, links: links || [] };
+  }
+
+  var CARDS = [
+    /* ── Legendary ── */
+    C("ciena", "Ciena Internship", "legendary", 8, 2026, "s-cpu", "Work",
+      "Software Engineering Intern in Ottawa. Architected a <strong>Rust port of an 1,800-line C optical-planning model</strong> with PyO3/maturin and cbindgen, rebuilt seven neural networks in HuggingFace Candle, and bridged the whole thing back to a C network simulator over FFI. Cross-compiled to a static binary so ML inference runs on legacy Linux and Docker.",
+      [["1,800", "C lines ported"], ["7", "Neural nets"], ["~500", "Regression cases"]]),
+
+    C("nm", "National Master", "legendary", 9, 2014, "s-rook", "Title",
+      "Canadian Chess National Master. Three times top 3 at the Ontario Championships, twice top 5 nationally, and represented Waterloo at the 2026 Canadian University Championships.",
+      [["2251", "CFC peak"], ["2136", "FIDE peak"], ["3&#215;", "Top 3 Ontario"]]),
+
+    C("descartes", "Descartes Scholarship", "legendary", 7, 2025, "s-crown", "Award",
+      "The Ren&#233; Descartes National Scholarship &#8212; Waterloo's top entrance award, given to ten students across Canada.",
+      [["$25K", "Award"], ["10", "In Canada"], ["2025", "Year"]]),
+
+    C("teamcanada", "Team Canada", "legendary", 8, 2019, "s-trophy", "Title",
+      "Represented Canada at the World Cadet Chess Championships.",
+      [["2019", "Year"], ["World", "Cadet Champs"], ["CAN", "Team"]]),
+
+    /* ── Epic ── */
+    C("clipfarm", "ClipFarm", "epic", 7, 2026, "s-video", "Project",
+      "A full-stack pipeline turning raw volleyball VODs into highlight clips. RF-DETR ball tracking finds rally contacts, refined by YOLOv8-pose. Serverless GPU inference with CPU fallback, plus an R2 cache keyed by video hash and skip-decode frame sampling.",
+      [["13&#8594;8.7", "Min per game"], ["31%", "Faster tracking"], ["2026", "Started"]],
+      [["GitHub", "https://github.com/chessdudeo7", 1]]),
+
+    C("hume", "HUME", "epic", 6, 2026, "s-brain", "Project",
+      "A structural firewall for an online belief-revision engine, built to block prompt injection. Confidence is revised from <strong>structured provenance</strong> rather than raw text, with structural OOD detection separating in-model contradictions from out-of-model regimes.",
+      [["19", "Adversarial probes"], ["Bayes", "Method"], ["2026", "Built"]],
+      [["GitHub", "https://github.com/chessdudeo7", 1]]),
+
+    C("knightmare", "KnightMare", "epic", 5, 2025, "s-rook", "Project",
+      "A chess engine that learns instead of searching. A PyTorch CNN over 100,000+ grandmaster games encodes each position as a 12-channel tensor and returns a move distribution &#8212; no alpha-beta anywhere. Modal's cloud GPUs made it shippable inside a hackathon.",
+      [["100K+", "Games trained"], ["12", "Tensor channels"], ["GPU", "Modal cloud"]],
+      [["Write-up", "project-knightmare.html", 0], ["GitHub", "https://github.com/chessdudeo7/ChessHacks", 1]]),
+
+    C("waterloo", "Waterloo CS Co-op", "epic", 6, 2025, "s-book", "Education",
+      "BCS Honours Computer Science with Co-op. Coursework in Object-Oriented Software Development, Logic and Computation, and Elementary Algorithm Design.",
+      [["3.9", "GPA / 4.0"], ["2029", "Graduating"], ["Co-op", "Program"]]),
+
+    C("cmo", "CMO Rep&#234;chage", "epic", 6, 2025, "s-sigma", "Award",
+      "Canadian Mathematical Olympiad Rep&#234;chage qualifier. Also competed at the Harvard&#8211;MIT Mathematics Tournament for the Carleton Math Enrichment Centre.",
+      [["Top 100", "National"], ["2nd", "E. Ontario"], ["2025", "Year"]]),
+
+    /* ── Rare ── */
+    C("lumi", "Lumi", "rare", 5, 2026, "s-brain", "Project",
+      "A FastAPI backend for mentor matching and math problem retrieval, with LangChain routing tasks and a ChromaDB RAG system searching contest problems with topic-aware filtering.",
+      [["500+", "Problems indexed"], ["RAG", "ChromaDB"], ["2026", "Started"]],
+      [["GitHub", "https://github.com/chessdudeo7", 1]]),
+
+    C("chess4all", "Chess4All", "rare", 4, 2024, "s-rook", "Project",
+      "The training platform I wish I'd had at 1400. Structured endgame studies, interactive puzzles on a board component hand-written in vanilla JS, and an annotated master game database. Firebase handles auth and per-user progress.",
+      [["30+", "Endgame studies"], ["Vanilla", "JS board"], ["2024", "Started"]],
+      [["Write-up", "project-chess4all.html", 0], ["GitHub", "https://github.com/chessdudeo7/Chess4All", 1]]),
+
+    C("otmac", "OTMaC", "rare", 3, 2024, "s-globe", "Project",
+      "The official site for the Ottawa Math Team Contest, which I help organize &#8212; format, past papers, preparation guides and team registration, deployed so any organizer can ship an update through a pull request.",
+      [["Ottawa", "Region"], ["Live", "Status"], ["2024", "Started"]],
+      [["Write-up", "project-otmac.html", 0], ["Live site", "https://otmac.github.io", 1]]),
+
+    C("auxilium", "Auxilium", "rare", 4, 2025, "s-wrench", "Work",
+      "Software Developer, remote. Analyzed historical pairing outcomes, then built a Pandas matching algorithm with weighted criteria and constraint filtering on top of an indexed SQLite store.",
+      [["+36%", "Match rate"], ["SQLite", "Store"], ["2025", "Started"]]),
+
+    C("tutoring", "Chess &amp; STEM Coach", "rare", 3, 2025, "s-book", "Work",
+      "Coaching chess from beginner to advanced, and tutoring grades 1&#8211;12 maths, physics and chemistry including contest preparation.",
+      [["10+", "Students"], ["4", "Subjects"], ["2025", "Started"]],
+      [["Lessons", "tutoring.html", 0]]),
+
+    /* ── Common: the skills ── */
+    C("rust", "Rust", "common", 5, 2026, "s-cpu", "Skill", "PyO3, maturin, cbindgen, FFI, cross-compilation."),
+    C("pytorch", "PyTorch", "common", 5, 2024, "s-brain", "Skill", "CNNs, training loops, tensor pipelines."),
+    C("candle", "Candle", "common", 5, 2026, "s-brain", "Skill", "HuggingFace's Rust ML framework."),
+    C("cpp", "C / C++", "common", 4, 2021, "s-cpu", "Skill", "Systems work and the source side of the Ciena port."),
+    C("python", "Python", "common", 3, 2021, "s-cpu", "Skill", "The default tool for everything ML and data."),
+    C("onnx", "ONNX", "common", 4, 2026, "s-brain", "Skill", "Model interchange and inference validation."),
+    C("langchain", "LangChain", "common", 3, 2026, "s-brain", "Skill", "Task routing for retrieval systems."),
+    C("typescript", "TypeScript", "common", 3, 2024, "s-globe", "Skill", "Frontend work on ClipFarm."),
+    C("nextjs", "Next.js", "common", 3, 2026, "s-globe", "Skill", "React framework behind ClipFarm's frontend."),
+    C("fastapi", "FastAPI", "common", 3, 2025, "s-globe", "Skill", "Async Python backends."),
+    C("postgres", "PostgreSQL", "common", 3, 2026, "s-wrench", "Skill", "Async Postgres on Supabase with JWT auth."),
+    C("docker", "Docker", "common", 4, 2026, "s-wrench", "Skill", "Multi-service stacks and legacy build targets."),
+    C("linux", "Linux", "common", 3, 2024, "s-wrench", "Skill", "Build environments and deployment targets."),
+    C("git", "Git", "common", 2, 2021, "s-wrench", "Skill", "Version control across every project here."),
+    C("firebase", "Firebase", "common", 2, 2024, "s-wrench", "Skill", "Auth and Firestore for Chess4All."),
+    C("pandas", "Pandas", "common", 2, 2025, "s-sigma", "Skill", "The matching algorithm at Auxilium.")
+  ];
+
+  var MILESTONES = [
+    ["2026", "Ciena", "Software engineering intern &#8212; Rust, Candle, ONNX."],
+    ["2026", "Canadian University Championships", "Represented the University of Waterloo."],
+    ["2025", "Waterloo", "BCS Honours CS Co-op, on the Descartes Scholarship."],
+    ["2025", "CMO Rep&#234;chage", "Top 100 nationally, 2nd in Eastern Ontario."],
+    ["2025", "KnightMare", "First serious end-to-end ML pipeline, built at ChessHacks."],
+    ["2024", "First ships", "Chess4All and the OTMaC contest site go live."],
+    ["2023", "National Master", "Peak 2251 CFC."],
+    ["2019", "Team Canada", "World Cadet Chess Championships."],
+    ["2014", "First tournament", "Where all of it starts."]
+  ];
+
+  var DEFAULT_DECK = ["ciena", "nm", "clipfarm", "hume", "knightmare", "waterloo", "rust", "pytorch"];
+  var deck = DEFAULT_DECK.slice();
+
+  var byId = {};
+  CARDS.forEach(function (c) { byId[c.id] = c; });
+
+  function lvl(c) { return Math.max(1, YEAR - c.since + 1); }
+  function icon(id, cls) { return '<svg' + (cls ? ' class="' + cls + '"' : '') + '><use href="#' + id + '"></use></svg>'; }
+
+  /* ── Card element ─────────────────────────────────────────────────────── */
+  function cardEl(c) {
+    var r = RARITY[c.rar];
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "card" + (c.rar === "legendary" ? " legendary" : "");
+    b.style.setProperty("--r1", r.r1);
+    b.style.setProperty("--r2", r.r2);
+    b.setAttribute("aria-label", c.name + ", " + r.label + ", " + c.elixir + " elixir");
+    b.innerHTML =
+      '<span class="pip">' + c.elixir + "</span>" +
+      (deck.indexOf(c.id) >= 0 ? '<span class="in-deck">&#10003;</span>' : "") +
+      '<span class="lvl">L' + lvl(c) + "</span>" +
+      '<span class="card-inner">' +
+        '<span class="card-art" style="color:' + r.r1 + '">' + icon(c.icon) + "</span>" +
+        '<span class="card-name">' + c.name + "</span>" +
+      "</span>";
+    b.addEventListener("click", function () { inspect(c); });
+    return b;
+  }
+
+  /* ── Collection ───────────────────────────────────────────────────────── */
+  var collection = document.getElementById("v-collection");
+
+  function renderCollection() {
+    collection.innerHTML = "";
+    ["legendary", "epic", "rare", "common"].forEach(function (rar) {
+      var list = CARDS.filter(function (c) { return c.rar === rar; });
+      if (!list.length) { return; }
+
+      var head = document.createElement("div");
+      head.className = "tier-head";
+      head.style.setProperty("--t", RARITY[rar].r1);
+      head.innerHTML = "<h2>" + RARITY[rar].label + '</h2><span class="bar"></span><span class="n">' + list.length + "</span>";
+      collection.appendChild(head);
+
+      var g = document.createElement("div");
+      g.className = "grid";
+      list.forEach(function (c) { g.appendChild(cardEl(c)); });
+      collection.appendChild(g);
+    });
+  }
+
+  /* ── Deck ─────────────────────────────────────────────────────────────── */
+  var slotsEl = document.getElementById("slots");
+  var deckGrid = document.getElementById("deck-grid");
+
+  function renderDeck() {
+    slotsEl.innerHTML = "";
+    for (var i = 0; i < 8; i++) {
+      var id = deck[i];
+      var s = document.createElement("button");
+      s.type = "button";
+      s.className = "slot";
+
+      if (id) {
+        var c = byId[id], r = RARITY[c.rar];
+        s.classList.add("filled");
+        s.style.setProperty("--r1", r.r1);
+        s.style.setProperty("--r2", r.r2);
+        s.innerHTML = '<span class="slot-in" style="color:' + r.r1 + '">' + icon(c.icon) + "</span>";
+        s.setAttribute("aria-label", "Remove " + c.name + " from deck");
+        s.addEventListener("click", (function (cid) {
+          return function () { toggleDeck(cid); };
+        })(id));
+      } else {
+        s.innerHTML = '<span class="empty-x">+</span>';
+        s.setAttribute("aria-label", "Empty deck slot");
+      }
+      slotsEl.appendChild(s);
+    }
+
+    var total = deck.reduce(function (a, id) { return a + (byId[id] ? byId[id].elixir : 0); }, 0);
+    var n = deck.filter(Boolean).length;
+    document.getElementById("avg").textContent = n ? (total / n).toFixed(1) : "0.0";
+
+    deckGrid.innerHTML = "";
+    deck.forEach(function (id) { if (byId[id]) { deckGrid.appendChild(cardEl(byId[id])); } });
+  }
+
+  function toggleDeck(id) {
+    var i = deck.indexOf(id);
+    if (i >= 0) { deck.splice(i, 1); }
+    else if (deck.length < 8) { deck.push(id); }
+    else { return false; }
+    renderCollection();
+    renderDeck();
+    return true;
+  }
+
+  /* ── Inspect ──────────────────────────────────────────────────────────── */
+  var inspectEl = document.getElementById("inspect");
+  var sheetEl = document.getElementById("sheet");
+
+  function inspect(c) {
+    var r = RARITY[c.rar];
+    var inDeck = deck.indexOf(c.id) >= 0;
+    var full = deck.length >= 8 && !inDeck;
+
+    var stats = c.stats || [["L" + lvl(c), "Level"], [c.elixir, "Elixir"], [c.since, "Since"]];
+
+    sheetEl.style.setProperty("--r1", r.r1);
+    sheetEl.style.setProperty("--r2", r.r2);
+
+    sheetEl.innerHTML =
+      '<div class="sheet-top">' +
+        '<div class="sheet-card' + (c.rar === "legendary" ? " legendary" : "") + '" style="--r1:' + r.r1 + ';--r2:' + r.r2 + '">' +
+          '<span class="pip">' + c.elixir + "</span>" +
+          '<span class="card-inner"><span class="card-art" style="color:' + r.r1 + '">' + icon(c.icon) +
+          '</span><span class="card-name">' + c.name + "</span></span>" +
+        "</div>" +
+        '<div class="sheet-head">' +
+          "<h3>" + c.name + "</h3>" +
+          '<div class="sheet-tags">' +
+            '<span class="tag rarity" style="--r1:' + r.r1 + '">' + r.label + "</span>" +
+            '<span class="tag">' + c.type + "</span>" +
+            '<span class="tag">Level ' + lvl(c) + "</span>" +
+          "</div>" +
+          '<div class="stats">' +
+            stats.map(function (s) {
+              return '<div class="stat"><div class="stat-n">' + s[0] + '</div><div class="stat-l">' + s[1] + "</div></div>";
+            }).join("") +
+          "</div>" +
+        "</div>" +
+      "</div>" +
+      (c.body ? '<div class="sheet-body">' + c.body + "</div>" : "") +
+      '<div class="sheet-btns">' +
+        '<button type="button" class="btn ' + (inDeck ? "btn-ghost" : "btn-elixir") + '" id="deck-toggle"' +
+          (full ? " disabled style=\"opacity:.45;cursor:not-allowed\"" : "") + ">" +
+          (inDeck ? "Remove from deck" : full ? "Deck full (8/8)" : "Add to deck") +
+        "</button>" +
+        c.links.map(function (l) {
+          return '<a class="btn ' + (l[2] ? "btn-ghost" : "btn-gold") + '" href="' + l[1] + '">' + l[0] + "</a>";
+        }).join("") +
+        '<button type="button" class="btn btn-ghost" id="sheet-close">Close</button>' +
+      "</div>";
+
+    var t = document.getElementById("deck-toggle");
+    if (!full) { t.addEventListener("click", function () { toggleDeck(c.id); inspect(c); }); }
+    document.getElementById("sheet-close").addEventListener("click", close);
+
+    inspectEl.classList.add("on");
+  }
+
+  function close() { inspectEl.classList.remove("on"); }
+
+  inspectEl.addEventListener("click", function (e) { if (e.target === inspectEl) { close(); } });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") { close(); } });
+
+  /* ── Trophy road ──────────────────────────────────────────────────────── */
+  document.getElementById("road").innerHTML = MILESTONES.map(function (m) {
+    return '<div class="milestone"><div class="ms-node">' + m[0] + "</div>" +
+           '<div class="ms-body"><h3>' + m[1] + "</h3><p>" + m[2] + "</p></div></div>";
+  }).join("");
+
+  /* ── Tabs ─────────────────────────────────────────────────────────────── */
+  var TABS = [
+    { id: "collection", label: "Cards",   icon: "s-cpu" },
+    { id: "deck",       label: "Deck",    icon: "s-crown" },
+    { id: "road",       label: "Road",    icon: "s-trophy" },
+    { id: "profile",    label: "Profile", icon: "s-book" }
+  ];
+
+  var tabsEl = document.getElementById("tabs");
+  var stage = document.getElementById("stage");
+
+  TABS.forEach(function (t, i) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "tab dsp";
+    b.setAttribute("aria-current", i === 0 ? "true" : "false");
+    b.innerHTML = icon(t.icon) + "<span>" + t.label + "</span>";
+    b.addEventListener("click", function () {
+      TABS.forEach(function (t2, j) {
+        document.getElementById("v-" + t2.id).classList.toggle("on", i === j);
+        tabsEl.children[j].setAttribute("aria-current", String(i === j));
+      });
+      stage.scrollTop = 0;
+    });
+    tabsEl.appendChild(b);
+  });
+
+  /* ── Counters ─────────────────────────────────────────────────────────── */
+  document.getElementById("c-cards").textContent = CARDS.length;
+  document.getElementById("c-trophy").textContent =
+    CARDS.filter(function (c) { return c.rar === "legendary" || c.rar === "epic"; }).length;
+
+  renderCollection();
+  renderDeck();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Matthew Zhu — Latent Space</title>
+<meta name="description" content="Matthew Zhu — Computer Science at Waterloo, software engineering intern at Ciena, Canadian chess National Master. Projects and experience as an embedding you can explore.">
+<meta name="theme-color" content="#04060F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Sora:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="latent.css">
+</head>
+<body>
+
+<canvas id="gl"></canvas>
+<div id="vig"></div>
+<div id="labels"></div>
+
+<header id="top">
+  <span class="nm">MATTHEW ZHU</span>
+  <span>latent space &#183; 5 clusters &#183; 15 anchors</span>
+  <span class="sp"></span>
+  <button id="btn-index" type="button">Read as list</button>
+  <a href="MATTHEW_ZHU_SWE.pdf">Resume</a>
+  <a href="mailto:m49zhu@uwaterloo.ca">Email</a>
+</header>
+
+<nav id="clusters" aria-label="Clusters"></nav>
+
+<div id="hint">
+  <div><b>drag</b> orbit &#183; <b>scroll</b> zoom</div>
+  <div><b>click a node</b> to inspect</div>
+</div>
+
+<aside id="panel" aria-live="polite">
+  <button class="x" id="p-close" type="button">close</button>
+  <div id="p-inner"></div>
+</aside>
+
+<div id="nogl">
+  <div>
+    <p style="font-size:19px;margin-bottom:14px">This view needs WebGL.</p>
+    <button id="btn-index2" class="lnk" type="button">Read the portfolio as a list</button>
+  </div>
+</div>
+
+<!-- Plain-text mirror: everything in the 3D scene, readable and crawlable. -->
+<section id="index">
+  <div class="ix">
+    <button class="lnk" id="ix-close" style="margin-bottom:24px">&#8592; Back to latent space</button>
+    <h1>Matthew Zhu</h1>
+    <p class="sub">Computer Science at the University of Waterloo, class of 2029. Software engineering
+    intern at Ciena. Canadian chess National Master. Open to co-op terms in 2027.</p>
+    <div id="ix-body"></div>
+    <div class="p-links" style="margin-top:28px">
+      <a class="lnk" href="mailto:m49zhu@uwaterloo.ca">m49zhu@uwaterloo.ca</a>
+      <a class="lnk" href="MATTHEW_ZHU_SWE.pdf">Resume &#183; SWE</a>
+      <a class="lnk" href="MATTHEW_ZHU_MLE.pdf">Resume &#183; MLE</a>
+      <a class="lnk" href="https://github.com/chessdudeo7">GitHub</a>
+      <a class="lnk" href="https://www.linkedin.com/in/matthewzhu99">LinkedIn</a>
+      <a class="lnk" href="tutoring.html">Tutoring</a>
+    </div>
+  </div>
+</section>
+
+<script type="importmap">
+{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js",
+"three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
+</script>
+
+<script type="module">
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+/* ── Clusters: domains, positioned so neighbours are genuinely related.
+      ml sits between systems-flavoured career work and math; web bridges
+      chess and math, because that's where those projects actually came from. */
+const CLUSTERS = {
+  career:{ c:"#F2A93B", label:"career",  at:[   0,  14,   0], n:620 },
+  ml:    { c:"#8B7BF0", label:"ml",      at:[  22,   2,  -6], n:760 },
+  web:   { c:"#2FD4C4", label:"web",     at:[  -8, -12,  18], n:600 },
+  chess: { c:"#FF6B6B", label:"chess",   at:[ -26,  -2,  -8], n:640 },
+  math:  { c:"#4DA6FF", label:"math",    at:[   4,  -8, -26], n:560 }
+};
+
+const A = (id,cl,at,title,when,body,list,tech,links)=>({id,cl,at,title,when,body,list,tech,links:links||[]});
+
+const ANCHORS = [
+  A("ciena","career",[2,17,3],"Ciena","Software Engineering Intern &#183; May 2026 &#8212; now &#183; Ottawa",
+    "Porting an <strong>1,800-line C optical-planning model</strong> to Rust and rebuilding its neural networks so inference runs on hardware a decade older than the model.",
+    ["Rust port via PyO3/maturin and cbindgen",
+     "<strong>7 neural network models</strong> in HuggingFace Candle, replicating a TensorFlow/ONNX architecture",
+     "FFI bridge exposing the Rust/Candle backend to a C network simulator",
+     "ONNX/Candle inference with <strong>zero divergence</strong> across a ~500-case regression suite",
+     "Statically-linked cross-compiled binary for legacy Linux and Docker"],
+    ["Rust","Candle","ONNX","PyO3","C"]),
+
+  A("auxilium","career",[-4,12,-4],"Auxilium","Software Developer &#183; Jun 2025 &#8212; now &#183; Remote",
+    "Analyzed historical pairing outcomes to find what actually drives a successful mentor&#8211;student match, then built the algorithm around it.",
+    ["Pandas matching algorithm with weighted criteria and constraint filtering",
+     "Match rate up <strong>36%</strong>","Indexed SQLite store for repeatable runs"],
+    ["Python","Pandas","SQLite"]),
+
+  A("waterloo","career",[3,11,-5],"University of Waterloo","BCS Honours CS, Co-op &#183; 2025&#8211;2029",
+    "GPA 3.9/4.0. <strong>Ren&#233; Descartes National Scholarship</strong> &#8212; $25,000, one of ten awarded across Canada.",
+    ["Object-Oriented Software Development","Logic and Computation",
+     "Elementary Algorithm Design and Data Abstraction",
+     "Stanford CS 230 Deep Learning &#183; Google ML certification"],null),
+
+  A("tutoring","career",[-3,16,-3],"Coach &amp; Tutor","Independent &#183; 2025 &#8212; now",
+    "Coaching chess from beginner to advanced, and tutoring grades 1&#8211;12 maths, physics and chemistry including contest prep.",
+    ["10+ students mentored"],null,[["Tutoring site","tutoring.html",0]]),
+
+  A("clipfarm","ml",[25,4,-3],"ClipFarm","Computer vision &#183; 2026 &#8212; now",
+    "A full-stack pipeline turning raw volleyball VODs into highlight clips.",
+    ["RF-DETR ball tracking detects rally contacts, refined by YOLOv8-pose",
+     "Serverless GPU inference with CPU fallback: <strong>13 min &#8594; 8.7 min</strong> per game",
+     "Cloudflare R2 cache keyed by video hash plus skip-decode sampling: <strong>31% faster</strong>",
+     "Async Postgres on Supabase with JWT auth, Dockerized multi-service stack"],
+    ["Next.js","FastAPI","PyTorch","Celery","Postgres","Docker"],
+    [["GitHub","https://github.com/chessdudeo7",1]]),
+
+  A("hume","ml",[26,-1,-9],"HUME","ML safety &#183; 2026",
+    "A structural firewall for an online belief-revision engine, built to block prompt injection. Confidence is revised from <strong>structured provenance</strong> rather than raw text.",
+    ["Log-odds likelihood-ratio belief update",
+     "Structural OOD detection separating in-model contradictions from out-of-model regimes",
+     "Perception seam with NegEx/ConText negation and modality scoping",
+     "<strong>19-probe</strong> adversarial test battery"],
+    ["Python","Bayesian inference"],[["GitHub","https://github.com/chessdudeo7",1]]),
+
+  A("lumi","ml",[19,3,-11],"Lumi","Retrieval &#183; 2026 &#8212; now",
+    "A FastAPI backend for mentor matching and math problem retrieval, with LangChain routing tasks.",
+    ["ChromaDB RAG over <strong>500+ contest problems</strong> with topic-aware filtering",
+     "PyMuPDF ingestion pipeline","PyTorch matcher scoring mentors on subject alignment"],
+    ["FastAPI","LangChain","ChromaDB","PyMuPDF"],[["GitHub","https://github.com/chessdudeo7",1]]),
+
+  A("knightmare","ml",[13,0,-2],"KnightMare","Deep learning &#183; 2025",
+    "A chess engine that learns instead of searching. Built at ChessHacks.",
+    ["PyTorch CNN trained on <strong>100,000+ grandmaster games</strong>",
+     "12-channel tensor board encoding, move distribution output &#8212; no alpha-beta",
+     "Modal cloud GPUs cut training from hours to minutes",
+     "Legal-move masking at inference fixed illegal suggestions"],
+    ["PyTorch","Modal","python-chess"],
+    [["Write-up","project-knightmare.html",0],["GitHub","https://github.com/chessdudeo7/ChessHacks",1]]),
+
+  A("chess4all","web",[-11,-13,17],"Chess4All","Full-stack &#183; 2024 &#8212; now",
+    "The training platform I wish I'd had at 1400.",
+    ["<strong>30+</strong> structured endgame studies",
+     "Interactive puzzles on a board component hand-written in vanilla JS &#8212; no chess UI library",
+     "Searchable annotated master game database",
+     "Firebase auth and per-user progress across devices"],
+    ["JavaScript","Firebase","Firestore","Flask"],
+    [["Write-up","project-chess4all.html",0],["GitHub","https://github.com/chessdudeo7/Chess4All",1]]),
+
+  A("otmac","web",[-5,-10,21],"OTMaC","Community &#183; 2024 &#8212; now",
+    "The official site for the Ottawa Math Team Contest, which I help organize.",
+    ["Contest format, rules, past papers and preparation guides","Team registration flow",
+     "GitHub Pages so any organizer can ship an update through a pull request"],
+    ["HTML5","CSS3","JavaScript"],
+    [["Write-up","project-otmac.html",0],["Live site","https://otmac.github.io",1]]),
+
+  A("portfolio","web",[-9,-15,14],"This site","Prototype &#183; 2026",
+    "A WebGL portfolio where the content is an embedding rather than a page. Clusters are domains, anchors are real work, and proximity means relatedness.",
+    null,["Three.js","WebGL","JavaScript"]),
+
+  A("nm","chess",[-28,-1,-6],"National Master","Canadian Chess Federation &#183; 2026",
+    "Earned the third and final NM norm at the <strong>2026 Markham True North Open</strong>, finishing 2nd with a 2300+ performance rating. Twelve years after my first CFC tournament.",
+    ["Peak <strong>2251 CFC</strong> / 2136 FIDE","Three times top 3 at the Ontario Championships",
+     "Twice top 5 at the Canadian Championships",
+     "Represented Waterloo at the 2026 Canadian University Chess Championships"],null),
+
+  A("teamcanada","chess",[-25,-4,-12],"Team Canada","World Cadet Chess Championships &#183; 2019",
+    "Represented Canada internationally.",null,null),
+
+  A("cmo","math",[5,-9,-28],"CMO Rep&#234;chage","Canadian Mathematical Olympiad &#183; 2025",
+    "Qualified for the Rep&#234;chage &#8212; top 100 nationally, 2nd place in Eastern Ontario.",null,null),
+
+  A("hmmt","math",[2,-7,-24],"HMMT","Harvard&#8211;MIT Mathematics Tournament &#183; 2025",
+    "Competed for the Carleton Math Enrichment Centre.",null,null)
+];
+
+const SKILLS = {
+  career:["Git","Linux","Jira","Bitbucket","LaTeX","Docker"],
+  ml:["PyTorch","Hugging Face","Candle","ONNX","LangChain","RAG","CNNs","Modal","NumPy"],
+  web:["React","Next.js","Node.js","TypeScript","HTML5","CSS3","Hugo","Supabase","PostgreSQL"],
+  chess:["Endgame theory","Opening prep","Coaching","Calculation"],
+  math:["Olympiad","Linear algebra","Probability","Pandas","Pygame"]
+};
+
+/* ── Scene ──────────────────────────────────────────────────────────────── */
+const canvas = document.getElementById("gl");
+let renderer;
+try { renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:false}); }
+catch(e){ document.getElementById("nogl").classList.add("on"); }
+
+if (renderer) {
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth, innerHeight);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x04060F, 0.011);
+
+const camera = new THREE.PerspectiveCamera(58, innerWidth/innerHeight, 0.1, 500);
+camera.position.set(46, 24, 63);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.07;
+controls.minDistance = 8;
+controls.maxDistance = 150;
+controls.enablePan = false;
+
+/* Soft round sprite, generated — no image asset. */
+function dot(){
+  const s=64, c=document.createElement("canvas"); c.width=c.height=s;
+  const g=c.getContext("2d"), r=g.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);
+  r.addColorStop(0,"rgba(255,255,255,1)"); r.addColorStop(.22,"rgba(255,255,255,.85)");
+  r.addColorStop(.55,"rgba(255,255,255,.16)"); r.addColorStop(1,"rgba(255,255,255,0)");
+  g.fillStyle=r; g.fillRect(0,0,s,s);
+  return new THREE.CanvasTexture(c);
+}
+const SPRITE = dot();
+
+/* Gaussian-ish spread so clusters look sampled, not scattered in a box. */
+function gauss(){ return (Math.random()+Math.random()+Math.random()-1.5)*0.9; }
+
+const pos=[], col=[], sz=[];
+const tmp = new THREE.Color();
+
+Object.keys(CLUSTERS).forEach(k=>{
+  const cl = CLUSTERS[k];
+  tmp.set(cl.c);
+  for(let i=0;i<cl.n;i++){
+    const r = 5.5 + Math.abs(gauss())*4.2;
+    const th = Math.random()*Math.PI*2, ph = Math.acos(2*Math.random()-1);
+    pos.push(cl.at[0]+r*Math.sin(ph)*Math.cos(th)*1.15,
+             cl.at[1]+r*Math.cos(ph)*0.82,
+             cl.at[2]+r*Math.sin(ph)*Math.sin(th)*1.15);
+    const f = 0.7+Math.random()*0.5;
+    col.push(tmp.r*f, tmp.g*f, tmp.b*f);
+    sz.push(Math.random()<0.07 ? 1.2 : 0.5);
+  }
+});
+
+/* Sparse field so the clusters read as sitting inside a space. */
+tmp.set("#7C8BC0");
+for(let i=0;i<900;i++){
+  const R=70+Math.random()*90, th=Math.random()*Math.PI*2, ph=Math.acos(2*Math.random()-1);
+  pos.push(R*Math.sin(ph)*Math.cos(th), R*Math.cos(ph)*0.5, R*Math.sin(ph)*Math.sin(th));
+  const f=0.22+Math.random()*0.26; col.push(tmp.r*f,tmp.g*f,tmp.b*f); sz.push(0.5);
+}
+
+const geo = new THREE.BufferGeometry();
+geo.setAttribute("position", new THREE.Float32BufferAttribute(pos,3));
+geo.setAttribute("color", new THREE.Float32BufferAttribute(col,3));
+geo.setAttribute("aSize", new THREE.Float32BufferAttribute(sz,1));
+
+const mat = new THREE.ShaderMaterial({
+  uniforms:{ uScale:{value:innerHeight*0.6} },
+  vertexShader:`
+    attribute float aSize; varying vec3 vC;
+    uniform float uScale;
+    void main(){
+      vC = color;
+      vec4 mv = modelViewMatrix * vec4(position,1.0);
+      gl_PointSize = aSize * uScale / -mv.z;
+      gl_Position = projectionMatrix * mv;
+    }`,
+  /* Analytic disc: solid core with a one-step soft edge. A gradient sprite
+     loses almost all its alpha once a point is only a few pixels wide. */
+  fragmentShader:`
+    varying vec3 vC;
+    void main(){
+      float d = length(gl_PointCoord - vec2(0.5));
+      float a = smoothstep(0.5, 0.13, d);
+      if(a < 0.02) discard;
+      gl_FragColor = vec4(vC, a);
+    }`,
+  vertexColors:true, transparent:true, depthWrite:false, blending:THREE.AdditiveBlending
+});
+
+const cloud = new THREE.Points(geo, mat);
+scene.add(cloud);
+
+/* Anchors: brighter, larger, and the only things with labels. */
+const aPos=[], aCol=[], aSz=[];
+ANCHORS.forEach(a=>{
+  tmp.set(CLUSTERS[a.cl].c);
+  aPos.push(a.at[0],a.at[1],a.at[2]);
+  aCol.push(0.55+tmp.r*0.5, 0.55+tmp.g*0.5, 0.55+tmp.b*0.5);
+  aSz.push(2.2);
+});
+const aGeo = new THREE.BufferGeometry();
+aGeo.setAttribute("position", new THREE.Float32BufferAttribute(aPos,3));
+aGeo.setAttribute("color", new THREE.Float32BufferAttribute(aCol,3));
+aGeo.setAttribute("aSize", new THREE.Float32BufferAttribute(aSz,1));
+scene.add(new THREE.Points(aGeo, mat.clone()));
+
+/* ── Labels ─────────────────────────────────────────────────────────────── */
+const labelHost = document.getElementById("labels");
+const labels = ANCHORS.map(a=>{
+  const b=document.createElement("button");
+  b.type="button"; b.className="lab";
+  b.style.setProperty("--c", CLUSTERS[a.cl].c);
+  b.setAttribute("aria-current","false");
+  b.innerHTML='<span class="d"></span>'+a.title;
+  b.addEventListener("click",()=>select(a));
+  labelHost.appendChild(b);
+  return b;
+});
+
+const v = new THREE.Vector3(), wp = new THREE.Vector3();
+
+/* Nearest label wins a contested spot; anything overlapping an already-placed
+   one is hidden. Without this the clusters turn into a pile of unreadable
+   overlapping chips. The selected anchor is always placed first. */
+function placeLabels(){
+  const cand=[];
+  for(let i=0;i<ANCHORS.length;i++){
+    const a=ANCHORS[i];
+    v.set(a.at[0],a.at[1],a.at[2]).project(camera);
+    if(v.z>1){ labels[i].style.display="none"; continue; }
+    wp.set(a.at[0],a.at[1],a.at[2]);
+    cand.push({i,x:(v.x*0.5+0.5)*innerWidth,y:(-v.y*0.5+0.5)*innerHeight,
+               d:camera.position.distanceTo(wp),sel:ANCHORS[i]===current});
+  }
+  cand.sort((p,q)=> (q.sel-p.sel) || (p.d-q.d));
+
+  const placed=[];
+  for(const c of cand){
+    const el=labels[c.i];
+    const w=el.offsetWidth||110, h=el.offsetHeight||24;
+    const r={l:c.x-w/2-3,r:c.x+w/2+3,t:c.y-h/2-3,b:c.y+h/2+3};
+    const hit=placed.some(p=> !(r.r<p.l||r.l>p.r||r.b<p.t||r.t>p.b));
+    if(hit && !c.sel){ el.style.display="none"; continue; }
+    placed.push(r);
+    el.style.display="flex";
+    el.style.left=c.x+"px"; el.style.top=c.y+"px";
+    el.style.opacity = c.d>130 ? 0.3 : 1;
+  }
+}
+
+/* ── Camera flights ─────────────────────────────────────────────────────── */
+let flyTo=null, flyLook=null, flyT=0;
+function flyToPoint(p, dist){
+  const target=new THREE.Vector3(...p);
+  const dir=new THREE.Vector3().subVectors(camera.position,target).normalize();
+  flyTo=target.clone().add(dir.multiplyScalar(dist));
+  flyLook=target; flyT=0;
+}
+
+/* ── Panel ──────────────────────────────────────────────────────────────── */
+const panel=document.getElementById("panel"), pInner=document.getElementById("p-inner");
+let current=null;
+
+function select(a){
+  current=a;
+  const c=CLUSTERS[a.cl].c;
+  panel.style.setProperty("--c",c);
+  labels.forEach((l,i)=>l.setAttribute("aria-current",String(ANCHORS[i]===a)));
+  pInner.innerHTML =
+    `<div class="p-tag">${CLUSTERS[a.cl].label}</div>`+
+    `<h2 class="p-title">${a.title}</h2>`+
+    `<div class="p-when">${a.when}</div>`+
+    `<div class="p-body"><p>${a.body}</p></div>`+
+    (a.list?`<ul class="p-list">${a.list.map(x=>`<li>${x}</li>`).join("")}</ul>`:"")+
+    (a.tech?`<div class="p-tech">${a.tech.map(x=>`<span>${x}</span>`).join("")}</div>`:"")+
+    (a.links.length?`<div class="p-links">${a.links.map(l=>
+      `<a class="lnk ${l[2]?"":"lnk-go"}" href="${l[1]}">${l[0]}</a>`).join("")}</div>`:"");
+  panel.classList.add("on");
+  flyToPoint(a.at, 15);
+}
+
+document.getElementById("p-close").addEventListener("click",()=>{
+  panel.classList.remove("on"); current=null;
+  labels.forEach(l=>l.setAttribute("aria-current","false"));
+});
+
+/* ── Cluster nav ────────────────────────────────────────────────────────── */
+const cNav=document.getElementById("clusters");
+Object.keys(CLUSTERS).forEach(k=>{
+  const cl=CLUSTERS[k];
+  const n=ANCHORS.filter(a=>a.cl===k).length;
+  const b=document.createElement("button");
+  b.type="button"; b.className="cb"; b.style.setProperty("--c",cl.c);
+  b.innerHTML=`<span class="d"></span><span>${cl.label}</span><span class="n">${n}</span>`;
+  b.addEventListener("click",()=>flyToPoint(cl.at, 34));
+  cNav.appendChild(b);
+});
+
+/* ── Loop ───────────────────────────────────────────────────────────────── */
+/* Re-fit every frame instead of trusting resize events: if the page loads in a
+   hidden or zero-width container, no resize ever fires and the canvas would
+   stay 0x0 forever. */
+let lw=0, lh=0;
+function fit(){
+  const w=Math.max(1,innerWidth), h=Math.max(1,innerHeight);
+  if(w===lw && h===lh) return;
+  lw=w; lh=h;
+  camera.aspect=w/h; camera.updateProjectionMatrix();
+  renderer.setSize(w,h);
+  mat.uniforms.uScale.value=h*0.6;
+}
+
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function tick(){
+  requestAnimationFrame(tick);
+  fit();
+  if(flyTo){
+    flyT=Math.min(1,flyT+0.035);
+    const e=1-Math.pow(1-flyT,3);
+    camera.position.lerp(flyTo,e*0.16);
+    controls.target.lerp(flyLook,e*0.16);
+    if(flyT>=1 && camera.position.distanceTo(flyTo)<0.6) flyTo=null;
+  }
+  if(!reduced && !flyTo) cloud.rotation.y += 0.00028;
+  controls.update();
+  placeLabels();
+  renderer.render(scene,camera);
+}
+tick();
+}
+
+/* ── Plain-text mirror ──────────────────────────────────────────────────── */
+const order=["career","ml","web","chess","math"];
+document.getElementById("ix-body").innerHTML = order.map(k=>{
+  const cl=CLUSTERS[k];
+  const rows=ANCHORS.filter(a=>a.cl===k).map(a=>
+    `<div class="ix-row"><div class="w">${a.when}</div><div><h3>${a.title}</h3>
+     <p>${a.body.replace(/<[^>]+>/g,"")}</p></div></div>`).join("");
+  return `<h2 style="--c:${cl.c}">${cl.label}</h2>${rows}
+    <div class="ix-row"><div class="w">skills</div><div><p>${SKILLS[k].join(" &#183; ")}</p></div></div>`;
+}).join("");
+
+const ix=document.getElementById("index");
+const openIx=()=>ix.classList.add("on");
+document.getElementById("btn-index").addEventListener("click",openIx);
+document.getElementById("btn-index2").addEventListener("click",openIx);
+document.getElementById("ix-close").addEventListener("click",()=>ix.classList.remove("on"));
+addEventListener("keydown",e=>{ if(e.key==="Escape") ix.classList.remove("on"); });
+</script>
+
+</body>
+</html>

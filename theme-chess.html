@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matthew Zhu — Software Engineer &amp; National Master</title>
+<meta name="description" content="Matthew Zhu — Computer Science at Waterloo, software engineering intern at Ciena, Canadian chess National Master. Portfolio, projects, and resume.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="chess.css">
+</head>
+<body>
+
+<!-- Evaluation bar: White's advantage grows as the game — and the page — goes on. -->
+<div class="rail" aria-hidden="true">
+  <div class="eval-score" id="eval-score">0.00</div>
+  <div class="eval">
+    <div class="eval-mid"></div>
+    <div class="eval-fill" id="eval-fill"></div>
+  </div>
+  <div class="rail-phase" id="rail-phase">Opening</div>
+</div>
+
+<header class="masthead">
+  <a class="wordmark" href="#top"><span class="fig">&#9822;</span> Matthew Zhu</a>
+
+  <nav aria-label="Sections">
+    <ul class="nav">
+      <li><a href="#opening">1. Opening</a></li>
+      <li><a href="#development">2. Development</a></li>
+      <li><a href="#middlegame">3. Middlegame</a></li>
+      <li><a href="#combinations">4. Combinations</a></li>
+      <li><a href="#endgame">5. Endgame</a></li>
+      <li><a href="tutoring.html">Tutoring</a></li>
+    </ul>
+  </nav>
+
+  <button class="flip" id="flip" type="button" aria-pressed="false">
+    <span class="flip-glyph" aria-hidden="true"></span> Flip board
+  </button>
+</header>
+
+<main id="top">
+
+<!-- ══ Hero ══════════════════════════════════════════════════════════════ -->
+<section class="shell hero">
+  <div>
+    <h1 class="hero-name reveal">Matthew<br><em>Zhu</em></h1>
+
+    <p class="hero-sub reveal" data-delay="1">
+      I build software the way I play chess — read the whole board, then commit.
+    </p>
+
+    <!-- The bio, in the format the subject actually uses. -->
+    <div class="tags reveal" data-delay="2">
+      <div><span class="k">[Event</span> <span class="v">"Honours Computer Science, Co-op"</span><span class="k">]</span></div>
+      <div><span class="k">[Site</span> <span class="v">"University of Waterloo"</span><span class="k">]</span></div>
+      <div><span class="k">[White</span> <span class="v">"Zhu, Matthew"</span><span class="k">]</span></div>
+      <div><span class="k">[Title</span> <span class="v">"National Master"</span><span class="k">]</span></div>
+      <div><span class="k">[Elo</span> <span class="v">"2251 CFC · 2136 FIDE"</span><span class="k">]</span></div>
+      <div><span class="k">[Opening</span> <span class="v">"Rust, Python, TypeScript"</span><span class="k">]</span></div>
+      <div><span class="k">[Result</span> <span class="v">"*"</span><span class="k">]</span></div>
+    </div>
+
+    <div class="hero-cta reveal" data-delay="3">
+      <a class="btn btn-solid" href="#combinations">See the games</a>
+      <a class="btn" href="MATTHEW_ZHU_SWE.pdf">Resume — SWE</a>
+      <a class="btn" href="MATTHEW_ZHU_MLE.pdf">Resume — MLE</a>
+    </div>
+  </div>
+
+  <div class="board-wrap reveal" data-delay="2">
+    <canvas id="tour" width="640" height="640" role="img"
+            aria-label="A knight tracing a closed tour across all 64 squares of a chessboard."></canvas>
+    <div class="board-caption">
+      <span>Knight&#8217;s tour &#183; Warnsdorff</span>
+      <span id="tour-count">1 / 64</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 1. Opening ════════════════════════════════════════════════════════ -->
+<section class="section" id="opening">
+  <div class="shell">
+    <div class="move-head reveal">
+      <span class="move-no">1.</span>
+      <span class="move-fig" aria-hidden="true">&#9823;</span>
+      <h2 class="move-title">Opening</h2>
+    </div>
+    <p class="move-gloss reveal">Who is sitting across the board</p>
+
+    <p class="prose reveal">
+      I&#8217;m a Computer Science student at the University of Waterloo, class of 2029, currently a
+      <strong>software engineering intern at Ciena</strong> in Ottawa — where I&#8217;m porting an 1,800-line C
+      optical-planning model to Rust and rebuilding its neural networks in HuggingFace Candle so the
+      inference runs on hardware a decade older than the model.
+    </p>
+    <p class="prose reveal" data-delay="1">
+      Chess came first. I earned the Canadian <strong>National Master</strong> title, represented Team Canada at
+      the 2019 World Cadet Championships, and spent a decade learning one habit that transfers cleanly to
+      engineering: <strong>understand the position before you touch a piece</strong>. Most bugs, like most blunders,
+      are a move played before the board was read.
+    </p>
+    <p class="prose reveal" data-delay="2">
+      These days that shows up as ML infrastructure and full-stack systems — computer vision pipelines,
+      retrieval systems, and Rust/C interop. I&#8217;m open to co-op terms in 2027.
+    </p>
+  </div>
+</section>
+
+<!-- ══ 2. Development ════════════════════════════════════════════════════ -->
+<section class="section" id="development">
+  <div class="shell">
+    <div class="move-head reveal">
+      <span class="move-no">2.</span>
+      <span class="move-fig" aria-hidden="true">&#9822;</span>
+      <h2 class="move-title">Development</h2>
+    </div>
+    <p class="move-gloss reveal">Knights out first &#183; education and repertoire</p>
+
+    <div class="ply reveal" style="border-top:0; padding-top:0;">
+      <div class="ply-when">2025 &#8212;<br>2029</div>
+      <div>
+        <div class="ply-role">Honours Computer Science, Co-op</div>
+        <div class="ply-org">University of Waterloo &#183; BCS &#183; GPA 3.9 / 4.0</div>
+        <ul class="variations">
+          <li><strong>Ren&#233; Descartes National Scholarship</strong> — $25,000, one of ten awarded in Canada (2025)</li>
+          <li>Coursework: Object-Oriented Software Development, Logic and Computation, Elementary Algorithm Design and Data Abstraction</li>
+          <li>Certifications: Stanford CS 230 Deep Learning &#183; Google for Developers Machine Learning</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="repertoire reveal" data-delay="1" style="margin-top:44px;">
+      <div class="rep-row">
+        <div class="rep-key">Languages</div>
+        <div class="rep-vals">
+          <span class="chip">Python</span><span class="chip">C / C++</span><span class="chip">Rust</span>
+          <span class="chip">Java</span><span class="chip">TypeScript</span><span class="chip">JavaScript</span>
+          <span class="chip">PHP</span>
+        </div>
+      </div>
+      <div class="rep-row">
+        <div class="rep-key">Frontend</div>
+        <div class="rep-vals">
+          <span class="chip">React</span><span class="chip">Next.js</span><span class="chip">Node.js</span>
+          <span class="chip">HTML5</span><span class="chip">CSS3</span><span class="chip">Pygame</span>
+          <span class="chip">Hugo</span>
+        </div>
+      </div>
+      <div class="rep-row">
+        <div class="rep-key">Backend &amp; Data</div>
+        <div class="rep-vals">
+          <span class="chip">FastAPI</span><span class="chip">Flask</span><span class="chip">REST</span>
+          <span class="chip">PostgreSQL</span><span class="chip">SQLite</span><span class="chip">Supabase</span>
+          <span class="chip">Firebase</span><span class="chip">Pandas</span>
+        </div>
+      </div>
+      <div class="rep-row">
+        <div class="rep-key">AI &amp; ML</div>
+        <div class="rep-vals">
+          <span class="chip">PyTorch</span><span class="chip">Hugging Face</span><span class="chip">Candle</span>
+          <span class="chip">ONNX</span><span class="chip">LangChain</span><span class="chip">RAG</span>
+          <span class="chip">CNNs</span><span class="chip">Modal</span>
+        </div>
+      </div>
+      <div class="rep-row">
+        <div class="rep-key">Tools</div>
+        <div class="rep-vals">
+          <span class="chip">Linux</span><span class="chip">Git</span><span class="chip">Docker</span>
+          <span class="chip">Cloudflare</span><span class="chip">Celery / Redis</span><span class="chip">Jira</span>
+          <span class="chip">Bitbucket</span><span class="chip">LaTeX</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 3. Middlegame ═════════════════════════════════════════════════════ -->
+<section class="section" id="middlegame">
+  <div class="shell">
+    <div class="move-head reveal">
+      <span class="move-no">3.</span>
+      <span class="move-fig" aria-hidden="true">&#9820;</span>
+      <h2 class="move-title">Middlegame</h2>
+    </div>
+    <p class="move-gloss reveal">Where the work happens</p>
+
+    <div class="score">
+      <article class="ply reveal">
+        <div class="ply-when">May 2026 &#8212;<br>Present</div>
+        <div>
+          <div class="ply-role">Software Engineering Intern</div>
+          <div class="ply-org">Ciena &#183; Ottawa, ON</div>
+          <ul class="variations">
+            <li>Architected a <strong>Rust port of an 1,800-line C optical-planning model</strong> using PyO3/maturin and cbindgen</li>
+            <li>Built <strong>seven neural network models</strong> in HuggingFace Candle, replicating an existing TensorFlow/ONNX architecture</li>
+            <li>Engineered an <strong>FFI bridge</strong> exposing the Rust/Candle ML backend as a library to a C-based network simulator</li>
+            <li>Implemented an ONNX/Candle inference mode and validated <strong>zero divergence</strong> across a ~500-case regression suite</li>
+            <li>Cross-compiled a statically-linked Rust binary, enabling ML inference on legacy Linux and Docker systems</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="ply reveal">
+        <div class="ply-when">Jun 2025 &#8212;<br>Present</div>
+        <div>
+          <div class="ply-role">Software Developer</div>
+          <div class="ply-org">Auxilium &#183; Remote</div>
+          <ul class="variations">
+            <li>Analyzed historical pairing outcomes to identify the drivers behind successful mentor&#8211;student matches</li>
+            <li>Designed and implemented a <strong>matching algorithm in Python (Pandas)</strong> ranking mentor&#8211;student compatibility</li>
+            <li>Tuned weighted criteria and constraint filtering, raising successful match rates by <strong>36%</strong></li>
+            <li>Built an indexed SQLite database supporting efficient querying and repeatable matching runs</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="ply reveal">
+        <div class="ply-when">2025 &#8212;<br>Present</div>
+        <div>
+          <div class="ply-role">Chess Coach &amp; STEM Tutor</div>
+          <div class="ply-org">Independent &#183; Ottawa and online</div>
+          <ul class="variations">
+            <li>Mentored 10+ students across chess, mathematics, physics, and chemistry</li>
+            <li>Coach beginner through advanced players; tutor grades 1&#8211;12 math including contest preparation</li>
+            <li><a href="tutoring.html" style="color:var(--accent);border-bottom:1px solid currentColor;">Lessons and reviews &#8594;</a></li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 4. Combinations ═══════════════════════════════════════════════════ -->
+<section class="section" id="combinations">
+  <div class="shell">
+    <div class="move-head reveal">
+      <span class="move-no">4.</span>
+      <span class="move-fig" aria-hidden="true">&#9819;</span>
+      <h2 class="move-title">Combinations</h2>
+    </div>
+    <p class="move-gloss reveal">Things I&#8217;ve built, and what they cost to build</p>
+
+    <div class="combos reveal" data-delay="1">
+
+      <article class="combo">
+        <div class="combo-top">
+          <span class="combo-sq">Computer vision</span>
+          <span class="combo-when">2026 &#8212;</span>
+        </div>
+        <h3>ClipFarm</h3>
+        <p>A full-stack pipeline that turns raw volleyball VODs into highlight clips. Ball tracking with RF-DETR detects rally contacts, refined by YOLOv8-pose classification. Serverless GPU inference with CPU fallback cut per-game tracking from 13 minutes to 8.7; a Cloudflare R2 cache keyed by video hash plus skip-decode frame sampling took another 31% off.</p>
+        <div class="combo-tech">
+          <span>Next.js</span><span>FastAPI</span><span>PyTorch</span><span>Celery</span><span>Postgres</span><span>Docker</span>
+        </div>
+        <div class="combo-links"><a href="https://github.com/chessdudeo7">GitHub</a></div>
+      </article>
+
+      <article class="combo">
+        <div class="combo-top">
+          <span class="combo-sq">ML safety</span>
+          <span class="combo-when">2026</span>
+        </div>
+        <h3>HUME</h3>
+        <p>A structural firewall for an online belief-revision engine, built to block prompt injection. Confidence is revised through log-odds likelihood ratios drawn from structured provenance rather than from text, with structural OOD detection separating in-model contradictions from out-of-model regimes. Measured against a 19-probe adversarial battery.</p>
+        <div class="combo-tech">
+          <span>Python</span><span>Bayesian inference</span><span>NegEx / ConText</span>
+        </div>
+        <div class="combo-links"><a href="https://github.com/chessdudeo7">GitHub</a></div>
+      </article>
+
+      <article class="combo">
+        <div class="combo-top">
+          <span class="combo-sq">Retrieval</span>
+          <span class="combo-when">2026 &#8212;</span>
+        </div>
+        <h3>Lumi</h3>
+        <p>A FastAPI backend for mentor matching and math problem retrieval, with LangChain handling task routing. A ChromaDB RAG system searches 500+ contest problems with topic-aware filtering, fed by a PyMuPDF ingestion pipeline, while a PyTorch matcher scores mentors on subject alignment and qualifications.</p>
+        <div class="combo-tech">
+          <span>FastAPI</span><span>LangChain</span><span>ChromaDB</span><span>PyMuPDF</span><span>PyTorch</span>
+        </div>
+        <div class="combo-links"><a href="https://github.com/chessdudeo7">GitHub</a></div>
+      </article>
+
+      <article class="combo">
+        <div class="combo-top">
+          <span class="combo-sq">Deep learning</span>
+          <span class="combo-when">2025</span>
+        </div>
+        <h3>KnightMare</h3>
+        <p>A chess engine that learns instead of searching. A PyTorch CNN trained on 100,000+ grandmaster games encodes each position as a 12-channel tensor and outputs a move distribution — no alpha-beta anywhere. Modal&#8217;s cloud GPUs turned hours of local training into minutes, which is the only reason it shipped inside a hackathon.</p>
+        <div class="combo-tech">
+          <span>PyTorch</span><span>Modal</span><span>python-chess</span><span>NumPy</span>
+        </div>
+        <div class="combo-links">
+          <a href="project-knightmare.html">Write-up</a>
+          <a href="https://github.com/chessdudeo7/ChessHacks">GitHub</a>
+        </div>
+      </article>
+
+      <article class="combo">
+        <div class="combo-top">
+          <span class="combo-sq">Full-stack</span>
+          <span class="combo-when">2024 &#8212;</span>
+        </div>
+        <h3>Chess4All</h3>
+        <p>The training platform I wish I&#8217;d had at 1400. 30+ structured endgame studies, interactive puzzles on a board component written from scratch in vanilla JS, and a searchable database of annotated master games. Firebase handles auth and per-user progress so study state follows you across devices.</p>
+        <div class="combo-tech">
+          <span>JavaScript</span><span>Firebase</span><span>Firestore</span><span>Flask</span>
+        </div>
+        <div class="combo-links">
+          <a href="project-chess4all.html">Write-up</a>
+          <a href="https://github.com/chessdudeo7/Chess4All">GitHub</a>
+        </div>
+      </article>
+
+      <article class="combo">
+        <div class="combo-top">
+          <span class="combo-sq">Community</span>
+          <span class="combo-when">2024 &#8212;</span>
+        </div>
+        <h3>OTMaC</h3>
+        <p>The official site for the Ottawa Math Team Contest, which I help organize. Built to speak to students, parents, and teachers at once without cluttering — contest format, past papers, preparation guides, and team registration. Deployed on GitHub Pages so any organizer can ship an update through a pull request.</p>
+        <div class="combo-tech">
+          <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>GitHub Pages</span>
+        </div>
+        <div class="combo-links">
+          <a href="project-otmac.html">Write-up</a>
+          <a href="https://otmac.github.io">Live site</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ 5. Endgame ════════════════════════════════════════════════════════ -->
+<section class="section" id="endgame">
+  <div class="shell">
+    <div class="move-head reveal">
+      <span class="move-no">5.</span>
+      <span class="move-fig" aria-hidden="true">&#9818;</span>
+      <h2 class="move-title">Endgame</h2>
+    </div>
+    <p class="move-gloss reveal">Results, and how to reach me</p>
+
+    <div class="crosstable reveal">
+      <div class="result">
+        <div class="result-name">Canadian Chess <strong>National Master</strong> <span class="qual">&#183; peak 2251 CFC, 2136 FIDE</span></div>
+        <div class="result-year">Title</div>
+      </div>
+      <div class="result">
+        <div class="result-name">Team Canada, <strong>World Cadet Chess Championships</strong></div>
+        <div class="result-year">2019</div>
+      </div>
+      <div class="result">
+        <div class="result-name">Ontario Chess Championships <span class="qual">&#183; three times top 3</span></div>
+        <div class="result-year">3&#215;</div>
+      </div>
+      <div class="result">
+        <div class="result-name">Canadian Chess Championships <span class="qual">&#183; twice top 5</span></div>
+        <div class="result-year">2&#215;</div>
+      </div>
+      <div class="result">
+        <div class="result-name">University of Waterloo, <strong>Canadian University Chess Championships</strong></div>
+        <div class="result-year">2026</div>
+      </div>
+      <div class="result">
+        <div class="result-name"><strong>Canadian Mathematical Olympiad</strong> Rep&#234;chage qualifier <span class="qual">&#183; top 100 nationally, 2nd in Eastern Ontario</span></div>
+        <div class="result-year">2025</div>
+      </div>
+      <div class="result">
+        <div class="result-name">Harvard&#8211;MIT Mathematics Tournament <span class="qual">&#183; Carleton Math Enrichment Centre</span></div>
+        <div class="result-year">2025</div>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top:clamp(48px,7vw,80px);">
+      <p class="label">Adjourned &#8212; your move</p>
+      <a class="endgame-mail" href="mailto:m49zhu@uwaterloo.ca">m49zhu@uwaterloo.ca</a>
+      <div class="elsewhere">
+        <a class="btn" href="https://github.com/chessdudeo7">GitHub</a>
+        <a class="btn" href="https://www.linkedin.com/in/matthewzhu99">LinkedIn</a>
+        <a class="btn" href="MATTHEW_ZHU_SWE.pdf">Resume &#8212; SWE</a>
+        <a class="btn" href="MATTHEW_ZHU_MLE.pdf">Resume &#8212; MLE</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="shell colophon">
+  <span>&#169; 2026 Matthew Zhu &#183; Built from scratch, no frameworks</span>
+  <span><span class="star">&#42;</span> game in progress</span>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var root = document.documentElement;
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ── Flip board: light squares ⇄ dark squares ─────────────────────────── */
+  var flipBtn = document.getElementById("flip");
+  var stored = null;
+  try { stored = localStorage.getItem("board-side"); } catch (e) { /* private mode */ }
+
+  function currentTheme() {
+    return root.getAttribute("data-theme") ||
+      (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+  }
+
+  function setTheme(t) {
+    root.setAttribute("data-theme", t);
+    flipBtn.setAttribute("aria-pressed", String(t === "light"));
+    try { localStorage.setItem("board-side", t); } catch (e) { /* ignore */ }
+    paintBoard();
+  }
+
+  if (stored === "light" || stored === "dark") { root.setAttribute("data-theme", stored); }
+  flipBtn.addEventListener("click", function () {
+    setTheme(currentTheme() === "dark" ? "light" : "dark");
+  });
+
+  /* ── Scroll reveals ───────────────────────────────────────────────────── */
+  var revealObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("in");
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+
+  document.querySelectorAll(".reveal").forEach(function (el) { revealObserver.observe(el); });
+
+  /* ── Evaluation bar as scroll progress ────────────────────────────────── */
+  var fill = document.getElementById("eval-fill");
+  var scoreEl = document.getElementById("eval-score");
+  var phaseEl = document.getElementById("rail-phase");
+  var sections = Array.prototype.slice.call(document.querySelectorAll("section[id]"));
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll(".nav a[href^='#']"));
+  var ticking = false;
+
+  function updateRail() {
+    var max = document.body.scrollHeight - window.innerHeight;
+    var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+
+    fill.style.height = (8 + p * 84) + "%";
+    scoreEl.textContent = p > 0.985 ? "1–0" : "+" + (p * 5.8).toFixed(2);
+
+    var active = null;
+    sections.forEach(function (s) {
+      if (s.getBoundingClientRect().top <= window.innerHeight * 0.42) { active = s; }
+    });
+
+    if (active) {
+      var head = active.querySelector(".move-title");
+      phaseEl.textContent = head ? head.textContent : "Opening";
+      navLinks.forEach(function (a) {
+        a.setAttribute("aria-current", a.getAttribute("href") === "#" + active.id ? "true" : "false");
+      });
+    } else {
+      phaseEl.textContent = "Opening";
+      navLinks.forEach(function (a) { a.setAttribute("aria-current", "false"); });
+    }
+
+    ticking = false;
+  }
+
+  function onScroll() {
+    if (!ticking) { ticking = true; requestAnimationFrame(updateRail); }
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  updateRail();
+
+  /* ── Knight's tour ────────────────────────────────────────────────────────
+     Warnsdorff's heuristic: from the current square, always move to the
+     onward square with the fewest onward moves. Computed at load, so the
+     path is a real tour of all 64 squares rather than a canned animation.
+     ───────────────────────────────────────────────────────────────────── */
+  var N = 8;
+  var JUMPS = [[1,2],[2,1],[2,-1],[1,-2],[-1,-2],[-2,-1],[-2,1],[-1,2]];
+
+  function inBoard(x, y) { return x >= 0 && y >= 0 && x < N && y < N; }
+
+  function buildTour(sx, sy) {
+    var seen = [];
+    for (var i = 0; i < N * N; i++) { seen.push(false); }
+
+    var path = [[sx, sy]];
+    seen[sy * N + sx] = true;
+
+    function onward(x, y) {
+      var out = [];
+      for (var j = 0; j < JUMPS.length; j++) {
+        var nx = x + JUMPS[j][0], ny = y + JUMPS[j][1];
+        if (inBoard(nx, ny) && !seen[ny * N + nx]) { out.push([nx, ny]); }
+      }
+      return out;
+    }
+
+    for (var step = 1; step < N * N; step++) {
+      var cur = path[path.length - 1];
+      var moves = onward(cur[0], cur[1]);
+      if (!moves.length) { return null; }
+
+      var best = null, bestDeg = 9;
+      for (var m = 0; m < moves.length; m++) {
+        var deg = onward(moves[m][0], moves[m][1]).length;
+        if (deg < bestDeg) { bestDeg = deg; best = moves[m]; }
+      }
+
+      seen[best[1] * N + best[0]] = true;
+      path.push(best);
+    }
+    return path;
+  }
+
+  var tour = null;
+  for (var sy = 0; sy < N && !tour; sy++) {
+    for (var sx = 0; sx < N && !tour; sx++) { tour = buildTour(sx, sy); }
+  }
+
+  var canvas = document.getElementById("tour");
+  var ctx = canvas.getContext("2d");
+  var css = getComputedStyle(root);
+  var progress = 0;          // index of the move currently being played
+  var t = 0;                 // 0→1 within that move
+  var countEl = document.getElementById("tour-count");
+  var DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+  function sizeCanvas() {
+    var box = canvas.getBoundingClientRect();
+    var side = Math.max(240, box.width);
+    canvas.width = side * DPR;
+    canvas.height = side * DPR;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    paintBoard();
+  }
+
+  function readVars() {
+    css = getComputedStyle(root);
+    return {
+      light: css.getPropertyValue("--sq-light").trim(),
+      dark: css.getPropertyValue("--sq-dark").trim(),
+      line: css.getPropertyValue("--line").trim(),
+      accent: css.getPropertyValue("--accent").trim(),
+      text: css.getPropertyValue("--text").trim(),
+      muted: css.getPropertyValue("--text-3").trim()
+    };
+  }
+
+  function easeInOut(x) {
+    return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+  }
+
+  function paintBoard() {
+    if (!tour) { return; }
+    var c = readVars();
+    var side = canvas.width / DPR;
+    var sq = side / N;
+
+    ctx.clearRect(0, 0, side, side);
+
+    for (var y = 0; y < N; y++) {
+      for (var x = 0; x < N; x++) {
+        ctx.fillStyle = ((x + y) % 2 === 0) ? c.light : c.dark;
+        ctx.fillRect(x * sq, y * sq, sq, sq);
+      }
+    }
+
+    /* Squares already visited get a quiet marker. */
+    ctx.fillStyle = c.muted;
+    for (var i = 0; i <= progress && i < tour.length; i++) {
+      var p = tour[i];
+      ctx.globalAlpha = 0.28;
+      ctx.beginPath();
+      ctx.arc(p[0] * sq + sq / 2, p[1] * sq + sq / 2, sq * 0.055, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    /* The path so far. */
+    if (progress > 0) {
+      ctx.strokeStyle = c.accent;
+      ctx.globalAlpha = 0.32;
+      ctx.lineWidth = 1.1;
+      ctx.lineJoin = "round";
+      ctx.beginPath();
+      ctx.moveTo(tour[0][0] * sq + sq / 2, tour[0][1] * sq + sq / 2);
+      for (var k = 1; k <= progress; k++) {
+        ctx.lineTo(tour[k][0] * sq + sq / 2, tour[k][1] * sq + sq / 2);
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+
+    /* Knight, interpolated between the last square and the next. */
+    var from = tour[progress];
+    var to = tour[Math.min(progress + 1, tour.length - 1)];
+    var e = easeInOut(t);
+    var kx = (from[0] + (to[0] - from[0]) * e) * sq + sq / 2;
+    var ky = (from[1] + (to[1] - from[1]) * e) * sq + sq / 2;
+
+    ctx.strokeStyle = c.accent;
+    ctx.lineWidth = 1.4;
+    ctx.strokeRect(to[0] * sq + 1, to[1] * sq + 1, sq - 2, sq - 2);
+
+    ctx.fillStyle = c.text;
+    ctx.font = Math.round(sq * 0.78) + 'px "Segoe UI Symbol","Apple Symbols","Noto Sans Symbols 2",serif';
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("♞", kx, ky + sq * 0.04);
+
+    ctx.strokeStyle = c.line;
+    ctx.lineWidth = 1;
+    ctx.strokeRect(0.5, 0.5, side - 1, side - 1);
+  }
+
+  var last = 0;
+  var MOVE_MS = 620;
+
+  function loop(now) {
+    if (!last) { last = now; }
+    var dt = now - last;
+    last = now;
+
+    t += dt / MOVE_MS;
+    while (t >= 1) {
+      t -= 1;
+      progress++;
+      if (progress >= tour.length - 1) { progress = 0; }
+      countEl.textContent = (progress + 1) + " / 64";
+    }
+
+    paintBoard();
+    requestAnimationFrame(loop);
+  }
+
+  window.addEventListener("resize", sizeCanvas);
+  sizeCanvas();
+
+  if (tour && !reduced) {
+    requestAnimationFrame(loop);
+  } else if (tour) {
+    progress = 0;
+    t = 0;
+    countEl.textContent = "1 / 64";
+    paintBoard();
+  }
+})();
+</script>
+
+</body>
+</html>

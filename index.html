@@ -1,265 +1,587 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio | Matthew Zhu</title>
-
-  <link rel="stylesheet" href="style.css">
-  
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-  <style>
-    /* Page-Specific Styles */
-    .hero-text::after {
-      content: '|';
-      animation: blink 0.8s infinite;
-    }
-    @keyframes blink { 50% { opacity: 0; } }
-
-    /* Resume Section */
-    .resume-box {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    /* Experience Timeline */
-    .timeline-item {
-      border-left: 2px solid var(--accent-1);
-      padding-left: 20px;
-      margin-bottom: 30px;
-      position: relative;
-    }
-    .timeline-item::before {
-      content: '';
-      position: absolute;
-      left: -6px;
-      top: 0;
-      width: 10px;
-      height: 10px;
-      background: var(--accent-2);
-      border-radius: 50%;
-    }
-    .timeline-date {
-      color: var(--accent-2);
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 5px;
-      display: block;
-    }
-
-    /* Coursework Grid */
-    .course-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .course-tag {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      color: var(--muted);
-      transition: all 0.2s ease;
-    }
-    .course-tag:hover {
-      background: var(--accent-1);
-      color: white;
-      border-color: var(--accent-1);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Matthew Zhu — The Board</title>
+<meta name="description" content="Matthew Zhu — Computer Science at Waterloo, software engineering intern at Ciena, Canadian chess National Master. A portfolio told through an annotated game.">
+<meta name="theme-color" content="#0B0C10">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Sora:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="board.css">
 </head>
-
 <body>
 
-<nav class="navbar">
-  <div class="logo">
-    <a href="index.html">Matthew Zhu</a>
-  </div>
-  <ul class="nav-links">
-    <li><a href="index.html" style="color:var(--accent-1);">Profile</a></li>
-    <li><a href="projects.html">Projects</a></li>
-    <li><a href="tutoring.html">Tutoring</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
+<canvas id="gl"></canvas>
+<div id="vig"></div>
 
-<header class="hero fade-up">
-  <h1 class="hero-text" id="typing-text"></h1>
-  <p>CS Student @ UWaterloo | Full Stack Developer | Competitive Chess Player</p>
-  
-  <div class="hero-links" style="margin-top: 20px;">
-    <a href="https://github.com/chessdudeo7" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-    <a href="https://www.linkedin.com/in/matthewzhu99" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
-  </div>
+<header id="top">
+  <span class="nm">Matthew Zhu</span>
+  <span>Zhu &#8211; Wu, Vankleek Hill Open 2025 &#183; 1&#8211;0</span>
+  <span class="sp"></span>
+  <button id="btn-index" type="button">Read as list</button>
+  <a href="MATTHEW_ZHU_SWE.pdf">Resume</a>
+  <a href="mailto:m49zhu@uwaterloo.ca">Email</a>
 </header>
 
-<section class="section fade-up">
-  <div class="project-card resume-box">
-    <div>
-      <h2 style="margin-bottom: 5px; border: none;">Resume</h2>
-      <p>Check out my experience, education, and technical skills.</p>
-    </div>
-    <a href="resume.pdf" download="resume.pdf" class="button">
-      <i class="fas fa-download"></i> Download Resume
-    </a>
+<div id="intro">
+  <div class="intro-in">
+    <p class="eyebrow">Zhu &#8211; Wu &#183; Vankleek Hill Open 2025 &#183; round 5</p>
+    <h1>Matthew Zhu</h1>
+    <p class="lede">Computer Science at Waterloo. Software engineering intern at Ciena.
+    Canadian chess National Master.</p>
+    <p class="lede2">This is the game I'm proudest of. I'll walk you through it, and
+    stop at the moments that stand for something.</p>
+    <button class="cta" id="start-walk" type="button">Walk me through the game</button>
+    <button class="cta2" id="start-manual" type="button">Let me explore it myself</button>
+    <button class="skip" id="start-skip" type="button">or just read the r&#233;sum&#233;</button>
   </div>
-</section>
+</div>
 
-<section class="section fade-up">
-  <h2>About Me</h2>
-  <ul>
-    <li>2A Computer Science student at the University of Waterloo</li>
-    <li>Passionate about software development and programming</li>
-    <li>Competitive chess player aiming for the International Master title</li>
-  </ul>
-</section>
+<nav id="stops" aria-label="Chapters"></nav>
 
-<section class="section fade-right">
-  <h2>Experience</h2>
-  
-  <div class="timeline-item">
-    <span class="timeline-date">Sept 2025 - Present</span>
-    <h3>Computer Science Student</h3>
-    <p>University of Waterloo</p>
-    <p>Rene Descartes National Scholarship Recipient</p>
-    <p>Looking to specialize in AI</p>
+<div id="ticker">
+  <button id="prev" type="button">&#9664;</button>
+  <span class="san" id="san">start</span>
+  <button id="next" type="button">&#9654;</button>
+  <span class="meta" id="meta"></span>
+</div>
+
+<div id="hint">
+  <div><b>drag</b> orbit &#183; <b>scroll</b> zoom</div>
+  <div><b>&#8592; &#8594;</b> step through the game</div>
+</div>
+
+<aside id="panel" aria-live="polite">
+  <button class="x" id="p-close" type="button">close</button>
+  <div id="p-inner"></div>
+</aside>
+
+<div id="nogl"><div>
+  <p style="font-size:19px;margin-bottom:14px">This view needs WebGL.</p>
+  <button id="btn-index2" class="lnk" type="button">Read the portfolio as a list</button>
+</div></div>
+
+<section id="index"><div class="ix">
+  <button class="lnk" id="ix-close" style="margin-bottom:24px">&#8592; Back to the board</button>
+  <h1>Matthew Zhu</h1>
+  <p class="sub">Computer Science at the University of Waterloo, class of 2029. Software engineering
+  intern at Ciena. Canadian chess National Master. Open to co-op terms in 2027.</p>
+  <div id="ix-body"></div>
+  <div class="p-links" style="margin-top:28px">
+    <a class="lnk" href="mailto:m49zhu@uwaterloo.ca">m49zhu@uwaterloo.ca</a>
+    <a class="lnk" href="MATTHEW_ZHU_SWE.pdf">Resume &#183; SWE</a>
+    <a class="lnk" href="MATTHEW_ZHU_MLE.pdf">Resume &#183; MLE</a>
+    <a class="lnk" href="https://github.com/chessdudeo7">GitHub</a>
+    <a class="lnk" href="https://www.linkedin.com/in/matthewzhu99">LinkedIn</a>
+    <a class="lnk" href="tutoring.html">Tutoring</a>
   </div>
+</div></section>
 
-  <div class="timeline-item">
-    <span class="timeline-date">2025 - Present</span>
-    <h3>STEM Tutor and Chess Coach</h3>
-    <p>Private</p>
-    <p>Mentored 10+ students in math, physics, chemistry, and chess</p>
-  </div>
+<script type="importmap">
+{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js",
+"three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
+</script>
 
-  <div class="timeline-item">
-    <span class="timeline-date">2021 - 2025</span>
-    <h3>High School Student</h3>
-    <p>Merivale High School</p>
-    <p>Received Ontario Secondary School Diploma with a 97% average</p>
-    <p>Received IB Diploma with a score of 40/45</p>
-  </div>
-</section>
+<script type="module">
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-<section class="section fade-up">
-  <h2>Technical Skills</h2>
-  
-  <div style="margin-bottom: 30px;">
-    
-    <div style="margin-bottom: 15px;">
-      <div style="margin-bottom:8px;">
-        <span>Python / C / C++</span>
-      </div>
-      <div style="background:rgba(255,255,255,0.1); height:6px; border-radius:3px;">
-        <div style="width:90%; height:100%; background:var(--accent-1); border-radius:3px;"></div>
-      </div>
-    </div>
+/* Positions generated offline from the PGN with chess.js and verified
+   (47 plies, mate confirmed) — no chess engine needed at runtime. */
+const FENS = ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR","rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR","rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR","rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R","rnbqkbnr/ppp2ppp/3p4/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R","rnbqkbnr/ppp2ppp/3p4/4p3/3PP3/5N2/PPP2PPP/RNBQKB1R","r1bqkbnr/pppn1ppp/3p4/4p3/3PP3/5N2/PPP2PPP/RNBQKB1R","r1bqkbnr/pppn1ppp/3p4/4p3/2BPP3/5N2/PPP2PPP/RNBQK2R","r1bqkbnr/pp1n1ppp/2pp4/4p3/2BPP3/5N2/PPP2PPP/RNBQK2R","r1bqkbnr/pp1n1ppp/2pp4/4p3/2BPP3/2N2N2/PPP2PPP/R1BQK2R","r1bqk1nr/pp1nbppp/2pp4/4p3/2BPP3/2N2N2/PPP2PPP/R1BQK2R","r1bqk1nr/pp1nbppp/2pp4/4p3/2BPP3/2N2N2/PPP2PPP/R1BQ1RK1","r1bqk2r/pp1nbppp/2pp1n2/4p3/2BPP3/2N2N2/PPP2PPP/R1BQ1RK1","r1bqk2r/pp1nbppp/2pp1n2/4p3/P1BPP3/2N2N2/1PP2PPP/R1BQ1RK1","r1bq1rk1/pp1nbppp/2pp1n2/4p3/P1BPP3/2N2N2/1PP2PPP/R1BQ1RK1","r1bq1rk1/pp1nbppp/2pp1n2/4P3/P1B1P3/2N2N2/1PP2PPP/R1BQ1RK1","r1bq1rk1/pp1nbppp/2p2n2/4p3/P1B1P3/2N2N2/1PP2PPP/R1BQ1RK1","r1bq1rk1/pp1nbppp/2p2n2/4p3/P1B1P3/2N2N2/1PP1QPPP/R1B2RK1","r1b2rk1/ppqnbppp/2p2n2/4p3/P1B1P3/2N2N2/1PP1QPPP/R1B2RK1","r1b2rk1/ppqnbppp/2p2n2/4p3/P1B1P3/2N2N1P/1PP1QPP1/R1B2RK1","r1b2rk1/ppq1bppp/2p2n2/2n1p3/P1B1P3/2N2N1P/1PP1QPP1/R1B2RK1","r1b2rk1/ppq1bppp/2p2n2/2n1p3/P1B1P3/2N2N1P/1PP1QPP1/R1BR2K1","r1b2rk1/1pq1bppp/2p2n2/p1n1p3/P1B1P3/2N2N1P/1PP1QPP1/R1BR2K1","r1b2rk1/1pq1bppp/2p2n2/p1n1p3/P1B1P3/1PN2N1P/2P1QPP1/R1BR2K1","r1b2rk1/1pq1bppp/2p1nn2/p3p3/P1B1P3/1PN2N1P/2P1QPP1/R1BR2K1","r1b2rk1/1pq1bppp/2p1nn2/p3p3/P1B1P3/1PN2N1P/1BP1QPP1/R2R2K1","r1b2rk1/1pq1bppp/2p2n2/p3p3/P1B1Pn2/1PN2N1P/1BP1QPP1/R2R2K1","r1b2rk1/1pq1bppp/2p2n2/p3p3/P1B1Pn2/1PN1QN1P/1BP2PP1/R2R2K1","r1b2rk1/1pq1bppp/2p2nn1/p3p3/P1B1P3/1PN1QN1P/1BP2PP1/R2R2K1","r1b2rk1/1pq1bppp/2p2nn1/p3p3/P1B1P3/1P2QN1P/1BP1NPP1/R2R2K1","r1b2rk1/1pq1bppp/2p3n1/p3p2n/P1B1P3/1P2QN1P/1BP1NPP1/R2R2K1","r1b2rk1/1pq1bppp/2p3n1/p3p2n/P1B1P1P1/1P2QN1P/1BP1NP2/R2R2K1","r1b2rk1/1pq1bppp/2p2nn1/p3p3/P1B1P1P1/1P2QN1P/1BP1NP2/R2R2K1","r1b2rk1/1pq1bppp/2p2nn1/p3p3/P1B1P1P1/1P2QNNP/1BP2P2/R2R2K1","r1b2rk1/1pqnbppp/2p3n1/p3p3/P1B1P1P1/1P2QNNP/1BP2P2/R2R2K1","r1b2rk1/1pqnbppp/2p3n1/p3pN2/P1B1P1P1/1P2QN1P/1BP2P2/R2R2K1","r1b2rk1/1pqn1ppp/2p3n1/p1b1pN2/P1B1P1P1/1P2QN1P/1BP2P2/R2R2K1","r1b2rk1/1pqR1ppp/2p3n1/p1b1pN2/P1B1P1P1/1P2QN1P/1BP2P2/R5K1","r1b2rk1/1p1R1ppp/1qp3n1/p1b1pN2/P1B1P1P1/1P2QN1P/1BP2P2/R5K1","r1b2rk1/1p3Rpp/1qp3n1/p1b1pN2/P1B1P1P1/1P2QN1P/1BP2P2/R5K1","r1b2rk1/1p3Rpp/1qp3n1/p3pN2/P1B1P1P1/1P2bN1P/1BP2P2/R5K1","r1b2rk1/1p4Rp/1qp3n1/p3pN2/P1B1P1P1/1P2bN1P/1BP2P2/R5K1","r1b2r1k/1p4Rp/1qp3n1/p3pN2/P1B1P1P1/1P2bN1P/1BP2P2/R5K1","r1b2r1k/1p4Rp/1qp3n1/p3NN2/P1B1P1P1/1P2b2P/1BP2P2/R5K1","r4r1k/1p4Rp/1qp3n1/p3Nb2/P1B1P1P1/1P2b2P/1BP2P2/R5K1","r4rRk/1p5p/1qp3n1/p3Nb2/P1B1P1P1/1P2b2P/1BP2P2/R5K1","r5rk/1p5p/1qp3n1/p3Nb2/P1B1P1P1/1P2b2P/1BP2P2/R5K1","r5rk/1p3N1p/1qp3n1/p4b2/P1B1P1P1/1P2b2P/1BP2P2/R5K1"];
 
-    <div style="margin-bottom: 15px;">
-      <div style="margin-bottom:8px;">
-        <span>HTML / CSS / JavaScript</span>
-      </div>
-      <div style="background:rgba(255,255,255,0.1); height:6px; border-radius:3px;">
-        <div style="width:85%; height:100%; background:var(--accent-2); border-radius:3px;"></div>
-      </div>
-    </div>
+const SAN = ("e4 e5 Nf3 d6 d4 Nd7 Bc4 c6 Nc3 Be7 O-O Ngf6 a4 O-O dxe5 dxe5 Qe2 Qc7 h3 Nc5 "+
+"Rd1 a5 b3 Ne6 Bb2 Nf4 Qe3 Ng6 Ne2 Nh5 g4 Nf6 Ng3 Nd7 Nf5 Bc5 Rxd7 Qb6 Rxf7 Bxe3 "+
+"Rxg7+ Kh8 Nxe5 Bxf5 Rg8+ Rxg8 Nf7#").split(" ");
 
-    <div style="margin-bottom: 15px;">
-      <div style="margin-bottom:8px;">
-        <span>Firebase / SQL / Git</span>
-      </div>
-      <div style="background:rgba(255,255,255,0.1); height:6px; border-radius:3px;">
-        <div style="width:75%; height:100%; background:var(--accent-1); border-radius:3px;"></div>
-      </div>
-    </div>
-  </div>
+const I = (title,when,body,list,tech,links)=>({title,when,body,list,tech,links:links||[]});
 
-  <h3>Relevant Coursework</h3>
-  <div class="course-grid">
-    <span class="course-tag">CS 135: Designing Functional Programs</span>
-    <span class="course-tag">CS 136: Elementary Algorithm Design and Data Abstraction</span>
-    <span class="course-tag">CS 136L: Tools and Techniques for Software Development</span>
-    <span class="course-tag">MATH 137: Calculus 1 (Honours)</span>
-    <span class="course-tag">MATH 138: Calculus 2 (Honours)</span>
-    <span class="course-tag">MATH 145: Algebra (Advanced)</span>
-    <span class="course-tag">MATH 146: Linear Algebra (Advanced)</span>
-  </div>
-</section>
+/* Each stop is a real moment in the game paired with the work it stands for. */
+const STOPS = [
+  { ply:0, mv:"start", title:"Who's playing",
+    note:"Vankleek Hill Open, round 5, August 2025. I'm White against a 2210 &#8212; almost exactly my rating at the time. Nothing is decided yet, which is the honest place to start.",
+    items:[ I("Matthew Zhu","Computer Science &#183; Waterloo &#183; class of 2029",
+      "Software engineering intern at Ciena, and a Canadian chess National Master. A decade of chess taught me the habit that transfers cleanest to engineering: understand the position before you touch a piece.",
+      ["Ottawa / Waterloo, Canada","Open to co-op terms in <strong>2027</strong>"]) ] },
 
-<section class="section fade-up">
-  <h2>Featured Projects</h2>
+  { ply:14, mv:"7...O-O", title:"Foundations",
+    note:"Both sides are castled and every piece is where it should be. No plan yet &#8212; just good squares and a safe king. That's what school is for.",
+    items:[ I("University of Waterloo","BCS Honours Computer Science, Co-op &#183; 2025&#8211;2029",
+      "GPA 3.9/4.0, on Waterloo's top entrance award.",
+      ["<strong>Ren&#233; Descartes National Scholarship</strong> &#8212; $25,000, one of ten awarded across Canada",
+       "Object-Oriented Software Development, Logic and Computation, Elementary Algorithm Design",
+       "Stanford CS 230 Deep Learning &#183; Google for Developers Machine Learning"]) ] },
 
-  <div class="project-card">
-    <h3>♟ Chess4All</h3>
-    <p style="color:var(--accent-2); font-size:0.9rem; margin-bottom:10px;">HTML • CSS • JavaScript • FireBase</p>
-    <p>A comprehensive chess training tool featuring 30+ endgame study pages, puzzles, and a database of master games</p>
-    <div style="margin-top:15px;">
-      <a href="https://github.com/chessdudeo7/Chess4All" class="button" style="padding: 8px 16px; font-size: 0.9rem;">View on GitHub</a>
-    </div>
-  </div>
+  { ply:24, mv:"12...Ne6", title:"First builds",
+    note:"The quiet phase. Nobody is attacking; I'm improving pieces and learning what the position wants. Everything I made early was like this &#8212; not ambitious, just useful to someone.",
+    items:[
+      I("Chess4All","Full-stack &#183; 2024 &#8212; now",
+        "The training platform I wish I'd had at 1400.",
+        ["<strong>30+</strong> structured endgame studies",
+         "Puzzles on a chessboard component hand-written in vanilla JS &#8212; no chess UI library",
+         "Firebase auth and per-user progress that follows you across devices"],
+        ["JavaScript","Firebase","Firestore","Flask"],
+        [["Write-up","project-chess4all.html",0],["GitHub","https://github.com/chessdudeo7/Chess4All",1]]),
+      I("OTMaC","Community &#183; 2024 &#8212; now",
+        "The official site for the Ottawa Math Team Contest, which I help organize.",
+        ["Contest format, rules, past papers and preparation guides","Team registration flow",
+         "On GitHub Pages so any organizer can ship an update through a pull request"],
+        ["HTML5","CSS3","JavaScript"],
+        [["Write-up","project-otmac.html",0],["Live site","https://otmac.github.io",1]]),
+      I("Coaching &amp; tutoring","Independent &#183; 2025 &#8212; now",
+        "Chess from beginner to advanced, plus grades 1&#8211;12 maths, physics and chemistry including contest prep.",
+        ["10+ students mentored"],null,[["Tutoring site","tutoring.html",1]]) ] },
 
-  <div class="project-card">
-    <h3>♟ KnightMare - ChessHacks</h3>
-    <p style="color:var(--accent-2); font-size:0.9rem; margin-bottom:10px;">Python • PyTorch • Modal</p>
-    <p>An AI chess model trained on 100,000+ games, using machine learning algorithms to predict optimal moves and evaluate positions</p>
-    <div style="margin-top:15px;">
-      <a href="https://github.com/chessdudeo7/ChessHacks" class="button" style="padding: 8px 16px; font-size: 0.9rem;">View on GitHub</a>
-    </div>
-  </div>
+  { ply:34, mv:"17...Nd7", title:"Turning to machine learning",
+    note:"g4 and Ng3 have taken space and Black's knight is back on d7. Nothing is won yet, but every piece is pointed at something. Learning ML felt exactly like this &#8212; a lot of setup before anything happened.",
+    items:[
+      I("KnightMare","Deep learning &#183; 2025",
+        "A chess engine that learns instead of searching, built at ChessHacks.",
+        ["PyTorch CNN trained on <strong>100,000+ grandmaster games</strong>",
+         "12-channel tensor board encoding, move distribution output &#8212; no alpha-beta anywhere",
+         "Modal cloud GPUs cut training from hours to minutes",
+         "Legal-move masking at inference fixed illegal suggestions"],
+        ["PyTorch","Modal","python-chess","NumPy"],
+        [["Write-up","project-knightmare.html",0],["GitHub","https://github.com/chessdudeo7/ChessHacks",1]]),
+      I("Lumi","Retrieval &#183; 2026 &#8212; now",
+        "A FastAPI backend for mentor matching and math problem retrieval, with LangChain routing tasks.",
+        ["ChromaDB RAG over <strong>500+ contest problems</strong> with topic-aware filtering",
+         "PyMuPDF ingestion pipeline","PyTorch matcher scoring mentors on subject alignment"],
+        ["FastAPI","LangChain","ChromaDB","PyMuPDF"],[["GitHub","https://github.com/chessdudeo7",1]]),
+      I("HUME","ML safety &#183; 2026",
+        "A structural firewall for a belief-revision engine. Confidence is revised from <strong>structured provenance</strong> rather than raw text, so a persuasive sentence can't move the posterior on its own.",
+        ["Log-odds likelihood-ratio belief update","Structural OOD detection",
+         "NegEx/ConText negation and modality scoping","<strong>19-probe</strong> adversarial battery"],
+        ["Python","Bayesian inference"],[["GitHub","https://github.com/chessdudeo7",1]]) ] },
 
-  <div class="project-card" style="margin-top: 20px;">
-    <h3>💻 OTMaC Website</h3>
-    <p style="color:var(--accent-2); font-size:0.9rem; margin-bottom:10px;">HTML • CSS • JS</p>
-    <p>The official promotional website for the Ottawa Math Team Contest, providing interested students with contest details and preparation materials</p>
-    <div style="margin-top:15px;">
-      <a href="https://github.com/OTMaC/otmac.github.io" class="button" style="padding: 8px 16px; font-size: 0.9rem;">View on GitHub</a>
-    </div>
-  </div>
-</section>
+  { ply:37, mv:"19.Rxd7", title:"Shipping for real",
+    note:"The rook takes on d7 and can be taken back. Past this point there's no returning to quiet manoeuvring &#8212; either it works or I'm just down material. Writing code other people depend on feels the same.",
+    items:[
+      I("Auxilium","Software Developer &#183; Jun 2025 &#8212; now &#183; Remote",
+        "Analyzed historical pairing outcomes to find what actually drives a successful mentor&#8211;student match, then built the algorithm around it.",
+        ["Pandas matching algorithm with weighted criteria and constraint filtering",
+         "Successful match rate up <strong>36%</strong>",
+         "Indexed SQLite database for efficient querying and repeatable runs"],
+        ["Python","Pandas","SQLite"]),
+      I("ClipFarm","Computer vision &#183; 2026 &#8212; now",
+        "A full-stack pipeline that turns raw volleyball VODs into highlight clips.",
+        ["RF-DETR ball tracking detects rally contacts, refined by YOLOv8-pose classification",
+         "Serverless GPU inference with CPU fallback: <strong>13 min &#8594; 8.7 min</strong> per game",
+         "Cloudflare R2 cache keyed by video hash plus skip-decode sampling: <strong>31% faster</strong>",
+         "Async Postgres on Supabase with JWT auth, Dockerized multi-service stack"],
+        ["Next.js","FastAPI","PyTorch","Celery","Postgres","Docker"],
+        [["GitHub","https://github.com/chessdudeo7",1]]) ] },
 
-<section id="contact" class="section fade-up" style="text-align: center;">
-  <h2>Get In Touch</h2>
-  <p style="margin-bottom: 20px;">I'm currently looking for summer 2026 internships. If you are interested, please reach out to me via email.</p>
-  <a href="mailto:m49zhu@uwaterloo.ca" class="button">m49zhu@uwaterloo.ca</a>
-</section>
+  { ply:39, mv:"20.Rxf7", title:"Counting it all the way",
+    note:"Black's bishop is attacking my queen and I take on f7 anyway. <strong>20...Bxe3 wins it</strong> &#8212; and it doesn't matter, because the mate is already there. The move I'm proudest of: calculating far enough to know the biggest piece on the board was irrelevant.",
+    items:[ I("Ciena","Software Engineering Intern &#183; May 2026 &#8212; now &#183; Ottawa",
+      "Porting an <strong>1,800-line C optical-planning model</strong> to Rust and rebuilding its neural networks in HuggingFace Candle so inference runs on hardware a decade older than the model.",
+      ["Rust port architected with PyO3/maturin and cbindgen",
+       "<strong>7 neural network models</strong> in Candle, replicating a TensorFlow/ONNX architecture",
+       "FFI bridge exposing the Rust/Candle ML backend to a C-based network simulator",
+       "ONNX/Candle inference validated at <strong>zero divergence</strong> over a ~500-case regression suite",
+       "Statically-linked cross-compiled binary, enabling ML inference on legacy Linux and Docker"],
+      ["Rust","Candle","ONNX","PyO3","C","Docker"]) ] },
 
-<footer>
-  &copy; 2026 Matthew Zhu. All rights reserved.
-</footer>
+  { ply:47, mv:"24.Nf7#", title:"The bishop from move 13",
+    note:"The knight steps off e5 and the bishop I put on b2 eleven moves earlier delivers mate down the long diagonal. The winning move was played long before it mattered.",
+    items:[
+      I("National Master","Chess Federation of Canada &#183; 2026",
+        "Earned the third and final NM norm at the <strong>2026 Markham True North Open</strong>, finishing 2nd with a 2300+ performance rating.",
+        ["Peak <strong>2251 CFC</strong> / 2136 FIDE","Three times top 3 at the Ontario Championships",
+         "Twice top 5 at the Canadian Championships",
+         "Team Canada, 2019 World Cadet Championships",
+         "Represented Waterloo at the 2026 Canadian University Championships"]),
+      I("Also in the file","Mathematics",
+        "Canadian Mathematical Olympiad Rep&#234;chage qualifier &#8212; top 100 nationally, 2nd in Eastern Ontario. Competed at the Harvard&#8211;MIT Mathematics Tournament for the Carleton Math Enrichment Centre.",
+        null,["Python","C / C++","Rust","TypeScript","React","Next.js","FastAPI","PostgreSQL","Docker","Linux","Git"]),
+      I("Your move","Open to co-op terms in 2027",
+        "If any of this is useful to you, I'd like to hear from you.",null,null,
+        [["Email","mailto:m49zhu@uwaterloo.ca",0],["Resume &#183; SWE","MATTHEW_ZHU_SWE.pdf",1],
+         ["Resume &#183; MLE","MATTHEW_ZHU_MLE.pdf",1],["GitHub","https://github.com/chessdudeo7",1],
+         ["LinkedIn","https://www.linkedin.com/in/matthewzhu99",1]]) ] }
+];
 
-<script>
-  /* Typing Effect */
-  const text = "Hi, I'm Matthew Zhu";
-  const speed = 100;
-  let i = 0;
-  
-  function typeWriter() {
-    if (i < text.length) {
-      document.getElementById("typing-text").innerHTML += text.charAt(i);
-      i++;
-      setTimeout(typeWriter, speed);
+/* ── Board maths ─────────────────────────────────────────────────────────── */
+const sqXZ = (f,r)=>[f-3.5, 3.5-r];            /* file 0-7, rank 0-7 (rank0 = rank 1) */
+
+function parseFEN(fen){
+  const rows=fen.split("/"), map={};
+  for(let r=0;r<8;r++){
+    let f=0;
+    for(const ch of rows[r]){
+      if(/\d/.test(ch)) f+=+ch;
+      else { map[(7-r)*8+f] = ch; f++; }      /* key: rank*8+file, value e.g. 'P' or 'p' */
     }
   }
+  return map;
+}
+const BOARDS = FENS.map(parseFEN);
 
-  /* Scroll Animations */
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('reveal');
-      }
-    });
-  });
+/* ── Scene ───────────────────────────────────────────────────────────────── */
+const canvas=document.getElementById("gl");
+let renderer;
+try{ renderer=new THREE.WebGLRenderer({canvas,antialias:true}); }
+catch(e){ document.getElementById("nogl").classList.add("on"); }
 
-  const hiddenElements = document.querySelectorAll('.fade-up, .fade-right');
-  hiddenElements.forEach((el) => observer.observe(el));
+if(renderer){
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 
-  window.onload = typeWriter;
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x0B0C10);
+scene.fog=new THREE.Fog(0x0B0C10,24,52);
+
+const camera=new THREE.PerspectiveCamera(42,1,0.1,200);
+camera.position.set(0,10.4,11.6);
+
+const controls=new OrbitControls(camera,renderer.domElement);
+controls.enableDamping=true; controls.dampingFactor=.07; controls.enablePan=false;
+controls.minDistance=7; controls.maxDistance=26;
+controls.maxPolarAngle=Math.PI*0.46; controls.minPolarAngle=Math.PI*0.1;
+controls.target.set(0,0.4,0);
+
+scene.add(new THREE.HemisphereLight(0xBFD2FF,0x2A2417,0.6));
+const key=new THREE.DirectionalLight(0xFFF3D8,2.2);
+key.position.set(6,13,7); key.castShadow=true;
+key.shadow.mapSize.set(2048,2048);
+key.shadow.camera.left=-8; key.shadow.camera.right=8;
+key.shadow.camera.top=8; key.shadow.camera.bottom=-8; key.shadow.bias=-0.0009;
+scene.add(key);
+const rim=new THREE.DirectionalLight(0x9CC4FF,0.75); rim.position.set(-7,6,-6); scene.add(rim);
+
+function boardTex(){
+  const S=1024,c=document.createElement("canvas"); c.width=c.height=S;
+  const g=c.getContext("2d"),m=S*0.06,sq=(S-m*2)/8;
+  g.fillStyle="#1A1913"; g.fillRect(0,0,S,S);
+  for(let r=0;r<8;r++)for(let f=0;f<8;f++){
+    g.fillStyle=((f+r)%2===0)?"#3A3730":"#E8DFC8";
+    g.fillRect(m+f*sq,m+r*sq,sq,sq);
+  }
+  g.strokeStyle="#C8A24A"; g.lineWidth=S*0.006;
+  g.strokeRect(m-g.lineWidth/2,m-g.lineWidth/2,sq*8+g.lineWidth,sq*8+g.lineWidth);
+  g.fillStyle="#8A7C55"; g.font=`600 ${S*0.028}px "JetBrains Mono",monospace`;
+  g.textAlign="center"; g.textBaseline="middle";
+  for(let f=0;f<8;f++){ const x=m+f*sq+sq/2;
+    g.fillText("abcdefgh"[f],x,m*0.55); g.fillText("abcdefgh"[f],x,S-m*0.55); }
+  for(let r=0;r<8;r++){ const y=m+r*sq+sq/2;
+    g.fillText(String(8-r),m*0.55,y); g.fillText(String(8-r),S-m*0.55,y); }
+  const t=new THREE.CanvasTexture(c);
+  t.anisotropy=renderer.capabilities.getMaxAnisotropy();
+  return t;
+}
+
+const board=new THREE.Mesh(new THREE.BoxGeometry(9.2,0.5,9.2),
+  [0,1,2,3,4,5].map(i=> i===2
+    ? new THREE.MeshStandardMaterial({map:boardTex(),roughness:.62,metalness:.06})
+    : new THREE.MeshStandardMaterial({color:0x16150F,roughness:.75,metalness:.1})));
+board.position.y=-0.25; board.receiveShadow=true; scene.add(board);
+
+/* ── Pieces ──────────────────────────────────────────────────────────────── */
+const V=(x,y)=>new THREE.Vector2(x,y);
+const PROFILE={
+  p:[V(0,0),V(.30,0),V(.30,.06),V(.20,.12),V(.17,.30),V(.22,.40),V(.15,.46),V(.20,.50),V(.19,.55),V(0,.72)],
+  r:[V(0,0),V(.34,0),V(.34,.07),V(.24,.14),V(.21,.55),V(.28,.60),V(.31,.62),V(.31,.80),V(.22,.80),V(.22,.72),V(0,.72)],
+  b:[V(0,0),V(.33,0),V(.33,.07),V(.23,.14),V(.18,.55),V(.25,.62),V(.16,.68),V(.20,.76),V(.13,.88),V(.07,.98),V(0,1.02)],
+  n:[V(0,0),V(.34,0),V(.34,.07),V(.26,.13),V(.22,.26),V(.24,.30),V(.15,.33),V(0,.34)],
+  q:[V(0,0),V(.38,0),V(.38,.08),V(.27,.16),V(.19,.70),V(.28,.78),V(.18,.86),V(.24,.98),V(.13,1.06),V(.08,1.18),V(0,1.24)],
+  k:[V(0,0),V(.40,0),V(.40,.08),V(.28,.16),V(.20,.78),V(.30,.86),V(.19,.94),V(.24,1.06),V(.14,1.14),V(.11,1.22),V(0,1.24)]
+};
+const MAT={
+  w:new THREE.MeshStandardMaterial({color:0xEDE4CE,roughness:.42,metalness:.12}),
+  b:new THREE.MeshStandardMaterial({color:0x24262B,roughness:.38,metalness:.28})
+};
+const GEO={};
+function geoFor(t){ if(!GEO[t]){ GEO[t]=new THREE.LatheGeometry(PROFILE[t],48); GEO[t].computeVertexNormals(); } return GEO[t]; }
+
+/* Knight head as an extruded side silhouette — a lathe can't produce a horse,
+   and boxes read as a robot. Built once and shared. */
+let KNIGHT=null;
+function knightGeo(){
+  if(KNIGHT) return KNIGHT;
+  const pts=[
+    [-.20,.00],[-.25,.14],[-.24,.30],[-.19,.44],[-.21,.56],[-.14,.68],
+    [-.17,.82],[-.06,.74],[-.01,.86],[.05,.70],[.17,.62],[.27,.48],
+    [.29,.36],[.19,.31],[.07,.35],[.03,.24],[.11,.11],[.20,.00]
+  ];
+  const s=new THREE.Shape();
+  s.moveTo(pts[0][0],pts[0][1]);
+  for(let i=1;i<pts.length;i++) s.lineTo(pts[i][0],pts[i][1]);
+  s.closePath();
+  KNIGHT=new THREE.ExtrudeGeometry(s,{depth:.26,bevelEnabled:true,
+    bevelThickness:.035,bevelSize:.035,bevelSegments:3,curveSegments:8});
+  KNIGHT.translate(0,0,-.13);          /* centre across the square */
+  KNIGHT.computeVertexNormals();
+  return KNIGHT;
+}
+
+function buildPiece(code){
+  const t=code.toLowerCase(), white=code===code.toUpperCase();
+  const m=MAT[white?"w":"b"], g=new THREE.Group();
+  const body=new THREE.Mesh(geoFor(t),m); body.castShadow=true; body.receiveShadow=true; g.add(body);
+
+  if(t==="n"){
+    const head=new THREE.Mesh(knightGeo(),m);
+    head.position.y=0.30; head.castShadow=true; head.receiveShadow=true; g.add(head);
+    /* Keep the silhouette side-on to the default camera — turned to face the
+       opponent it reads as a flat slab. White looks right, Black looks left. */
+    g.rotation.y = white ? 0 : Math.PI;
+  }
+  if(t==="r") for(let i=0;i<5;i++){
+    const a=(i/5)*Math.PI*2;
+    const b2=new THREE.Mesh(new THREE.BoxGeometry(.10,.10,.10),m);
+    b2.position.set(Math.cos(a)*.26,.84,Math.sin(a)*.26); b2.castShadow=true; g.add(b2);
+  }
+  if(t==="k"){
+    const a=new THREE.Mesh(new THREE.BoxGeometry(.07,.24,.07),m); a.position.y=1.36;
+    const b2=new THREE.Mesh(new THREE.BoxGeometry(.19,.07,.07),m); b2.position.y=1.36;
+    [a,b2].forEach(x=>{x.castShadow=true;g.add(x)});
+  }
+  if(t==="q") for(let i=0;i<7;i++){
+    const a=(i/7)*Math.PI*2;
+    const s=new THREE.Mesh(new THREE.SphereGeometry(.045,10,8),m);
+    s.position.set(Math.cos(a)*.11,1.30,Math.sin(a)*.11); s.castShadow=true; g.add(s);
+  }
+  return g;
+}
+
+/* live[squareIndex] = {code, obj, anim} */
+let live={};
+
+function setPosition(idx, animate){
+  const want=BOARDS[idx];
+  const nextLive={};
+  const spare=[];                                  /* pieces whose square emptied */
+
+  for(const k in live){
+    if(want[k]===live[k].code) nextLive[k]=live[k];
+    else spare.push(live[k]);
+  }
+  for(const k in want){
+    if(nextLive[k]) continue;
+    const code=want[k];
+    const i=spare.findIndex(s=>s.code===code);
+    const sq=+k, f=sq%8, r=(sq-f)/8, [x,z]=sqXZ(f,r);
+    if(i>=0){
+      const s=spare.splice(i,1)[0];
+      if(animate){ s.anim={fx:s.obj.position.x,fz:s.obj.position.z,tx:x,tz:z,t:0,hop:code.toLowerCase()==="n"?0.75:0.22}; }
+      else { s.obj.position.set(x,0,z); s.anim=null; }
+      nextLive[k]=s;
+    } else {
+      const obj=buildPiece(code); obj.position.set(x,0,z); scene.add(obj);
+      nextLive[k]={code,obj,anim:null};
+    }
+  }
+  spare.forEach(s=>{ s.dying=true; s.obj.userData.die=0; dying.push(s); });
+  live=nextLive;
+}
+
+const dying=[];
+
+/* ── Playback ────────────────────────────────────────────────────────────── */
+let ply=0, target=0, stepT=0, stopIdx=0;
+const STEP=0.42;                                   /* seconds per half-move */
+
+function jumpTo(p, instant){
+  p=Math.max(0,Math.min(FENS.length-1,p));
+  if(instant || Math.abs(p-ply)>1 && p<ply){
+    ply=p; target=p; setPosition(ply,false);
+  } else { target=p; }
+  syncUI();
+}
+
+const stopsEl=document.getElementById("stops");
+STOPS.forEach((s,i)=>{
+  const b=document.createElement("button");
+  b.type="button"; b.className="st"; b.setAttribute("aria-current",String(i===0));
+  b.innerHTML=`<span class="mv">${s.mv}</span><span class="ti">${s.title}</span>`;
+  b.addEventListener("click",()=>goStop(i));
+  stopsEl.appendChild(b);
+});
+
+/* Auto-play state: the game runs itself between checkpoints, dwells on each
+   one, then carries on. Any manual input hands control back to the visitor. */
+let paused=false, waiting=false, dwell=0, dwellBar=null;
+const isAuto=()=>document.body.dataset.mode==="auto";
+let started=false;            /* nothing reveals itself until a mode is chosen */
+const DWELL=7;                                     /* seconds held on a checkpoint */
+
+function goStop(i){
+  stopIdx=i;
+  const s=STOPS[i];
+  waiting=false;
+  panel.classList.remove("on");                    /* reopens on arrival */
+  /* Forward from here plays out; jumping back snaps so you never wait. */
+  if(s.ply>=ply) target=s.ply; else jumpTo(s.ply,true);
+  [...stopsEl.children].forEach((b,j)=>b.setAttribute("aria-current",String(j===i)));
+}
+
+function takeControl(){ document.body.dataset.mode="manual"; waiting=false; }
+
+const panel=document.getElementById("panel"), pInner=document.getElementById("p-inner");
+
+/* Below 900px the panel is full-width, so it must never open by itself —
+   the board has to be what you land on. */
+const isSheet=()=>matchMedia("(max-width: 900px)").matches;
+
+function showPanel(s,auto){
+  pInner.innerHTML=
+    `<div class="p-move">${s.mv}</div><h2 class="p-title">${s.title}</h2>`+
+    `<div class="p-note">${s.note}</div>`+
+    s.items.map(it=>
+      `<div class="p-item"><h3>${it.title}</h3><div class="w">${it.when}</div>`+
+      `<p>${it.body}</p>`+
+      (it.list?`<ul>${it.list.map(x=>`<li>${x}</li>`).join("")}</ul>`:"")+
+      (it.tech?`<div class="p-tech">${it.tech.map(x=>`<span>${x}</span>`).join("")}</div>`:"")+
+      (it.links.length?`<div class="p-links">${it.links.map(l=>
+        `<a class="lnk ${l[2]?"":"lnk-go"}" href="${l[1]}">${l[0]}</a>`).join("")}</div>`:"")+
+      `</div>`).join("")+
+    `<div class="p-nav">`+
+      `<span class="count">${stopIdx+1} / ${STOPS.length}</span>`+
+      (isAuto() && stopIdx<STOPS.length-1
+        ? `<button type="button" id="ps">${paused?"Resume":"Pause"}</button>` : "")+
+      `<button type="button" id="pv" ${stopIdx===0?"disabled":""}>&#9664; Back</button>`+
+      (stopIdx<STOPS.length-1
+        ? `<button type="button" class="go" id="nx">Next &#9654;</button>`
+        : `<button type="button" class="go" id="rp">Replay</button>`)+
+    `</div>`+
+    (isAuto() && stopIdx<STOPS.length-1 ? `<div class="dwell"><i></i></div>` : "");
+
+  const pv=document.getElementById("pv");
+  if(pv) pv.onclick=()=>{ takeControl(); goStop(stopIdx-1); };
+  const nx=document.getElementById("nx"); if(nx) nx.onclick=()=>goStop(stopIdx+1);
+  const rp=document.getElementById("rp");
+  if(rp) rp.onclick=()=>{ takeControl(); jumpTo(0,true); goStop(0); };
+  const ps=document.getElementById("ps");
+  if(ps) ps.onclick=()=>{ paused=!paused; ps.textContent=paused?"Resume":"Pause"; };
+
+  dwellBar=panel.querySelector(".dwell i");
+
+  if(!(auto && isSheet())) panel.classList.add("on");
+}
+
+const sanEl=document.getElementById("san"), metaEl=document.getElementById("meta");
+const prevB=document.getElementById("prev"), nextB=document.getElementById("next");
+
+function syncUI(){
+  sanEl.textContent = ply===0 ? "start" : `${Math.ceil(ply/2)}${ply%2?".":"..."} ${SAN[ply-1]}`;
+  metaEl.textContent = `ply ${ply} / ${FENS.length-1}`;
+  prevB.disabled = ply<=0 && target<=0;
+  nextB.disabled = ply>=FENS.length-1 && target>=FENS.length-1;
+}
+
+prevB.addEventListener("click",()=>{ takeControl(); jumpTo(ply-1,true); });
+nextB.addEventListener("click",()=>{ takeControl(); target=Math.min(FENS.length-1,ply+1); });
+addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight"){ e.preventDefault(); takeControl(); target=Math.min(FENS.length-1,ply+1); }
+  else if(e.key==="ArrowLeft"){ e.preventDefault(); takeControl(); jumpTo(ply-1,true); }
+  else if(e.key==="Escape"){ panel.classList.remove("on"); document.getElementById("index").classList.remove("on"); }
+});
+document.getElementById("p-close").addEventListener("click",()=>panel.classList.remove("on"));
+
+/* ── Loop ────────────────────────────────────────────────────────────────── */
+let lw=0,lh=0;
+function fit(){
+  const w=Math.max(1,innerWidth),h=Math.max(1,innerHeight);
+  if(w===lw&&h===lh) return;
+  lw=w; lh=h; camera.aspect=w/h; camera.updateProjectionMatrix(); renderer.setSize(w,h);
+  vo={x:-1,y:-1};                    /* force the view offset to recompute */
+}
+
+/* Slide the rendered scene out from behind the panel — sideways when it's a
+   column, upward when it's a bottom sheet — so the position stays in view. */
+let vo={x:-1,y:-1};
+function updateViewOffset(){
+  const open=panel.classList.contains("on"), s=isSheet();
+  document.body.classList.toggle("sheet-open", open && s);
+  const W=lw||innerWidth, H=lh||innerHeight;
+  const x = (open && !s) ? W*0.15 : 0;
+  const y = (open &&  s) ? H*0.20 : 0;
+  if(x===vo.x && y===vo.y) return;
+  vo={x,y};
+  if(x||y) camera.setViewOffset(W,H,x,y,W,H); else camera.clearViewOffset();
+}
+
+const clock=new THREE.Clock();
+setPosition(0,false); syncUI();
+
+/* The intro holds the board until the visitor chooses to start. */
+const intro=document.getElementById("intro");
+document.getElementById("start-walk").addEventListener("click",()=>{
+  intro.classList.add("off");
+  document.body.dataset.mode="auto"; paused=false; started=true;
+  goStop(0);
+});
+document.getElementById("start-manual").addEventListener("click",()=>{
+  intro.classList.add("off");
+  document.body.dataset.mode="manual"; started=true;
+});
+document.getElementById("start-skip").addEventListener("click",()=>{
+  intro.classList.add("off"); document.getElementById("index").classList.add("on");
+});
+
+function tick(){
+  requestAnimationFrame(tick);
+  fit();
+  updateViewOffset();
+  const dt=Math.min(clock.getDelta(),0.05);
+
+  /* advance one ply at a time toward the target */
+  const busy=Object.values(live).some(p=>p.anim);
+  if(!busy && target>ply){ ply++; setPosition(ply,true); syncUI(); }
+
+  /* Arrived at the checkpoint we were travelling to — reveal it. */
+  if(started && !busy && target===ply && ply===STOPS[stopIdx].ply && !panel.classList.contains("on")){
+    showPanel(STOPS[stopIdx]);
+    if(isAuto() && stopIdx<STOPS.length-1){ waiting=true; dwell=DWELL; }
+  }
+
+  /* Dwell, then carry on by itself. */
+  if(waiting && isAuto() && !paused){
+    dwell-=dt;
+    if(dwellBar) dwellBar.style.width=(100-Math.max(0,dwell)/DWELL*100)+"%";
+    if(dwell<=0){ waiting=false; goStop(stopIdx+1); }
+  }
+
+  for(const k in live){
+    const p=live[k];
+    if(!p.anim) continue;
+    p.anim.t=Math.min(1,p.anim.t+dt/STEP);
+    const e=p.anim.t<.5 ? 2*p.anim.t*p.anim.t : 1-Math.pow(-2*p.anim.t+2,2)/2;
+    p.obj.position.x=p.anim.fx+(p.anim.tx-p.anim.fx)*e;
+    p.obj.position.z=p.anim.fz+(p.anim.tz-p.anim.fz)*e;
+    p.obj.position.y=Math.sin(e*Math.PI)*p.anim.hop;
+    if(p.anim.t>=1){ p.obj.position.y=0; p.anim=null; }
+  }
+
+  for(let i=dying.length-1;i>=0;i--){
+    const d=dying[i]; d.obj.userData.die+=dt/0.3;
+    const s=Math.max(0,1-d.obj.userData.die);
+    d.obj.scale.setScalar(s); d.obj.position.y=(1-s)*0.5;
+    if(s<=0){ scene.remove(d.obj); dying.splice(i,1); }
+  }
+
+  controls.update();
+  renderer.render(scene,camera);
+}
+tick();
+}
+
+/* ── Text mirror ─────────────────────────────────────────────────────────── */
+document.getElementById("ix-body").innerHTML = STOPS.map(s=>
+  `<h2>${s.mv} &#183; ${s.title}</h2>`+
+  `<p style="color:var(--fg-2);font-size:13.5px;margin-bottom:8px">${s.note.replace(/<[^>]+>/g,"")}</p>`+
+  s.items.map(it=>`<div class="ix-row"><h3>${it.title}</h3>
+    <p>${it.when} &#8212; ${it.body.replace(/<[^>]+>/g,"")}</p></div>`).join("")
+).join("");
+
+const ix=document.getElementById("index");
+const openIx=()=>ix.classList.add("on");
+document.getElementById("btn-index").addEventListener("click",openIx);
+document.getElementById("btn-index2").addEventListener("click",openIx);
+document.getElementById("ix-close").addEventListener("click",()=>ix.classList.remove("on"));
 </script>
 
 </body>

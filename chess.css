@@ -1,0 +1,876 @@
+/* ==========================================================================
+   Matthew Zhu — portfolio design system
+   Concept: annotated game. Tournament bulletin typography, analog-clock
+   palette, board geometry as layout.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tokens
+   Dark = "from the dark squares". Light = "from the light squares".
+   Neutrals are warm-biased toward the accent; nothing here is a pure grey.
+   -------------------------------------------------------------------------- */
+:root {
+  --ground:    #100E0B;
+  --ground-2:  #191510;
+  --surface:   #1E1A13;
+  --surface-2: #262117;
+  --line:      rgba(237, 231, 218, 0.11);
+  --line-2:    rgba(237, 231, 218, 0.05);
+  --text:      #EDE7DA;
+  --text-2:    #A69C88;
+  --text-3:    #766D5C;
+  --accent:    #D4453A;  /* clock flag */
+  --accent-2:  #E0A93F;  /* brass */
+  --sq-light:  rgba(237, 231, 218, 0.055);
+  --sq-dark:   rgba(237, 231, 218, 0.015);
+  --eval-fill: #EDE7DA;
+  --eval-void: #241F17;
+
+  --shadow: 0 18px 44px -22px rgba(0, 0, 0, 0.85);
+
+  --display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --body:    "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --mono:    "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --figurine: "Segoe UI Symbol", "Apple Symbols", "Noto Sans Symbols 2", serif;
+
+  --f-xs:   0.72rem;
+  --f-sm:   0.82rem;
+  --f-base: 1.0625rem;
+  --f-lg:   1.22rem;
+  --f-xl:   1.6rem;
+  --f-2xl:  clamp(2rem, 4.4vw, 3rem);
+  --f-3xl:  clamp(3.1rem, 10.5vw, 7.4rem);
+
+  --rail: 74px;
+  --shell: 1140px;
+  --gut: clamp(20px, 5vw, 56px);
+
+  --ease: cubic-bezier(0.22, 0.68, 0.3, 1);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --ground:    #EFEAE0;
+    --ground-2:  #E6E0D3;
+    --surface:   #F7F3EA;
+    --surface-2: #EFE9DC;
+    --line:      rgba(21, 18, 13, 0.14);
+    --line-2:    rgba(21, 18, 13, 0.06);
+    --text:      #16130E;
+    --text-2:    #57503F;
+    --text-3:    #8B8371;
+    --accent:    #B22B20;
+    --accent-2:  #8A6210;
+    --sq-light:  rgba(21, 18, 13, 0.05);
+    --sq-dark:   rgba(21, 18, 13, 0.015);
+    --eval-fill: #16130E;
+    --eval-void: #D8D1C1;
+    --shadow: 0 18px 40px -24px rgba(60, 48, 28, 0.5);
+  }
+}
+
+/* The board flip wins over the OS preference, in both directions. */
+:root[data-theme="light"] {
+  --ground:    #EFEAE0;
+  --ground-2:  #E6E0D3;
+  --surface:   #F7F3EA;
+  --surface-2: #EFE9DC;
+  --line:      rgba(21, 18, 13, 0.14);
+  --line-2:    rgba(21, 18, 13, 0.06);
+  --text:      #16130E;
+  --text-2:    #57503F;
+  --text-3:    #8B8371;
+  --accent:    #B22B20;
+  --accent-2:  #8A6210;
+  --sq-light:  rgba(21, 18, 13, 0.05);
+  --sq-dark:   rgba(21, 18, 13, 0.015);
+  --eval-fill: #16130E;
+  --eval-void: #D8D1C1;
+  --shadow: 0 18px 40px -24px rgba(60, 48, 28, 0.5);
+}
+
+:root[data-theme="dark"] {
+  --ground:    #100E0B;
+  --ground-2:  #191510;
+  --surface:   #1E1A13;
+  --surface-2: #262117;
+  --line:      rgba(237, 231, 218, 0.11);
+  --line-2:    rgba(237, 231, 218, 0.05);
+  --text:      #EDE7DA;
+  --text-2:    #A69C88;
+  --text-3:    #766D5C;
+  --accent:    #D4453A;
+  --accent-2:  #E0A93F;
+  --sq-light:  rgba(237, 231, 218, 0.055);
+  --sq-dark:   rgba(237, 231, 218, 0.015);
+  --eval-fill: #EDE7DA;
+  --eval-void: #241F17;
+  --shadow: 0 18px 44px -22px rgba(0, 0, 0, 0.85);
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset & base
+   -------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--ground);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: var(--f-base);
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition: background 0.45s var(--ease), color 0.45s var(--ease);
+}
+
+img, canvas { display: block; max-width: 100%; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--ground);
+}
+
+/* --------------------------------------------------------------------------
+   3. Typography
+   -------------------------------------------------------------------------- */
+h1, h2, h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-variation-settings: "SOFT" 0, "WONK" 1;
+  letter-spacing: -0.02em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.mono {
+  font-family: var(--mono);
+  font-size: var(--f-sm);
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.label {
+  font-family: var(--mono);
+  font-size: var(--f-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.prose {
+  max-width: 62ch;
+  color: var(--text-2);
+}
+
+.prose + .prose { margin-top: 1.1em; }
+.prose strong { color: var(--text); font-weight: 600; }
+
+/* --------------------------------------------------------------------------
+   4. Shell & board grid
+   -------------------------------------------------------------------------- */
+.shell {
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: var(--gut);
+}
+
+.section {
+  padding-block: clamp(72px, 11vw, 132px);
+  border-top: 1px solid var(--line-2);
+  position: relative;
+}
+
+/* Faint board underlay bleeding out of the left edge of every section.
+   8 files wide, one rank tall — the substrate, not wallpaper. */
+.section::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  width: 100%;
+  height: 46px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--sq-light) 0 46px,
+    var(--sq-dark) 46px 92px
+  );
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* The band is absolutely positioned, so content needs its own stacking
+   context to stay above it. */
+.section > .shell {
+  position: relative;
+  z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   5. Left rail — evaluation bar + ply readout
+   -------------------------------------------------------------------------- */
+.rail {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: var(--rail);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  z-index: 40;
+  pointer-events: none;
+  border-inline-end: 1px solid var(--line-2);
+}
+
+.eval {
+  width: 9px;
+  height: min(46vh, 360px);
+  background: var(--eval-void);
+  border: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+}
+
+/* White's share grows from the bottom as the game goes on. */
+.eval-fill {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  height: 8%;
+  background: var(--eval-fill);
+  transition: height 0.18s linear;
+}
+
+.eval-mid {
+  position: absolute;
+  inset-inline: -4px;
+  inset-block-start: 50%;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.55;
+}
+
+.eval-score {
+  font-family: var(--mono);
+  font-size: var(--f-xs);
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.rail-phase {
+  writing-mode: vertical-rl;
+  font-family: var(--mono);
+  font-size: var(--f-xs);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  height: 148px;
+  display: flex;
+  align-items: center;
+}
+
+/* --------------------------------------------------------------------------
+   6. Masthead
+   -------------------------------------------------------------------------- */
+.masthead {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 14px var(--gut) 14px calc(var(--rail) + 8px);
+  background: color-mix(in srgb, var(--ground) 88%, transparent);
+  backdrop-filter: blur(14px) saturate(1.2);
+  border-block-end: 1px solid var(--line-2);
+}
+
+.wordmark {
+  font-family: var(--mono);
+  font-size: var(--f-sm);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.wordmark .fig {
+  font-family: var(--figurine);
+  color: var(--accent);
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+}
+
+.nav a {
+  display: block;
+  padding: 7px 12px;
+  font-family: var(--mono);
+  font-size: var(--f-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  position: relative;
+  transition: color 0.2s var(--ease);
+}
+
+.nav a:hover,
+.nav a:focus-visible,
+.nav a[aria-current="true"] { color: var(--text); }
+
+/* Legal-move dot, straight off an analysis board. */
+.nav a::after {
+  content: "";
+  position: absolute;
+  inset-block-end: 2px;
+  inset-inline-start: 50%;
+  translate: -50% 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0;
+  scale: 0.4;
+  transition: opacity 0.2s var(--ease), scale 0.2s var(--ease);
+}
+
+.nav a:hover::after,
+.nav a:focus-visible::after,
+.nav a[aria-current="true"]::after { opacity: 1; scale: 1; }
+
+.flip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 13px;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text-2);
+  font-family: var(--mono);
+  font-size: var(--f-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.22s var(--ease), color 0.22s var(--ease);
+}
+
+.flip:hover { border-color: var(--accent); color: var(--text); }
+
+.flip-glyph {
+  width: 13px;
+  height: 13px;
+  background-image: linear-gradient(
+    135deg,
+    var(--text) 0 50%,
+    transparent 50% 100%
+  );
+  border: 1px solid var(--text-2);
+  transition: rotate 0.45s var(--ease);
+}
+
+.flip:hover .flip-glyph { rotate: 180deg; }
+
+/* --------------------------------------------------------------------------
+   7. Hero
+   -------------------------------------------------------------------------- */
+.hero {
+  padding-block: clamp(52px, 9vw, 104px) clamp(64px, 10vw, 118px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.78fr);
+  gap: clamp(32px, 6vw, 72px);
+  align-items: center;
+}
+
+.hero-name {
+  font-size: var(--f-3xl);
+  font-weight: 700;
+  font-variation-settings: "SOFT" 0, "WONK" 1, "opsz" 144;
+  letter-spacing: -0.045em;
+  line-height: 0.86;
+}
+
+.hero-name em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.hero-sub {
+  margin-block-start: 22px;
+  font-size: var(--f-lg);
+  color: var(--text-2);
+  max-width: 34ch;
+  line-height: 1.42;
+}
+
+/* PGN tag-pair block: the bio, in the format the subject actually uses. */
+.tags {
+  margin-block-start: 34px;
+  font-family: var(--mono);
+  font-size: var(--f-sm);
+  line-height: 1.95;
+  color: var(--text-3);
+  border-inline-start: 2px solid var(--accent);
+  padding-inline-start: 18px;
+}
+
+.tags div { white-space: nowrap; overflow-x: auto; }
+.tags .k { color: var(--text-2); }
+.tags .v { color: var(--text); }
+
+.hero-cta {
+  margin-block-start: 36px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 22px;
+  font-family: var(--mono);
+  font-size: var(--f-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid var(--line);
+  color: var(--text-2);
+  transition: border-color 0.22s var(--ease), color 0.22s var(--ease),
+              translate 0.22s var(--ease);
+}
+
+.btn:hover { border-color: var(--accent); color: var(--text); translate: 0 -2px; }
+
+.btn-solid {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #FBF7EF;
+}
+
+.btn-solid:hover { color: #FBF7EF; filter: brightness(1.1); }
+
+.board-wrap { position: relative; }
+
+#tour {
+  width: 100%;
+  aspect-ratio: 1;
+  border: 1px solid var(--line);
+}
+
+.board-caption {
+  margin-block-start: 12px;
+  font-family: var(--mono);
+  font-size: var(--f-xs);
+  color: var(--text-3);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   8. Section headings — move numbers in figurine notation
+   -------------------------------------------------------------------------- */
+.move-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-block-end: 12px;
+}
+
+.move-no {
+  font-family: var(--mono);
+  font-size: var(--f-lg);
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.move-fig {
+  font-family: var(--figurine);
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+  color: var(--accent);
+  line-height: 1;
+}
+
+.move-title {
+  font-size: var(--f-2xl);
+  font-weight: 600;
+}
+
+.move-gloss {
+  margin-block-end: clamp(34px, 5vw, 56px);
+  color: var(--text-3);
+  font-family: var(--mono);
+  font-size: var(--f-sm);
+}
+
+/* --------------------------------------------------------------------------
+   9. Scoresheet — experience as an annotated game score
+   -------------------------------------------------------------------------- */
+.score { display: flex; flex-direction: column; gap: 4px; }
+
+.ply {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: clamp(16px, 3vw, 40px);
+  padding-block: 28px;
+  border-block-start: 1px solid var(--line-2);
+}
+
+.ply:first-child { border-block-start: 0; }
+
+.ply-when {
+  font-family: var(--mono);
+  font-size: var(--f-xs);
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.7;
+  padding-block-start: 6px;
+}
+
+.ply-role {
+  font-family: var(--display);
+  font-size: var(--f-xl);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.ply-org {
+  font-family: var(--mono);
+  font-size: var(--f-sm);
+  color: var(--accent);
+  margin-block-start: 4px;
+}
+
+/* Bullets set as variations — indented behind a rule, the way analysis is. */
+.variations {
+  margin-block-start: 16px;
+  padding-inline-start: 18px;
+  border-inline-start: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  list-style: none;
+  color: var(--text-2);
+  font-size: 0.97rem;
+  max-width: 68ch;
+}
+
+.variations li { position: relative; }
+
+.variations li::before {
+  content: "—";
+  position: absolute;
+  inset-inline-start: -32px;
+  color: var(--text-3);
+  font-family: var(--mono);
+  font-size: var(--f-xs);
+  inline-size: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   10. Repertoire table — skills
+   -------------------------------------------------------------------------- */
+.repertoire {
+  display: grid;
+  gap: 0;
+  border-block-start: 1px solid var(--line-2);
+}
+
+.rep-row {
+  display: grid;
+  grid-template-columns: 168px minmax(0, 1fr);
+  gap: clamp(14px, 3vw, 32px);
+  padding-block: 20px;
+  border-block-end: 1px solid var(--line-2);
+  align-items: start;
+}
+
+.rep-key {
+  font-family: var(--mono);
+  font-size: var(--f-xs);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  padding-block-start: 5px;
+}
+
+.rep-vals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.chip {
+  font-family: var(--mono);
+  font-size: var(--f-sm);
+  padding: 4px 11px;
+  border: 1px solid var(--line);
+  color: var(--text-2);
+  transition: border-color 0.2s var(--ease), color 0.2s var(--ease),
+              background 0.2s var(--ease);
+}
+
+.chip:hover {
+  border-color: var(--accent);
+  color: var(--text);
+  background: var(--surface);
+}
+
+/* --------------------------------------------------------------------------
+   11. Combinations — project cards
+   -------------------------------------------------------------------------- */
+.combos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 1px;
+  background: var(--line-2);
+  border: 1px solid var(--line-2);
+}
+
+.combo {
+  background: var(--ground);
+  padding: 30px 28px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  position: relative;
+  isolation: isolate;
+  transition: background 0.3s var(--ease);
+}
+
+/* Checkered wash resolves on hover — the square lighting up. */
+.combo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    repeating-conic-gradient(var(--sq-light) 0% 25%, transparent 0% 50%);
+  background-size: 44px 44px;
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
+}
+
+.combo:hover { background: var(--surface); }
+.combo:hover::before { opacity: 1; }
+
+.combo-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.combo-sq {
+  font-family: var(--mono);
+  font-size: var(--f-xs);
+  letter-spacing: 0.14em;
+  color: var(--text-3);
+}
+
+.combo-when {
+  font-family: var(--mono);
+  font-size: var(--f-xs);
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.combo h3 {
+  font-size: 1.45rem;
+  font-weight: 600;
+}
+
+.combo p {
+  color: var(--text-2);
+  font-size: 0.95rem;
+  flex: 1;
+}
+
+.combo-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: var(--f-xs);
+  color: var(--text-3);
+}
+
+.combo-tech span::after { content: " ·"; }
+.combo-tech span:last-child::after { content: ""; }
+
+.combo-links {
+  display: flex;
+  gap: 18px;
+  padding-block-start: 6px;
+  font-family: var(--mono);
+  font-size: var(--f-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.combo-links a {
+  color: var(--text-3);
+  border-block-end: 1px solid transparent;
+  padding-block-end: 2px;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.combo-links a:hover { color: var(--accent); border-color: var(--accent); }
+
+/* --------------------------------------------------------------------------
+   12. Crosstable — achievements
+   -------------------------------------------------------------------------- */
+.crosstable {
+  border-block-start: 1px solid var(--line-2);
+  max-width: 74ch;
+}
+
+.result {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: baseline;
+  padding-block: 15px;
+  border-block-end: 1px solid var(--line-2);
+}
+
+.result-name { color: var(--text); }
+.result-name .qual { color: var(--text-3); }
+
+.result-year {
+  font-family: var(--mono);
+  font-size: var(--f-sm);
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------------------
+   13. Endgame — contact
+   -------------------------------------------------------------------------- */
+.endgame-mail {
+  display: inline-block;
+  font-family: var(--display);
+  font-size: clamp(1.7rem, 5.2vw, 3.2rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-block: 8px 30px;
+  border-block-end: 2px solid var(--line);
+  padding-block-end: 6px;
+  transition: border-color 0.25s var(--ease), color 0.25s var(--ease);
+  word-break: break-word;
+}
+
+.endgame-mail:hover { color: var(--accent); border-color: var(--accent); }
+
+.elsewhere {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   14. Footer — the result line
+   -------------------------------------------------------------------------- */
+.colophon {
+  border-block-start: 1px solid var(--line-2);
+  padding-block: 40px 56px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--mono);
+  font-size: var(--f-xs);
+  color: var(--text-3);
+  letter-spacing: 0.08em;
+}
+
+.colophon .star { color: var(--accent); font-size: var(--f-lg); line-height: 1; }
+
+/* --------------------------------------------------------------------------
+   15. Motion
+   -------------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  translate: 0 18px;
+  transition: opacity 0.7s var(--ease), translate 0.7s var(--ease);
+}
+
+.reveal.in { opacity: 1; translate: 0 0; }
+
+.reveal[data-delay="1"] { transition-delay: 0.08s; }
+.reveal[data-delay="2"] { transition-delay: 0.16s; }
+.reveal[data-delay="3"] { transition-delay: 0.24s; }
+
+/* --------------------------------------------------------------------------
+   16. Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 940px) {
+  :root { --rail: 0px; }
+  .rail { display: none; }
+  .masthead { padding-inline-start: var(--gut); }
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 44px;
+  }
+  .board-wrap { order: -1; max-width: 420px; }
+}
+
+@media (max-width: 720px) {
+  .masthead {
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    padding-block: 11px;
+  }
+  .nav { flex-wrap: wrap; margin-inline-start: -12px; }
+  .ply { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .ply-when { padding-block-start: 0; }
+  .rep-row { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .rep-key { padding-block-start: 0; }
+  .combos { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* --------------------------------------------------------------------------
+   17. Reduced motion — the tour holds still, the reveals just appear
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1; translate: 0 0; }
+}

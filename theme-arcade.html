@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MATTHEW ZHU — ARCADE</title>
+<meta name="description" content="Matthew Zhu — Computer Science at Waterloo, software engineering intern at Ciena, Canadian chess National Master.">
+<meta name="theme-color" content="#06060B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik:wght@400;500&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="arcade.css">
+</head>
+<body>
+
+<div id="crt"></div><div id="glow"></div>
+
+<div id="attract">
+  <div>
+    <div class="logo">MATTHEW<br>ZHU</div>
+    <div class="tagline">&#9670; CS @ WATERLOO &#183; NATIONAL MASTER &#9670;</div>
+    <div class="press">PRESS START</div>
+    <div class="coin">insert coin &#183; click anywhere</div>
+  </div>
+</div>
+
+<div id="cab">
+  <div id="hud">
+    <span><span class="k">1UP</span> <span class="v" id="h-score">002251</span></span>
+    <span class="hi"><span class="k">HI-SCORE</span> <span class="v">002251</span></span>
+    <span class="sp"></span>
+    <span class="v" id="h-stage">MENU</span>
+    <span class="cr">CREDITS 01</span>
+  </div>
+
+  <div id="screen">
+
+    <section class="scr on" id="s-menu">
+      <div class="scr-title">SELECT MODE</div>
+      <div class="scr-sub">&#9662; arrow keys / click &#183; enter to start</div>
+      <div class="menu" id="menu"></div>
+    </section>
+
+    <section class="scr" id="s-player">
+      <button class="back px" data-back>&#9664; BACK</button>
+      <div class="scr-title">PLAYER 1</div>
+      <div class="scr-sub">stats and origin story</div>
+      <div class="pnl">
+        <h3>BIO</h3>
+        <p>Computer Science at the University of Waterloo, class of 2029. Currently a
+        <strong>software engineering intern at Ciena</strong> in Ottawa &#8212; porting an 1,800-line C
+        optical-planning model to Rust and rebuilding its neural networks in HuggingFace Candle so
+        inference runs on hardware a decade older than the model.</p>
+        <p>Chess came first. Canadian <strong>National Master</strong>, Team Canada at the 2019 World Cadet
+        Championships. A decade of it taught me the habit that transfers cleanest to engineering:
+        understand the position before you touch a piece.</p>
+        <p><strong>Open to co-op terms in 2027.</strong></p>
+      </div>
+      <div class="pnl">
+        <h3>CIENA</h3>
+        <div class="when">MAY 2026 &#8212; NOW &#183; OTTAWA, ON</div>
+        <ul>
+          <li>Architected a <strong>Rust port of an 1,800-line C optical-planning model</strong> (PyO3/maturin, cbindgen)</li>
+          <li>Built <strong>7 neural network models</strong> in HuggingFace Candle, replicating a TensorFlow/ONNX architecture</li>
+          <li>Engineered an <strong>FFI bridge</strong> exposing the Rust/Candle backend to a C network simulator</li>
+          <li>ONNX/Candle inference with <strong>zero divergence</strong> across a ~500-case regression suite</li>
+          <li>Cross-compiled a static binary for legacy Linux and Docker</li>
+        </ul>
+      </div>
+      <div class="pnl">
+        <h3>AUXILIUM</h3>
+        <div class="when">JUN 2025 &#8212; NOW &#183; REMOTE</div>
+        <ul>
+          <li>Pandas matching algorithm ranking mentor&#8211;student compatibility</li>
+          <li>Weighted criteria and constraint filtering &#8212; match rate <strong>+36%</strong></li>
+          <li>Indexed SQLite store for repeatable matching runs</li>
+        </ul>
+      </div>
+      <div class="pnl">
+        <h3>COACH / TUTOR</h3>
+        <div class="when">2025 &#8212; NOW</div>
+        <ul>
+          <li>10+ students across chess, maths, physics and chemistry</li>
+          <li><a href="tutoring.html" style="color:var(--mag)">Lessons and reviews &#8594;</a></li>
+        </ul>
+      </div>
+      <div class="pnl">
+        <h3>UNIVERSITY OF WATERLOO</h3>
+        <div class="when">2025 &#8212; 2029 &#183; BCS HONOURS CS, CO-OP</div>
+        <ul>
+          <li>GPA 3.9 / 4.0</li>
+          <li><strong>Ren&#233; Descartes National Scholarship</strong> &#8212; $25,000, 1 of 10 in Canada</li>
+          <li>Object-Oriented Software Dev, Logic and Computation, Elementary Algorithm Design</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="scr" id="s-stages">
+      <button class="back px" data-back>&#9664; BACK</button>
+      <div class="scr-title">STAGE SELECT</div>
+      <div class="scr-sub">six stages cleared</div>
+      <div class="stages" id="stages"></div>
+    </section>
+
+    <section class="scr" id="s-power">
+      <button class="back px" data-back>&#9664; BACK</button>
+      <div class="scr-title">POWER-UPS</div>
+      <div class="scr-sub">collected inventory</div>
+      <div id="power"></div>
+    </section>
+
+    <section class="scr" id="s-scores">
+      <button class="back px" data-back>&#9664; BACK</button>
+      <div class="scr-title">HIGH SCORES</div>
+      <div class="scr-sub">all-time leaderboard</div>
+      <table class="hs"><thead><tr><th>RK</th><th>SCORE</th><th>ACHIEVEMENT</th><th>YR</th></tr></thead>
+      <tbody id="scores"></tbody></table>
+    </section>
+
+    <section class="scr" id="s-continue">
+      <button class="back px" data-back>&#9664; BACK</button>
+      <div class="cont">
+        <div class="count" id="count">9</div>
+        <div class="msg">CONTINUE?</div>
+        <a class="mail" href="mailto:m49zhu@uwaterloo.ca">m49zhu@uwaterloo.ca</a>
+        <div class="btns">
+          <a class="btn btn-go" href="mailto:m49zhu@uwaterloo.ca">INSERT COIN</a>
+          <a class="btn" href="MATTHEW_ZHU_SWE.pdf">RESUME:SWE</a>
+          <a class="btn" href="MATTHEW_ZHU_MLE.pdf">RESUME:MLE</a>
+          <a class="btn" href="https://github.com/chessdudeo7">GITHUB</a>
+          <a class="btn" href="https://www.linkedin.com/in/matthewzhu99">LINKEDIN</a>
+          <a class="btn" href="tutoring.html">TUTORING</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+var MENU=[
+  ["player","PLAYER 1","bio, work, education"],
+  ["stages","STAGE SELECT","six projects"],
+  ["power","POWER-UPS","languages and tools"],
+  ["scores","HIGH SCORES","chess and maths record"],
+  ["continue","CONTINUE?","get in touch"]
+];
+
+var STAGES=[
+  ["ClipFarm","Volleyball VODs into highlight clips. RF-DETR ball tracking finds rally contacts, refined by YOLOv8-pose. Serverless GPU inference cut tracking from 13 min a game to 8.7, then an R2 cache and skip-decode sampling took another 31% off.","NEXT.JS / FASTAPI / PYTORCH / DOCKER","https://github.com/chessdudeo7"],
+  ["HUME","A structural firewall for an online belief-revision engine, built to block prompt injection. Confidence is revised from structured provenance rather than raw text, with structural OOD detection and a 19-probe adversarial battery.","PYTHON / BAYESIAN INFERENCE","https://github.com/chessdudeo7"],
+  ["Lumi","FastAPI backend for mentor matching and math problem retrieval. LangChain routes tasks; a ChromaDB RAG system searches 500+ contest problems with topic-aware filtering.","FASTAPI / LANGCHAIN / CHROMADB","https://github.com/chessdudeo7"],
+  ["KnightMare","A chess engine that learns instead of searching. A PyTorch CNN over 100,000+ grandmaster games returns a move distribution &#8212; no alpha-beta anywhere. Modal's cloud GPUs made it shippable inside a hackathon.","PYTORCH / MODAL / NUMPY","project-knightmare.html"],
+  ["Chess4All","The training platform I wish I'd had at 1400. 30+ endgame studies, puzzles on a board component hand-written in vanilla JS, and an annotated master game database. Firebase handles auth and progress.","JAVASCRIPT / FIREBASE / FLASK","project-chess4all.html"],
+  ["OTMaC","The official site for the Ottawa Math Team Contest, which I help organize. Format, past papers, prep guides and team registration, on GitHub Pages so any organizer can ship via pull request.","HTML / CSS / JS / PAGES","project-otmac.html"]
+];
+
+var POWER=[
+  ["LANGUAGES",["Python","C / C++","Rust","Java","TypeScript","JavaScript","PHP"]],
+  ["AI / ML",["PyTorch","Hugging Face","Candle","ONNX","LangChain","RAG","CNNs","Modal"]],
+  ["BACKEND",["FastAPI","Flask","REST","PostgreSQL","SQLite","Supabase","Firebase","Pandas"]],
+  ["FRONTEND",["React","Next.js","Node.js","HTML5","CSS3","Pygame","Hugo"]],
+  ["TOOLS",["Linux","Git","Docker","Cloudflare","Celery / Redis","Jira","Bitbucket","LaTeX"]],
+  ["CERTS",["Stanford CS 230 Deep Learning","Google ML Course"]]
+];
+
+/* Scores are real numbers where a real number exists. */
+var SCORES=[
+  ["2251","Chess rating &#183; peak CFC (National Master)","2023"],
+  ["2136","Chess rating &#183; peak FIDE","2023"],
+  ["25000","Ren&#233; Descartes National Scholarship &#183; 1 of 10 in Canada","2025"],
+  ["1800","C lines ported to Rust at Ciena","2026"],
+  ["100000","Grandmaster games trained on &#183; KnightMare","2025"],
+  ["500","Contest problems indexed &#183; Lumi","2026"],
+  ["100","CMO Rep&#234;chage &#183; top 100 nationally, 2nd Eastern Ontario","2025"],
+  ["40","IB Diploma score &#183; out of 45","2025"],
+  ["19","Adversarial probes &#183; HUME test battery","2026"],
+  ["1","Team Canada &#183; World Cadet Chess Championships","2019"]
+];
+
+var $=function(s){return document.querySelector(s)};
+var menuEl=$("#menu"), screenEl=$("#screen"), hStage=$("#h-stage"), hScore=$("#h-score");
+var cur=0, at="menu";
+
+/* ── Menu ── */
+MENU.forEach(function(m,i){
+  var b=document.createElement("button");
+  b.type="button"; b.className="mi"; b.setAttribute("aria-current",String(i===0));
+  b.innerHTML='<span class="sel">&#9654;</span><span class="no">'+String(i+1).padStart(2,"0")+
+    '</span><span>'+m[1]+'<br><span class="sub">'+m[2]+"</span></span>";
+  b.addEventListener("click",function(){cur=i;go(m[0])});
+  b.addEventListener("mouseenter",function(){cur=i;mark()});
+  menuEl.appendChild(b);
+});
+
+function mark(){
+  [].forEach.call(menuEl.children,function(c,i){c.setAttribute("aria-current",String(i===cur))});
+}
+
+function go(id){
+  at=id;
+  ["menu","player","stages","power","scores","continue"].forEach(function(k){
+    $("#s-"+k).classList.toggle("on",k===id);
+  });
+  hStage.textContent=id==="menu"?"MENU":(MENU.filter(function(m){return m[0]===id})[0]||[,"MENU"])[1];
+  screenEl.scrollTop=0;
+}
+
+[].forEach.call(document.querySelectorAll("[data-back]"),function(b){
+  b.addEventListener("click",function(){go("menu")});
+});
+
+/* ── Stages ── */
+$("#stages").innerHTML=STAGES.map(function(s,i){
+  return '<a class="stage" href="'+s[3]+'"><div class="n">STAGE '+String(i+1).padStart(2,"0")+
+    '</div><h4>'+s[0]+"</h4><p>"+s[1]+'</p><div class="tech">'+s[2]+"</div></a>";
+}).join("");
+
+/* ── Power-ups ── */
+$("#power").innerHTML=POWER.map(function(p){
+  return '<div class="pnl"><h3>'+p[0]+'</h3><div class="pu">'+
+    p[1].map(function(x){return "<span>"+x+"</span>"}).join("")+"</div></div>";
+}).join("");
+
+/* ── Scores ── */
+$("#scores").innerHTML=SCORES.map(function(s,i){
+  return "<tr><td class='r'>"+String(i+1).padStart(2,"0")+"</td><td class='s'>"+
+    String(s[0]).padStart(6,"0")+"</td><td class='n'>"+s[1]+"</td><td>"+s[2]+"</td></tr>";
+}).join("");
+
+/* ── Attract ── */
+var attract=$("#attract"), started=false;
+function start(){
+  if(started) return; started=true;
+  attract.classList.add("off");
+  setTimeout(function(){attract.remove()},400);
+}
+attract.addEventListener("click",start);
+
+/* ── Keys ── */
+document.addEventListener("keydown",function(e){
+  if(!started){ if(e.key!=="Tab"){e.preventDefault();start();} return; }
+  if(e.metaKey||e.ctrlKey||e.altKey) return;
+  if(at==="menu"){
+    if(e.key==="ArrowDown"||e.key==="s"){e.preventDefault();cur=(cur+1)%MENU.length;mark()}
+    else if(e.key==="ArrowUp"||e.key==="w"){e.preventDefault();cur=(cur+MENU.length-1)%MENU.length;mark()}
+    else if(e.key==="Enter"||e.key===" "){e.preventDefault();go(MENU[cur][0])}
+  } else if(e.key==="Escape"||e.key==="Backspace"){e.preventDefault();go("menu")}
+});
+
+/* ── CONTINUE? countdown, looping like a real cabinet ── */
+if(!reduced){
+  var n=9, el=$("#count");
+  setInterval(function(){
+    if(at!=="continue") return;
+    n=n>0?n-1:9; el.textContent=n;
+  },1000);
+}
+
+/* ── Score ticks up as you explore: a real progress readout ── */
+var seen={}, base=2251;
+var origGo=go;
+go=function(id){origGo(id); if(id!=="menu"&&!seen[id]){seen[id]=1;
+  base+=1000; hScore.textContent=String(base).padStart(6,"0");}};
+})();
+</script>
+</body>
+</html>

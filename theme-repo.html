@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>matthew-zhu — git log</title>
+<meta name="description" content="Matthew Zhu — Computer Science at Waterloo, software engineering intern at Ciena, Canadian chess National Master. Experience and projects as a commit history.">
+<meta name="theme-color" content="#121520">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Karla:wght@400;500;700&family=Martian+Mono:wdth,wght@75..112,400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="repo.css">
+</head>
+<body>
+
+<div id="app">
+
+  <header id="topbar">
+    <span class="repo-path">chessdudeo7/<b>matthew-zhu</b></span>
+    <span class="head-ref"><span class="dot"></span> HEAD &#8594; main</span>
+    <button class="head-ref" id="btn-readme" type="button">README.md</button>
+    <span class="topbar-spacer"></span>
+    <span class="stat" id="stat-count"></span>
+    <a class="head-ref" href="MATTHEW_ZHU_SWE.pdf">resume:swe</a>
+    <a class="head-ref" href="MATTHEW_ZHU_MLE.pdf">resume:mle</a>
+    <a class="head-ref" href="mailto:m49zhu@uwaterloo.ca">email</a>
+    <a class="head-ref" href="https://github.com/chessdudeo7">github</a>
+    <a class="head-ref" href="https://www.linkedin.com/in/matthewzhu99">linkedin</a>
+  </header>
+
+  <div id="main">
+    <nav id="branches" aria-label="Branches"></nav>
+
+    <div id="logwrap">
+      <div id="log">
+        <svg id="rails" aria-hidden="true"></svg>
+      </div>
+    </div>
+
+    <aside id="show" aria-live="polite">
+      <button class="close-show" id="close-show" type="button">close</button>
+      <div id="show-inner"></div>
+    </aside>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ══ Branches — the only place colour lives ══════════════════════════════ */
+  var BRANCHES = {
+    main:  { lane: 0, color: "#C3CADA", label: "main" },
+    chess: { lane: 1, color: "#E0603C", label: "chess" },
+    math:  { lane: 2, color: "#E0B33C", label: "math" },
+    web:   { lane: 3, color: "#3FB6A8", label: "web" },
+    ml:    { lane: 4, color: "#7B7BE8", label: "ml" },
+    sys:   { lane: 5, color: "#D14A6A", label: "systems" }
+  };
+
+  /* ══ History, newest first. Merges are real: KnightMare genuinely is
+        chess merged into ml, Chess4All is chess merged into web. ═══════════ */
+  var LOG = [
+    {
+      sha: "e7a3f91", date: "2026-07-14", br: "ml", subject: "HUME — structural firewall for a belief-revision engine",
+      body: "Confidence gets revised from <strong>structured provenance</strong> rather than from raw text, so a persuasive sentence can't move the posterior on its own.",
+      diff: [["a", "log-odds likelihood-ratio update"], ["a", "structural OOD detection (in-model vs out-of-model)"],
+             ["a", "perception seam: NegEx/ConText negation + modality scoping"], ["a", "19-probe adversarial battery"],
+             ["d", "trusting text at face value"]],
+      links: [["GitHub", "https://github.com/chessdudeo7", 1]]
+    },
+    {
+      sha: "9b2e77a", date: "2026-06-28", br: "sys", subject: "Cross-compile a statically-linked binary for legacy targets",
+      body: "The model was useless if it couldn't run where the hardware actually lives.",
+      diff: [["a", "static musl build, no runtime deps"], ["a", "ML inference on legacy Linux + Docker"], ["d", "glibc version pinning"]],
+      links: []
+    },
+    {
+      sha: "4d81c30", date: "2026-06-05", br: "sys", merge: "ml", subject: "Merge branch 'ml' — FFI bridge from Candle to the C simulator",
+      body: "Exposes the Rust/Candle backend as a library a <strong>C-based network simulator</strong> can call directly.",
+      diff: [["c", "Merge: ml → systems"], ["a", "cbindgen C headers"], ["a", "stable ABI across the boundary"], ["a", "Rust/Candle ML backend as a linkable library"]],
+      links: []
+    },
+    {
+      sha: "f0c1a4d", date: "2026-05-04", br: "main", merge: "sys", refs: [["HEAD → main", "head"]],
+      subject: "Merge branch 'systems' — Software Engineering Intern, Ciena",
+      body: "Ottawa, ON. Porting an <strong>1,800-line C optical-planning model</strong> to Rust and rebuilding its neural networks so inference runs on hardware a decade older than the model.",
+      diff: [["c", "Merge: systems → main"], ["a", "Rust port via PyO3/maturin + cbindgen"], ["a", "7 neural nets in HuggingFace Candle"],
+             ["a", "ONNX/Candle inference mode"], ["a", "zero divergence across ~500 regression cases"], ["d", "TensorFlow-only inference path"]],
+      links: []
+    },
+    {
+      sha: "c15d0b2", date: "2026-03-19", br: "ml", merge: "web", subject: "Merge branch 'web' — ClipFarm: volleyball VOD → highlight reel",
+      body: "A full-stack pipeline that finds rallies in raw game footage and cuts them into clips.",
+      diff: [["c", "Merge: web → ml"], ["a", "RF-DETR ball tracking, rally-contact detection"], ["a", "YOLOv8-pose refinement pass"],
+             ["a", "serverless GPU inference w/ CPU fallback"], ["a", "Cloudflare R2 cache keyed by video hash"],
+             ["d", "13.0 min per game"], ["a", " 8.7 min per game"], ["a", "another 31% off via skip-decode sampling"]],
+      links: [["GitHub", "https://github.com/chessdudeo7", 1]]
+    },
+    {
+      sha: "3ec6b58", date: "2026-02-21", br: "chess", subject: "Represent Waterloo at the Canadian University Chess Championships",
+      body: "", diff: [["a", "university-level competition"]], links: []
+    },
+    {
+      sha: "77ae914", date: "2026-01-30", br: "ml", merge: "math", subject: "Merge branch 'math' — Lumi: retrieval over contest problems",
+      body: "A FastAPI backend for mentor matching and math problem retrieval, with LangChain routing tasks.",
+      diff: [["c", "Merge: math → ml"], ["a", "ChromaDB RAG over 500+ contest problems"], ["a", "topic-aware filtering"],
+             ["a", "PyMuPDF ingestion pipeline"], ["a", "PyTorch mentor matcher (subject alignment)"]],
+      links: [["GitHub", "https://github.com/chessdudeo7", 1]]
+    },
+    {
+      sha: "2f9c6ab", date: "2026-01-08", br: "sys", root: "main", subject: "Branch 'systems' off main — start writing Rust",
+      body: "", diff: [["a", "rust, pyo3, maturin, cbindgen"], ["a", "FFI, ABI stability, cross-compilation"]], links: []
+    },
+    {
+      sha: "5c37f80", date: "2025-09-02", br: "main", refs: [["v-descartes", "tag"]],
+      subject: "Enrol: University of Waterloo, BCS Honours CS with Co-op",
+      body: "<strong>René Descartes National Scholarship</strong> — $25,000, one of ten awarded across Canada. GPA 3.9/4.0.",
+      diff: [["a", "Object-Oriented Software Development"], ["a", "Logic and Computation"],
+             ["a", "Elementary Algorithm Design and Data Abstraction"], ["a", "Stanford CS 230, Google ML certification"]],
+      links: []
+    },
+    {
+      sha: "b840d1e", date: "2025-06-16", br: "main", subject: "Software Developer, Auxilium — mentor–student matching",
+      body: "Analyzed historical pairing outcomes to find what actually drives a successful match, then built the algorithm around it.",
+      diff: [["a", "Pandas matching algorithm, weighted criteria"], ["a", "constraint filtering"],
+             ["a", "indexed SQLite for repeatable runs"], ["d", "match rate baseline"], ["a", "match rate +36%"]],
+      links: []
+    },
+    {
+      sha: "a41f7d3", date: "2025-04-11", br: "math", refs: [["v-cmo", "tag"]],
+      subject: "Canadian Mathematical Olympiad Repêchage qualifier",
+      body: "Top 100 nationally. 2nd place in Eastern Ontario.",
+      diff: [["a", "CMO Repêchage qualification"], ["a", "2nd, Eastern Ontario"]], links: []
+    },
+    {
+      sha: "6d90c14", date: "2025-03-01", br: "math", subject: "Harvard–MIT Mathematics Tournament",
+      body: "Competed for the Carleton Math Enrichment Centre.", diff: [["a", "HMMT 2025"]], links: []
+    },
+    {
+      sha: "1c7b402", date: "2025-01-25", br: "ml", merge: "chess", subject: "Merge branch 'chess' — KnightMare, built at ChessHacks",
+      body: "A chess engine that learns instead of searching. No alpha-beta anywhere — a CNN reads the board and returns a move distribution.",
+      diff: [["c", "Merge: chess → ml"], ["a", "PyTorch CNN over 100,000+ grandmaster games"],
+             ["a", "12-channel tensor board encoding"], ["a", "Modal cloud GPUs for training"],
+             ["d", "illegal move suggestions"], ["a", "legal-move masking at inference"]],
+      links: [["Write-up", "project-knightmare.html", 0], ["GitHub", "https://github.com/chessdudeo7/ChessHacks", 1]]
+    },
+    {
+      sha: "8f2a0e6", date: "2024-11-12", br: "ml", root: "main", subject: "Branch 'ml' off main — learn the maths properly",
+      body: "", diff: [["a", "pytorch, numpy, CNNs"], ["a", "Stanford CS 230 Deep Learning"], ["a", "data preprocessing"]], links: []
+    },
+    {
+      sha: "0ab34c7", date: "2024-09-08", br: "web", merge: "math", subject: "Merge branch 'math' — OTMaC contest website",
+      body: "The official site for the <strong>Ottawa Math Team Contest</strong>, which I help organize. Deployed so any organizer can ship an update through a pull request.",
+      diff: [["c", "Merge: math → web"], ["a", "contest format, rules, past papers"], ["a", "team registration flow"], ["a", "GitHub Pages deploy"]],
+      links: [["Write-up", "project-otmac.html", 0], ["Live site", "https://otmac.github.io", 1]]
+    },
+    {
+      sha: "d5e18b9", date: "2024-06-02", br: "web", merge: "chess", subject: "Merge branch 'chess' — Chess4All training platform",
+      body: "The training platform I wish I'd had at 1400. The board component is hand-written vanilla JS — no chess UI library.",
+      diff: [["c", "Merge: chess → web"], ["a", "30+ structured endgame studies"], ["a", "interactive puzzles + hint system"],
+             ["a", "annotated master game database"], ["a", "Firebase auth + per-user progress"]],
+      links: [["Write-up", "project-chess4all.html", 0], ["GitHub", "https://github.com/chessdudeo7/Chess4All", 1]]
+    },
+    {
+      sha: "b02cf47", date: "2024-02-14", br: "web", root: "main", subject: "Branch 'web' off main — ship something people can open",
+      body: "", diff: [["a", "html5, css3, javascript"], ["a", "firebase, firestore"]], links: []
+    },
+    {
+      sha: "7e4d6a0", date: "2023-05-20", br: "chess", refs: [["v-national-master", "tag"]],
+      subject: "Canadian Chess National Master",
+      body: "Peak rating <strong>2251 CFC</strong> / 2136 FIDE. Three times top 3 at the Ontario Championships, twice top 5 nationally.",
+      diff: [["a", "National Master title"], ["d", "2199"], ["a", "2251 CFC"]], links: []
+    },
+    {
+      sha: "c93b1f5", date: "2021-09-07", br: "main", subject: "Merivale High School — IB Diploma",
+      body: "97% OSSD average, 40/45 IB. Sevens in HL Math, HL Physics, SL Chemistry.",
+      diff: [["a", "IB Diploma, 40/45"], ["a", "OSSD, 97% average"]], links: []
+    },
+    {
+      sha: "4a71e88", date: "2021-09-01", br: "math", root: "main", subject: "Branch 'math' off main — contest maths",
+      body: "", diff: [["a", "AIME qualification (3×)"], ["a", "olympiad problem solving"]], links: []
+    },
+    {
+      sha: "2b60d19", date: "2019-11-03", br: "chess", refs: [["v-team-canada", "tag"]],
+      subject: "Represent Team Canada at the World Cadet Chess Championships",
+      body: "", diff: [["a", "international competition"], ["a", "Team Canada selection"]], links: []
+    },
+    {
+      sha: "f18c3b2", date: "2014-04-19", br: "chess", root: "main", subject: "Branch 'chess' off main — first rated tournament",
+      body: "", diff: [["a", "a rating"], ["a", "the habit of sitting with a position before touching it"]], links: []
+    },
+    {
+      sha: "0000001", date: "2014-01-01", br: "main", initial: true, subject: "Initial commit",
+      body: "", diff: [["c", "(root)"]], links: []
+    }
+  ];
+
+  var css = getComputedStyle(document.documentElement);
+  var LANE_W = parseFloat(css.getPropertyValue("--lane-w"));
+  var ROW = parseFloat(css.getPropertyValue("--row"));
+
+  var logEl = document.getElementById("log");
+  var rails = document.getElementById("rails");
+  var showEl = document.getElementById("show");
+  var showInner = document.getElementById("show-inner");
+  var enabled = {};
+  var selected = null;
+  var rows = [];
+
+  Object.keys(BRANCHES).forEach(function (k) { enabled[k] = true; });
+
+  function laneX(lane) { return 14 + lane * LANE_W; }
+  function rowY(i) { return i * ROW + ROW / 2; }
+
+  function el(tag, attrs) {
+    var n = document.createElementNS("http://www.w3.org/2000/svg", tag);
+    Object.keys(attrs).forEach(function (k) { n.setAttribute(k, attrs[k]); });
+    return n;
+  }
+
+  function visible() {
+    return LOG.filter(function (c) {
+      if (!enabled[c.br]) { return false; }
+      if (c.merge && !enabled[c.merge]) { return false; }
+      return true;
+    });
+  }
+
+  /* ══ Draw the graph ══════════════════════════════════════════════════════ */
+  function drawRails(list) {
+    while (rails.firstChild) { rails.removeChild(rails.firstChild); }
+
+    var h = list.length * ROW;
+    rails.setAttribute("height", h);
+    rails.setAttribute("width", laneX(6) + 8);
+    rails.style.height = h + "px";
+
+    /* A branch's rail runs from its newest appearance to its oldest. */
+    var span = {};
+    list.forEach(function (c, i) {
+      [c.br, c.merge].forEach(function (b) {
+        if (!b) { return; }
+        if (!span[b]) { span[b] = [i, i]; }
+        span[b][0] = Math.min(span[b][0], i);
+        span[b][1] = Math.max(span[b][1], i);
+      });
+    });
+
+    Object.keys(span).forEach(function (b) {
+      var x = laneX(BRANCHES[b].lane);
+      rails.appendChild(el("line", {
+        x1: x, y1: rowY(span[b][0]), x2: x, y2: rowY(span[b][1]),
+        stroke: BRANCHES[b].color, "stroke-width": 2, "stroke-linecap": "round", opacity: 0.85
+      }));
+    });
+
+    list.forEach(function (c, i) {
+      var cx = laneX(BRANCHES[c.br].lane);
+      var cy = rowY(i);
+
+      /* Merge: the incoming branch curves up into this commit. */
+      if (c.merge && enabled[c.merge]) {
+        var px = laneX(BRANCHES[c.merge].lane);
+        rails.appendChild(el("path", {
+          d: "M " + px + " " + (cy + ROW * 0.62) + " C " + px + " " + (cy + ROW * 0.16) +
+             ", " + cx + " " + (cy + ROW * 0.34) + ", " + cx + " " + cy,
+          fill: "none", stroke: BRANCHES[c.merge].color, "stroke-width": 2, opacity: 0.8
+        }));
+      }
+
+      /* Branch root: fork downward into the branch it came from. */
+      if (c.root && enabled[c.root]) {
+        var fx = laneX(BRANCHES[c.root].lane);
+        rails.appendChild(el("path", {
+          d: "M " + cx + " " + cy + " C " + cx + " " + (cy + ROW * 0.34) +
+             ", " + fx + " " + (cy + ROW * 0.16) + ", " + fx + " " + (cy + ROW * 0.62),
+          fill: "none", stroke: BRANCHES[c.br].color, "stroke-width": 2, opacity: 0.8
+        }));
+      }
+
+      var isMerge = !!c.merge;
+      rails.appendChild(el("circle", {
+        cx: cx, cy: cy, r: isMerge ? 6 : 5,
+        fill: isMerge ? "#121520" : BRANCHES[c.br].color,
+        stroke: BRANCHES[c.br].color, "stroke-width": isMerge ? 2.5 : 1.5
+      }));
+    });
+  }
+
+  /* ══ Rows ════════════════════════════════════════════════════════════════ */
+  function render() {
+    var list = visible();
+
+    rows.forEach(function (r) { r.remove(); });
+    rows = [];
+
+    list.forEach(function (c, i) {
+      var b = BRANCHES[c.br];
+      var row = document.createElement("button");
+      row.type = "button";
+      row.className = "commit";
+      row.style.setProperty("--c", b.color);
+      row.setAttribute("aria-current", "false");
+
+      var refs = (c.refs || []).map(function (r) {
+        return '<span class="ref ' + (r[1] === "head" ? "ref-head" : "ref-tag") + '">' + r[0] + "</span>";
+      }).join("");
+
+      row.innerHTML =
+        "<span></span>" +
+        '<span class="commit-main">' +
+          '<span class="commit-subject">' + c.subject + "</span>" +
+          '<span class="commit-meta">' +
+            '<span class="sha">' + c.sha + "</span>" +
+            '<span class="sep">·</span><span>' + c.date + "</span>" +
+            '<span class="sep">·</span><span>' + b.label + "</span>" +
+            refs +
+          "</span>" +
+        "</span>";
+
+      row.addEventListener("click", function () { select(c, list); });
+      logEl.appendChild(row);
+      rows.push(row);
+    });
+
+    logEl.style.height = (list.length * ROW) + "px";
+    drawRails(list);
+
+    document.getElementById("stat-count").textContent =
+      list.length + " commits · " + Object.keys(enabled).filter(function (k) { return enabled[k]; }).length + " branches";
+
+    if (selected) {
+      var idx = list.indexOf(selected);
+      if (idx >= 0) { rows[idx].setAttribute("aria-current", "true"); }
+    }
+  }
+
+  /* ══ git show ════════════════════════════════════════════════════════════ */
+  function select(c, list) {
+    selected = c;
+    list = list || visible();
+    rows.forEach(function (r, i) {
+      r.setAttribute("aria-current", list[i] === c ? "true" : "false");
+    });
+
+    var b = BRANCHES[c.br];
+    showEl.style.setProperty("--c", b.color);
+
+    var diff = c.diff.map(function (d) {
+      var mark = d[0] === "a" ? "+" : d[0] === "d" ? "-" : " ";
+      return '<div class="' + d[0] + '">' + mark + " " + d[1] + "</div>";
+    }).join("");
+
+    var links = (c.links || []).map(function (l) {
+      return '<a class="lnk ' + (l[2] ? "" : "lnk-go") + '" href="' + l[1] + '">' + l[0] + "</a>";
+    }).join("");
+
+    showInner.innerHTML =
+      '<div class="show-sha">commit <b>' + c.sha + "0f4c9e2b7d13a8" + "</b></div>" +
+      '<h2 class="show-subject">' + c.subject + "</h2>" +
+      '<div class="show-trailer">' +
+        '<span class="k">Author:</span> Matthew Zhu &lt;m49zhu@uwaterloo.ca&gt;<br>' +
+        '<span class="k">Date:</span>   ' + c.date + "<br>" +
+        '<span class="k">Branch:</span> ' + b.label +
+        (c.merge ? '<br><span class="k">Merge:</span>  ' + BRANCHES[c.merge].label + " → " + b.label : "") +
+      "</div>" +
+      (c.body ? '<div class="show-body">' + c.body + "</div>" : "") +
+      '<div class="diff-label">Diff</div>' +
+      '<div class="diff">' + diff + "</div>" +
+      (links ? '<div class="show-links">' + links + "</div>" : "");
+
+    showEl.classList.add("open");
+  }
+
+  /* Below 1100px the detail pane is a full-screen sheet rather than a column,
+     so it must never open by itself — the graph has to be what you land on. */
+  function isSheet() { return window.matchMedia("(max-width: 1100px)").matches; }
+
+  function showReadme(auto) {
+    selected = null;
+    rows.forEach(function (r) { r.setAttribute("aria-current", "false"); });
+    showEl.style.setProperty("--c", BRANCHES.main.color);
+
+    showInner.innerHTML =
+      '<div class="show-sha">chessdudeo7/matthew-zhu · <b>README.md</b></div>' +
+      '<h2 class="show-subject">Matthew Zhu</h2>' +
+      '<div class="show-trailer">' +
+        '<span class="k">Role:</span>     Software Engineering Intern, Ciena<br>' +
+        '<span class="k">School:</span>   University of Waterloo, BCS Honours CS Co-op<br>' +
+        '<span class="k">Status:</span>   Open to co-op terms in 2027' +
+      "</div>" +
+      '<div class="show-body">' +
+        "Computer Science at Waterloo, class of 2029. Right now I'm porting an " +
+        "<strong>1,800-line C optical-planning model</strong> to Rust at Ciena and rebuilding its " +
+        "neural networks in HuggingFace Candle." +
+      "</div>" +
+      '<div class="show-body">' +
+        "Chess came first — Canadian <strong>National Master</strong>, Team Canada at the 2019 World " +
+        "Cadet Championships. A decade of it taught me the habit that transfers cleanest to " +
+        "engineering: understand the position before you touch a piece." +
+      "</div>" +
+      '<div class="diff-label">Branches</div>' +
+      '<div class="diff">' +
+        Object.keys(BRANCHES).map(function (k) {
+          return '<div class="c">  ' + BRANCHES[k].label + "</div>";
+        }).join("") +
+      "</div>" +
+      '<div class="show-links">' +
+        '<a class="lnk lnk-go" href="mailto:m49zhu@uwaterloo.ca">Email</a>' +
+        '<a class="lnk" href="MATTHEW_ZHU_SWE.pdf">Resume · SWE</a>' +
+        '<a class="lnk" href="MATTHEW_ZHU_MLE.pdf">Resume · MLE</a>' +
+        '<a class="lnk" href="tutoring.html">Tutoring</a>' +
+      "</div>";
+
+    if (!(auto && isSheet())) { showEl.classList.add("open"); }
+  }
+
+  /* ══ Branch filters ══════════════════════════════════════════════════════ */
+  var nav = document.getElementById("branches");
+  var label = document.createElement("div");
+  label.className = "rail-label";
+  label.textContent = "Branches";
+  nav.appendChild(label);
+
+  Object.keys(BRANCHES).forEach(function (k) {
+    var b = BRANCHES[k];
+    var n = LOG.filter(function (c) { return c.br === k; }).length;
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "branch-btn";
+    btn.style.setProperty("--c", b.color);
+    btn.setAttribute("aria-pressed", "true");
+    btn.innerHTML = '<span class="swatch"></span><span>' + b.label + '</span><span class="n">' + n + "</span>";
+
+    btn.addEventListener("click", function () {
+      if (k === "main") { return; }        /* main is the trunk; it always draws */
+      enabled[k] = !enabled[k];
+      btn.setAttribute("aria-pressed", String(enabled[k]));
+      render();
+    });
+
+    nav.appendChild(btn);
+  });
+
+  var note = document.createElement("div");
+  note.className = "rail-note";
+  note.innerHTML = "Click a commit to read the diff.<br><br>" +
+    "<kbd>j</kbd> <kbd>k</kbd> or <kbd>&#8593;</kbd><kbd>&#8595;</kbd> to move<br>" +
+    "<kbd>esc</kbd> to close";
+  nav.appendChild(note);
+
+  /* ══ Keyboard ════════════════════════════════════════════════════════════ */
+  document.addEventListener("keydown", function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) { return; }
+    var list = visible();
+
+    if (e.key === "Escape") { showEl.classList.remove("open"); return; }
+
+    var dir = (e.key === "j" || e.key === "ArrowDown") ? 1
+            : (e.key === "k" || e.key === "ArrowUp") ? -1 : 0;
+    if (!dir) { return; }
+
+    e.preventDefault();
+    var i = list.indexOf(selected);
+    i = i < 0 ? (dir > 0 ? 0 : list.length - 1) : Math.min(list.length - 1, Math.max(0, i + dir));
+    select(list[i], list);
+    rows[i].scrollIntoView({ block: "nearest" });
+  });
+
+  document.getElementById("btn-readme").addEventListener("click", showReadme);
+  document.getElementById("close-show").addEventListener("click", function () {
+    showEl.classList.remove("open");
+  });
+
+  /* Lane width changes at the mobile breakpoint, so re-read and redraw. */
+  var rt = null;
+  window.addEventListener("resize", function () {
+    clearTimeout(rt);
+    rt = setTimeout(function () {
+      var c2 = getComputedStyle(document.documentElement);
+      LANE_W = parseFloat(c2.getPropertyValue("--lane-w"));
+      ROW = parseFloat(c2.getPropertyValue("--row"));
+      render();
+    }, 140);
+  });
+
+  render();
+  showReadme(true);
+})();
+</script>
+
+</body>
+</html>
