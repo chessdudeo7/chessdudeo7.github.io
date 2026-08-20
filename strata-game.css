@@ -1,0 +1,250 @@
+/* Strata — mining layer UI. Loaded after strata.css. */
+
+#pickup{
+  position:fixed; inset-block-end:calc(var(--deck-h) + 46px); inset-inline-start:50%;
+  translate:-50% 8px; z-index:55; opacity:0; pointer-events:none;
+  font-family:var(--hud); font-size:.62rem; letter-spacing:.05em;
+  padding:7px 13px; color:var(--text);
+  background:rgba(8,9,12,.88); border:2px solid var(--edge);
+  transition:opacity .2s var(--ease), translate .2s var(--ease);
+}
+#pickup.in{ opacity:1; translate:-50% 0; }
+
+#inv-btn{
+  position:fixed; inset-block-start:12px; inset-inline-end:14px; z-index:45;
+  display:flex; align-items:center; gap:8px;
+  font-family:var(--hud); font-size:.6rem; letter-spacing:.06em;
+  padding:9px 13px; color:var(--text-2); cursor:pointer;
+  background:rgba(8,9,12,.8); border:2px solid var(--edge);
+  backdrop-filter:blur(6px); transition:all .16s var(--ease);
+}
+#inv-btn:hover{ border-color:var(--torch); color:var(--text); }
+#inv-btn span{
+  display:grid; place-items:center; width:16px; height:16px;
+  background:rgba(255,255,255,.1); border:1px solid var(--edge); font-size:.55rem;
+}
+
+/* ── Inventory screen ── */
+#screen{
+  position:fixed; inset:0; z-index:70; display:none; place-items:center; padding:18px;
+  background:rgba(4,5,9,.78); backdrop-filter:blur(4px);
+}
+#screen.on{ display:grid; }
+
+.scr-box{
+  width:min(880px,100%); max-height:100%; overflow-y:auto;
+  background:linear-gradient(180deg,#1B1B22,#121218);
+  border:3px solid #0A0B0E;
+  box-shadow:inset 2px 2px 0 rgba(255,255,255,.12), inset -2px -2px 0 rgba(0,0,0,.5),
+             0 12px 0 rgba(0,0,0,.45);
+  padding:16px 18px 20px;
+}
+.scr-head{
+  display:flex; align-items:center; justify-content:space-between;
+  font-family:var(--hud); font-size:.72rem; color:var(--text);
+  padding-block-end:12px; border-block-end:2px solid rgba(255,255,255,.08); margin-block-end:14px;
+}
+.scr-x{
+  font-family:var(--hud); font-size:.55rem; padding:6px 11px; cursor:pointer;
+  background:rgba(255,255,255,.06); border:2px solid var(--edge); color:var(--text-2);
+}
+.scr-x:hover{ border-color:var(--torch); color:var(--text); }
+.scr-cols{ display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); gap:20px; }
+.scr-t{
+  font-family:var(--hud); font-size:.55rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--text-3); margin-block-end:8px;
+}
+
+.inv-grid{ display:flex; flex-wrap:wrap; gap:3px; }
+.inv-grid .empty{
+  font-family:var(--body); font-size:.82rem; color:var(--text-3);
+  max-width:44ch; line-height:1.6;
+}
+.islot{
+  position:relative; width:46px; height:46px; display:grid; place-items:center;
+  background:rgba(0,0,0,.34);
+  box-shadow:inset 2px 2px 0 rgba(0,0,0,.5), inset -2px -2px 0 rgba(255,255,255,.09);
+}
+.islot canvas{ width:30px; height:30px; image-rendering:pixelated; }
+.islot b{
+  position:absolute; inset-block-end:1px; inset-inline-end:3px;
+  font-family:var(--hud); font-size:.52rem; color:#fff;
+  text-shadow:1.5px 1.5px 0 rgba(0,0,0,.95);
+}
+.islot::after{
+  content:attr(data-tip); position:absolute; inset-block-end:calc(100% + 6px);
+  inset-inline-start:0; z-index:8; white-space:nowrap;
+  font-family:var(--hud); font-size:.5rem; padding:5px 8px; color:#EDE7FF;
+  background:rgba(16,4,26,.96); border:2px solid #2A0E4A;
+  opacity:0; pointer-events:none; transition:opacity .12s var(--ease);
+}
+.islot:hover::after{ opacity:1; }
+
+/* ── Crafting ── */
+.recipe{
+  display:grid; grid-template-columns:34px minmax(0,1fr) auto; gap:10px; align-items:center;
+  padding:7px 9px; margin-block-end:3px;
+  background:rgba(0,0,0,.26); border:1px solid rgba(255,255,255,.05);
+  opacity:.55;
+}
+.recipe.ok{ opacity:1; border-color:rgba(110,140,58,.45); }
+.recipe canvas{ width:30px; height:30px; image-rendering:pixelated; }
+.recipe b{ font-family:var(--hud); font-size:.56rem; color:var(--text); display:block; }
+.recipe span span{ font-family:var(--hud); font-size:.48rem; margin-inline-end:7px; }
+.recipe .has{ color:#8BE04A; }
+.recipe .lacks{ color:#C4595A; }
+.recipe button{
+  font-family:var(--hud); font-size:.52rem; padding:7px 12px; cursor:pointer;
+  background:linear-gradient(180deg,#4A7A2A,#33591C); color:#EAF6DC;
+  border:2px solid #0A0B0E;
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,.22), inset -1px -1px 0 rgba(0,0,0,.4);
+}
+.recipe button:hover:not(:disabled){ filter:brightness(1.15); }
+.recipe button:disabled{ background:#2A2C33; color:var(--text-3); cursor:not-allowed; }
+
+/* ── Player profile ── */
+.stat{
+  display:flex; justify-content:space-between; align-items:baseline;
+  font-family:var(--hud); font-size:.55rem; color:var(--text-3);
+  padding:7px 0; border-block-end:1px solid rgba(255,255,255,.05);
+}
+.stat b{ color:var(--text); font-size:.6rem; font-weight:400; }
+
+.armour{ margin-block:12px; display:grid; gap:4px; }
+.arm-row{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.arm-row > span{
+  font-family:var(--hud); font-size:.5rem; color:var(--text-3);
+  text-transform:uppercase; width:44px;
+}
+.arm-slot{
+  width:38px; height:38px; display:grid; place-items:center;
+  background:rgba(0,0,0,.34);
+  box-shadow:inset 2px 2px 0 rgba(0,0,0,.5), inset -2px -2px 0 rgba(255,255,255,.08);
+}
+.arm-slot.filled{ cursor:pointer; outline:2px solid var(--torch); outline-offset:-2px; }
+.arm-slot canvas{ width:26px; height:26px; image-rendering:pixelated; }
+.equip{
+  font-family:var(--hud); font-size:.48rem; padding:6px 9px; cursor:pointer;
+  background:rgba(255,255,255,.06); border:2px solid var(--edge); color:var(--text-2);
+}
+.equip:hover{ border-color:var(--torch); color:var(--text); }
+.wipe{
+  margin-block-start:10px; font-family:var(--hud); font-size:.48rem;
+  padding:7px 11px; cursor:pointer; background:none;
+  border:2px solid rgba(196,89,90,.4); color:#C4595A;
+}
+.wipe:hover{ border-color:#C4595A; }
+
+@media(max-width:760px){
+  .scr-cols{ grid-template-columns:minmax(0,1fr); }
+  #inv-btn{ inset-block-start:auto; inset-block-end:calc(var(--deck-h) + 44px); inset-inline-end:10px; }
+  .islot::after{ display:none; }
+}
+
+/* --------------------------------------------------------------------------
+   Two modes. Read mode is a portfolio; play mode is a game. Neither fights
+   the other: in read mode the canvas ignores clicks entirely, in play mode
+   the content column steps out of the way.
+   -------------------------------------------------------------------------- */
+body.mode-read #world { pointer-events: none; cursor: default; }
+
+body.mode-play #world { pointer-events: auto; cursor: crosshair; }
+body.mode-play main { opacity: 0; pointer-events: none; transition: opacity .3s var(--ease); }
+body.mode-play #world-veil { opacity: .35; }
+body.mode-play .core { opacity: .5; }
+
+main { transition: opacity .3s var(--ease); }
+
+#mode-btn{
+  position:fixed; inset-block-start:12px; inset-inline-end:150px; z-index:46;
+  display:flex; align-items:center; gap:8px;
+  font-family:var(--hud); font-size:.6rem; letter-spacing:.06em;
+  padding:9px 13px; cursor:pointer; color:var(--text-2);
+  background:rgba(8,9,12,.8); border:2px solid var(--edge);
+  backdrop-filter:blur(6px); transition:all .16s var(--ease);
+}
+#mode-btn:hover{ border-color:var(--torch); color:var(--text); }
+body.mode-play #mode-btn{
+  border-color:var(--torch); color:#100B06; background:var(--torch);
+}
+
+#play-hint{
+  position:fixed; inset-block-start:58px; inset-inline-end:14px; z-index:44;
+  font-family:var(--hud); font-size:.5rem; line-height:1.9; text-align:end;
+  color:var(--text-3); pointer-events:none; opacity:0;
+  transition:opacity .3s var(--ease);
+}
+body.mode-play #play-hint{ opacity:1; }
+
+/* --------------------------------------------------------------------------
+   Player figurine
+   -------------------------------------------------------------------------- */
+.fig-wrap{
+  display:flex; justify-content:center; padding:14px 0 10px;
+  background:rgba(0,0,0,.26);
+  box-shadow:inset 2px 2px 0 rgba(0,0,0,.45), inset -2px -2px 0 rgba(255,255,255,.06);
+  margin-block-end:12px;
+}
+#g-fig{ width:96px; height:192px; image-rendering:pixelated; }
+
+@media(max-width:760px){
+  #mode-btn{ inset-block-start:auto; inset-block-end:calc(var(--deck-h) + 44px);
+             inset-inline-end:auto; inset-inline-start:10px; }
+  #play-hint{ display:none; }
+}
+
+.islot.act{cursor:pointer;border:0;padding:0}
+.islot.act:hover{outline:2px solid var(--torch);outline-offset:-2px}
+
+/* ── Crafting bench ── */
+.bench{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-block-end:14px; }
+.cgrid{ display:grid; gap:3px; padding:4px; background:rgba(0,0,0,.3);
+  box-shadow:inset 2px 2px 0 rgba(0,0,0,.5), inset -2px -2px 0 rgba(255,255,255,.08); }
+.cslot{
+  width:46px; height:46px; display:grid; place-items:center; cursor:pointer;
+  background:rgba(255,255,255,.05); border:0; padding:0;
+  box-shadow:inset 2px 2px 0 rgba(0,0,0,.45), inset -2px -2px 0 rgba(255,255,255,.07);
+}
+.cslot:hover{ outline:2px solid var(--torch); outline-offset:-2px; }
+.cslot canvas{ width:30px; height:30px; image-rendering:pixelated; }
+.carrow{ font-family:var(--hud); font-size:.8rem; color:var(--text-3); }
+.cout{
+  position:relative; width:58px; height:58px; display:grid; place-items:center;
+  background:rgba(0,0,0,.32); border:0; padding:0; cursor:not-allowed;
+  box-shadow:inset 2px 2px 0 rgba(0,0,0,.5), inset -2px -2px 0 rgba(255,255,255,.07);
+}
+.cout.ready{ cursor:pointer; outline:2px solid #8BE04A; outline-offset:-2px; }
+.cout.ready:hover{ background:rgba(139,224,74,.14); }
+.cout canvas{ width:38px; height:38px; image-rendering:pixelated; }
+.cout b{
+  position:absolute; inset-block-end:2px; inset-inline-end:4px;
+  font-family:var(--hud); font-size:.55rem; color:#fff;
+  text-shadow:1.5px 1.5px 0 rgba(0,0,0,.95);
+}
+
+.held{
+  display:flex; align-items:center; gap:9px; flex-wrap:wrap;
+  margin-block:9px 0; padding:7px 10px;
+  background:rgba(232,114,44,.12); border:2px solid var(--torch);
+  font-family:var(--hud); font-size:.5rem; color:var(--text);
+}
+.held canvas{ width:22px; height:22px; image-rendering:pixelated; }
+.held button{
+  font-family:var(--hud); font-size:.46rem; padding:5px 8px; cursor:pointer;
+  background:rgba(255,255,255,.08); border:1px solid var(--edge); color:var(--text-2);
+}
+.held button:hover{ border-color:var(--torch); color:var(--text); }
+
+/* ── Recipe book ── */
+.book{ display:flex; flex-wrap:wrap; gap:5px; }
+.bcard{
+  display:flex; align-items:center; gap:8px; padding:6px 9px 6px 6px;
+  background:rgba(0,0,0,.24); border:1px solid rgba(255,255,255,.05);
+}
+.mini{ display:grid; gap:1px; }
+.mcell{
+  width:15px; height:15px; background:rgba(255,255,255,.045);
+  display:grid; place-items:center;
+}
+.mcell canvas{ width:13px; height:13px; image-rendering:pixelated; }
+.blab b{ font-family:var(--hud); font-size:.5rem; color:var(--text); }

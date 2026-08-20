@@ -1,0 +1,791 @@
+/* ==========================================================================
+   Matthew Zhu — "Strata"
+   The page is a vertical slice of a generated world. Scroll depth maps 1:1
+   onto a Y coordinate, and depth is chronology: the deeper you dig, the
+   further back you go. Chrome is a HUD, not a navbar.
+
+   Deliberately single-theme. You are underground. It is dark down here.
+   ========================================================================== */
+
+:root {
+  /* Ground */
+  --void:     #0A0B0E;
+  --panel:    rgba(12, 13, 17, 0.82);
+  --panel-2:  rgba(20, 22, 27, 0.9);
+  --edge:     rgba(233, 229, 219, 0.13);
+  --edge-2:   rgba(233, 229, 219, 0.06);
+
+  /* Warm-biased neutrals — pulled toward the torchlight, never pure grey */
+  --text:     #EAE6DC;
+  --text-2:   #9E988A;
+  --text-3:   #6B665B;
+
+  /* The one bold accent: torchlight. Everything else is earth. */
+  --torch:    #E8722C;
+  --glow:     #F4A961;
+
+  /* Set per-stratum; the palette is a function of depth. */
+  --depth: #6E8C3A;
+
+  --hud:     "Silkscreen", ui-monospace, monospace;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body:    "Chivo", "Helvetica Neue", Arial, sans-serif;
+
+  --f-hud:  0.68rem;
+  --f-sm:   0.86rem;
+  --f-base: 1.02rem;
+  --f-lg:   1.2rem;
+  --f-xl:   1.55rem;
+  --f-2xl:  clamp(1.9rem, 4vw, 2.9rem);
+  --f-3xl:  clamp(2.9rem, 9vw, 6.4rem);
+
+  --gauge: 60px;
+  --gut:   clamp(18px, 4vw, 48px);
+  --col:   1080px;
+
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Reset. Note: nothing in this document has a border-radius. The world is
+   made of blocks, and that rule is enforced everywhere rather than decorated.
+   -------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; border-radius: 0; }
+* { margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: var(--f-base);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+canvas { display: block; }
+img { display: block; max-width: 100%; }
+
+:focus-visible {
+  outline: 2px solid var(--torch);
+  outline-offset: 2px;
+}
+
+::selection { background: var(--torch); color: #100B06; }
+
+/* --------------------------------------------------------------------------
+   The world. Generated once to an offscreen buffer, then blitted per frame.
+   -------------------------------------------------------------------------- */
+#world {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Torchlight vignette: content column stays legible over the terrain. */
+#world-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  /* Weighted to the reading side: the content column stays legible while the
+     world stays visible out to the right. */
+  background:
+    linear-gradient(90deg,
+      rgba(8, 9, 12, 0.94) 0%,
+      rgba(8, 9, 12, 0.86) 40%,
+      rgba(8, 9, 12, 0.46) 74%,
+      rgba(8, 9, 12, 0.22) 100%),
+    linear-gradient(180deg,
+      rgba(8, 9, 12, 0.88) 0%,
+      rgba(8, 9, 12, 0.35) 13%,
+      transparent 26%,
+      transparent 80%,
+      rgba(8, 9, 12, 0.9) 100%);
+}
+
+main { position: relative; z-index: 2; }
+
+/* --------------------------------------------------------------------------
+   HUD — F3 debug readout
+   -------------------------------------------------------------------------- */
+.hud {
+  position: fixed;
+  z-index: 30;
+  font-family: var(--hud);
+  font-size: var(--f-hud);
+  line-height: 1.85;
+  color: var(--text-2);
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+  letter-spacing: 0.02em;
+}
+
+.hud-tl { inset-block-start: 12px; inset-inline-start: 14px; }
+.hud-tr { inset-block-start: 12px; inset-inline-end: 14px; text-align: end; }
+
+.hud b { color: var(--text); font-weight: 400; }
+.hud .lit { color: var(--depth); }
+
+/* --------------------------------------------------------------------------
+   Core sample — the depth gauge. Doubles as a scrubber; drag to travel.
+   -------------------------------------------------------------------------- */
+.core {
+  position: fixed;
+  inset-block: 84px 118px;
+  inset-inline-start: 18px;
+  width: 16px;
+  z-index: 30;
+  cursor: ns-resize;
+  touch-action: none;
+}
+
+.core-strata {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--edge);
+  background: linear-gradient(
+    180deg,
+    #3C4A63 0%,    /* dusk sky   */
+    #5C8A3C 9%,    /* grass      */
+    #6B4B33 17%,   /* dirt       */
+    #52525A 34%,   /* stone      */
+    #3A3C45 58%,   /* deepslate  */
+    #24252B 82%,   /* depths     */
+    #17181C 100%   /* bedrock    */
+  );
+}
+
+.core-marker {
+  position: absolute;
+  inset-inline: -6px;
+  height: 3px;
+  background: var(--torch);
+  box-shadow: 0 0 10px var(--torch);
+  translate: 0 -1px;
+  will-change: top;
+}
+
+.core-y {
+  position: absolute;
+  inset-inline-start: 26px;
+  font-family: var(--hud);
+  font-size: var(--f-hud);
+  color: var(--torch);
+  white-space: nowrap;
+  translate: 0 -50%;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.9);
+}
+
+/* --------------------------------------------------------------------------
+   Hotbar — this is the navigation. Keys 1-6, or click.
+   -------------------------------------------------------------------------- */
+.hotbar {
+  position: fixed;
+  inset-block-end: 20px;
+  inset-inline-start: 50%;
+  translate: -50% 0;
+  z-index: 40;
+  display: flex;
+  gap: 3px;
+  padding: 3px;
+  background: var(--panel);
+  border: 2px solid var(--edge);
+  backdrop-filter: blur(8px);
+  max-width: calc(100vw - 24px);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.hotbar::-webkit-scrollbar { display: none; }
+
+.slot {
+  position: relative;
+  flex: 0 0 auto;
+  width: 62px;
+  height: 62px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-family: var(--hud);
+  font-size: 0.56rem;
+  color: var(--text-3);
+  letter-spacing: 0.02em;
+  transition: background 0.18s var(--ease), color 0.18s var(--ease);
+}
+
+.slot canvas { width: 26px; height: 26px; image-rendering: pixelated; }
+
+.slot .key {
+  position: absolute;
+  inset-block-start: 2px;
+  inset-inline-start: 4px;
+  font-size: 0.5rem;
+  color: var(--text-3);
+  opacity: 0.7;
+}
+
+.slot:hover { background: rgba(255, 255, 255, 0.09); color: var(--text-2); }
+
+.slot[aria-current="true"] {
+  border-color: var(--text);
+  background: rgba(255, 255, 255, 0.11);
+  color: var(--text);
+}
+
+.slot[aria-current="true"]::after {
+  content: "";
+  position: absolute;
+  inset-block-end: -3px;
+  inset-inline: 8px;
+  height: 2px;
+  background: var(--torch);
+}
+
+/* --------------------------------------------------------------------------
+   Strata
+   -------------------------------------------------------------------------- */
+.stratum {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  /* Top padding clears the fixed HUD; bottom clears the hotbar. */
+  padding: clamp(124px, 15vh, 168px) var(--gut) clamp(126px, 15vh, 176px)
+           calc(var(--gauge) + var(--gut));
+  position: relative;
+}
+
+.stratum-inner {
+  width: 100%;
+  max-width: var(--col);
+  margin-inline: auto;
+}
+
+/* Hard boundary between layers, the way real strata meet. */
+.stratum + .stratum::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: 3px;
+  background: var(--depth);
+  opacity: 0.5;
+}
+
+.depth-tag {
+  font-family: var(--hud);
+  font-size: var(--f-hud);
+  color: var(--depth);
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-block-end: 18px;
+}
+
+.depth-tag::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--depth), transparent);
+  opacity: 0.45;
+}
+
+.stratum h2 {
+  font-family: var(--display);
+  font-size: var(--f-2xl);
+  font-weight: 800;
+  font-variation-settings: "wdth" 112;
+  text-transform: uppercase;
+  letter-spacing: -0.015em;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+.stratum-note {
+  font-family: var(--hud);
+  font-size: var(--f-hud);
+  color: var(--text-3);
+  margin-block-start: 10px;
+  letter-spacing: 0.05em;
+}
+
+.prose {
+  max-width: 60ch;
+  color: var(--text-2);
+  margin-block-start: 22px;
+}
+
+.prose + .prose { margin-block-start: 1em; }
+.prose strong { color: var(--text); font-weight: 700; }
+
+/* --------------------------------------------------------------------------
+   Surface — the spawn point
+   -------------------------------------------------------------------------- */
+#surface { align-items: center; }
+
+.spawn-title {
+  font-family: var(--display);
+  font-size: var(--f-3xl);
+  font-weight: 900;
+  font-variation-settings: "wdth" 118;
+  text-transform: uppercase;
+  line-height: 0.82;
+  letter-spacing: -0.035em;
+  text-shadow: 0 8px 40px rgba(0, 0, 0, 0.75);
+}
+
+.spawn-title span { display: block; color: var(--torch); }
+
+.spawn-sub {
+  margin-block-start: 24px;
+  font-size: var(--f-lg);
+  color: var(--text-2);
+  max-width: 40ch;
+  line-height: 1.45;
+}
+
+.spawn-cta {
+  margin-block-start: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.dig-hint {
+  margin-block-start: 44px;
+  font-family: var(--hud);
+  font-size: var(--f-hud);
+  color: var(--text-3);
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  line-height: 2.1;
+}
+
+.dig-hint i {
+  font-style: normal;
+  color: var(--torch);
+  animation: bob 1.9s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 4px; }
+}
+
+.dig-hint .keys {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* No keyboard on a phone — drop the shortcut hint rather than wrap it. */
+@media (max-width: 660px) {
+  .dig-hint .keys { display: none; }
+}
+
+.kbd {
+  font-family: var(--hud);
+  font-size: 0.62rem;
+  padding: 3px 6px;
+  border: 1px solid var(--edge);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-2);
+}
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  font-family: var(--hud);
+  font-size: var(--f-hud);
+  letter-spacing: 0.06em;
+  color: var(--text-2);
+  background: var(--panel-2);
+  border: 2px solid var(--edge);
+  cursor: pointer;
+  transition: border-color 0.18s var(--ease), color 0.18s var(--ease),
+              translate 0.18s var(--ease);
+}
+
+.btn:hover { border-color: var(--torch); color: var(--text); translate: 0 -2px; }
+
+.btn-torch {
+  background: var(--torch);
+  border-color: var(--torch);
+  color: #14100B;
+}
+
+.btn-torch:hover { background: var(--glow); border-color: var(--glow); color: #14100B; }
+
+/* --------------------------------------------------------------------------
+   Panels — the recurring container. Hard edges, no rounding, no shadow bloom.
+   -------------------------------------------------------------------------- */
+.panel {
+  background: var(--panel);
+  border: 2px solid var(--edge);
+  backdrop-filter: blur(6px);
+  padding: 26px 26px 24px;
+}
+
+.log {
+  display: grid;
+  gap: 2px;
+  margin-block-start: 30px;
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr);
+  gap: clamp(14px, 3vw, 34px);
+  background: var(--panel);
+  border: 2px solid var(--edge-2);
+  backdrop-filter: blur(6px);
+  padding: 24px 26px;
+  transition: border-color 0.22s var(--ease), background 0.22s var(--ease);
+}
+
+.entry:hover { border-color: var(--depth); background: var(--panel-2); }
+
+.entry-when {
+  font-family: var(--hud);
+  font-size: var(--f-hud);
+  color: var(--depth);
+  line-height: 1.9;
+  padding-block-start: 5px;
+}
+
+.entry-role {
+  font-family: var(--display);
+  font-size: var(--f-xl);
+  font-weight: 700;
+  font-variation-settings: "wdth" 108;
+  letter-spacing: -0.01em;
+}
+
+.entry-org {
+  font-family: var(--hud);
+  font-size: var(--f-hud);
+  color: var(--text-3);
+  margin-block-start: 6px;
+  letter-spacing: 0.04em;
+}
+
+.entry ul {
+  margin-block-start: 15px;
+  padding-inline-start: 16px;
+  display: grid;
+  gap: 8px;
+  color: var(--text-2);
+  font-size: 0.95rem;
+  max-width: 66ch;
+}
+
+.entry li::marker { color: var(--text-3); }
+.entry strong { color: var(--text); font-weight: 700; }
+
+/* --------------------------------------------------------------------------
+   Veins — projects, embedded in the stone
+   -------------------------------------------------------------------------- */
+.veins {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(316px, 1fr));
+  gap: 2px;
+  margin-block-start: 30px;
+}
+
+.vein {
+  background: var(--panel);
+  border: 2px solid var(--edge-2);
+  backdrop-filter: blur(6px);
+  padding: 22px 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  transition: border-color 0.22s var(--ease), background 0.22s var(--ease),
+              translate 0.22s var(--ease);
+}
+
+.vein:hover {
+  border-color: var(--ore, var(--torch));
+  background: var(--panel-2);
+  translate: 0 -3px;
+}
+
+.vein-top { display: flex; align-items: center; gap: 12px; }
+
+.vein canvas {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  image-rendering: pixelated;
+}
+
+.vein h3 {
+  font-family: var(--display);
+  font-size: 1.24rem;
+  font-weight: 700;
+  font-variation-settings: "wdth" 108;
+  letter-spacing: -0.01em;
+}
+
+.vein-kind {
+  font-family: var(--hud);
+  font-size: 0.56rem;
+  color: var(--ore, var(--torch));
+  letter-spacing: 0.1em;
+  margin-block-start: 3px;
+}
+
+.vein p { color: var(--text-2); font-size: 0.92rem; flex: 1; }
+
+.vein-tech {
+  font-family: var(--hud);
+  font-size: 0.56rem;
+  color: var(--text-3);
+  line-height: 2;
+  letter-spacing: 0.05em;
+}
+
+.vein-links {
+  display: flex;
+  gap: 16px;
+  font-family: var(--hud);
+  font-size: var(--f-hud);
+  padding-block-start: 4px;
+}
+
+.vein-links a {
+  color: var(--text-3);
+  border-block-end: 1px solid transparent;
+  padding-block-end: 2px;
+  transition: color 0.18s var(--ease), border-color 0.18s var(--ease);
+}
+
+.vein-links a:hover { color: var(--ore, var(--torch)); border-color: currentColor; }
+
+/* --------------------------------------------------------------------------
+   Inventory — skills as item slots
+   -------------------------------------------------------------------------- */
+.inv-group { margin-block-start: 26px; }
+
+.inv-label {
+  font-family: var(--hud);
+  font-size: var(--f-hud);
+  color: var(--text-3);
+  letter-spacing: 0.12em;
+  margin-block-end: 9px;
+}
+
+.inv {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.item {
+  font-family: var(--hud);
+  font-size: 0.6rem;
+  letter-spacing: 0.03em;
+  padding: 10px 13px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 2px solid var(--edge-2);
+  color: var(--text-2);
+  transition: border-color 0.16s var(--ease), color 0.16s var(--ease),
+              background 0.16s var(--ease);
+}
+
+.item:hover {
+  border-color: var(--depth);
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.09);
+}
+
+/* --------------------------------------------------------------------------
+   Rare finds — achievements
+   -------------------------------------------------------------------------- */
+.finds { display: grid; gap: 2px; margin-block-start: 30px; }
+
+.find {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: baseline;
+  background: var(--panel);
+  border: 2px solid var(--edge-2);
+  backdrop-filter: blur(6px);
+  padding: 16px 22px;
+  transition: border-color 0.2s var(--ease);
+}
+
+.find:hover { border-color: var(--depth); }
+.find strong { font-weight: 700; }
+.find .qual { color: var(--text-3); }
+
+.find-year {
+  font-family: var(--hud);
+  font-size: var(--f-hud);
+  color: var(--depth);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Bedrock — you cannot dig further
+   -------------------------------------------------------------------------- */
+#bedrock .stratum-inner { text-align: start; }
+
+.bedrock-mail {
+  display: inline-block;
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 4.6vw, 2.9rem);
+  font-weight: 800;
+  font-variation-settings: "wdth" 110;
+  letter-spacing: -0.025em;
+  margin-block: 14px 26px;
+  border-block-end: 3px solid var(--edge);
+  padding-block-end: 6px;
+  word-break: break-word;
+  transition: color 0.22s var(--ease), border-color 0.22s var(--ease);
+}
+
+.bedrock-mail:hover { color: var(--torch); border-color: var(--torch); }
+
+.elsewhere { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.colophon {
+  margin-block-start: 52px;
+  font-family: var(--hud);
+  font-size: var(--f-hud);
+  color: var(--text-3);
+  letter-spacing: 0.05em;
+  line-height: 2;
+}
+
+/* --------------------------------------------------------------------------
+   Reveals
+   -------------------------------------------------------------------------- */
+.rise {
+  opacity: 0;
+  translate: 0 22px;
+  transition: opacity 0.65s var(--ease), translate 0.65s var(--ease);
+}
+
+.rise.in { opacity: 1; translate: 0 0; }
+.rise[data-d="1"] { transition-delay: 0.08s; }
+.rise[data-d="2"] { transition-delay: 0.16s; }
+.rise[data-d="3"] { transition-delay: 0.24s; }
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 860px) {
+  :root { --gauge: 0px; }
+  .core { display: none; }
+  .hud-tr { display: none; }
+  .stratum { padding-inline-start: var(--gut); }
+  .entry { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .entry-when { padding-block-start: 0; }
+  .veins { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 560px) {
+  .slot { width: 54px; height: 54px; }
+  .slot canvas { width: 22px; height: 22px; }
+}
+
+/* --------------------------------------------------------------------------
+   Reduced motion — the world still renders, it just stops moving on its own
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .rise { opacity: 1; translate: 0 0; }
+}
+
+/* --------------------------------------------------------------------------
+   XP bar — level is depth travelled, bar is progress through the world
+   -------------------------------------------------------------------------- */
+#xp{
+  position:fixed; inset-inline:0; inset-block-end:calc(var(--deck-h) + 6px);
+  z-index:38; display:flex; flex-direction:column; align-items:center; gap:2px;
+  pointer-events:none;
+}
+.xp-track{
+  width:min(360px, 62vw); height:9px;
+  background:#0A0C10; border:2px solid #05070A;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.06);
+}
+.xp-track i{ display:block; height:100%; width:0%;
+  background:linear-gradient(180deg,#8BE04A,#5FBE24); }
+.xp-lvl{
+  font-family:var(--hud); font-size:12px; color:#8BE04A;
+  text-shadow:2px 2px 0 rgba(0,0,0,.95);
+}
+
+/* --------------------------------------------------------------------------
+   Advancement toasts
+   -------------------------------------------------------------------------- */
+#toasts{
+  position:fixed; inset-block-start:14px; inset-inline-end:14px;
+  z-index:60; display:grid; gap:6px; justify-items:end; pointer-events:none;
+}
+.toast{
+  display:flex; align-items:center; gap:11px;
+  padding:10px 14px 10px 10px;
+  background:linear-gradient(180deg,#1A1626,#120F1C);
+  border:2px solid #C8A24A;
+  box-shadow:0 6px 0 rgba(0,0,0,.5);
+  translate:120% 0; opacity:0;
+  transition:translate .38s var(--ease), opacity .38s var(--ease);
+}
+.toast.in{ translate:0 0; opacity:1; }
+.toast canvas{ width:32px; height:32px; image-rendering:pixelated; flex:0 0 auto; }
+.toast div{ display:grid; gap:2px; }
+.toast .t-k{ font-family:var(--hud); font-size:9px; color:#F5D97A; letter-spacing:.04em; }
+.toast .t-v{ font-family:var(--hud); font-size:10px; color:#EAE6DC; }
+
+/* --------------------------------------------------------------------------
+   Item tooltips — the hover card from an inventory screen
+   -------------------------------------------------------------------------- */
+.item{ position:relative; }
+.item::after{
+  content:attr(data-tip);
+  position:absolute; inset-block-end:calc(100% + 8px); inset-inline-start:0;
+  z-index:50; white-space:nowrap;
+  font-family:var(--hud); font-size:9px; line-height:1.7;
+  padding:6px 9px; color:#EDE7FF;
+  background:rgba(16,4,26,.96);
+  border:2px solid #2A0E4A;
+  box-shadow:0 0 0 2px rgba(120,60,200,.45);
+  opacity:0; translate:0 4px; pointer-events:none;
+  transition:opacity .14s var(--ease), translate .14s var(--ease);
+}
+.item:hover::after{ opacity:1; translate:0 0; }
+
+@media(max-width:620px){
+  #xp{ inset-block-end:calc(var(--deck-h) + 2px); }
+  .xp-track{ width:70vw; }
+  .item::after{ display:none; }
+}
