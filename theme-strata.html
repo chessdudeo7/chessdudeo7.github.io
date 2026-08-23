@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Chivo:wght@400;500;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="strata.css"><link rel="stylesheet" href="strata-game.css">
+<link rel="stylesheet" href="strata.css"><link rel="stylesheet" href="strata-game.css"><link rel="stylesheet" href="strata-scenes.css"><link rel="stylesheet" href="strata-cave.css">
 </head>
 <body>
 
@@ -47,312 +47,275 @@
 
 <main>
 
-<!-- ═══ Y +72 · SURFACE ══════════════════════════════════════════════════ -->
-<section class="stratum" id="surface" style="--depth:#6EA047"
+<!-- Y +72 · PIT HEAD -->
+<section class="stratum scene-head" id="surface" style="--depth:#6EA047"
          data-biome="surface" data-block="grass_block" data-label="Surface">
   <div class="stratum-inner">
-    <p class="depth-tag rise">Y +72 &#183; SURFACE</p>
+    <div class="headframe rise"><u></u><i></i><i></i><i></i><i></i></div>
 
+    <p class="depth-tag rise">Y +72 &#183; PIT HEAD</p>
     <h1 class="spawn-title rise" data-d="1">Matthew<span>Zhu</span></h1>
-
     <p class="spawn-sub rise" data-d="2">
       Computer Science at Waterloo. Software engineering intern at Ciena,
       porting an 1,800-line C model to Rust. Canadian chess National Master.
     </p>
 
     <div class="spawn-cta rise" data-d="3">
-      <a class="btn btn-torch" href="#built">Ore veins &#8595;</a>
+      <a class="btn btn-torch" href="#built">Ore gallery &#8595;</a>
       <a class="btn" href="MATTHEW_ZHU_SWE.pdf">Resume &#183; SWE</a>
-      <a class="btn" href="MATTHEW_ZHU_MLE.pdf">Resume &#183; MLE</a>
       <a class="btn" href="tutoring.html">Tutoring</a>
     </div>
 
-    <p class="dig-hint rise" data-d="3">
-      <span><i>&#9660;</i>&#160; Dig down &#8212; deeper is earlier.</span>
-      <span class="keys">
-        Or press
-        <span class="kbd">1</span><span class="kbd">2</span><span class="kbd">3</span><span class="kbd">4</span><span class="kbd">5</span><span class="kbd">6</span>
-      </span>
-    </p>
+    <div class="pit-mouth rise" data-d="3"><span>&#9660; THE SHAFT DROPS 136 BLOCKS</span></div>
   </div>
 </section>
 
-<!-- ═══ Y +40 · TOPSOIL ══════════════════════════════════════════════════ -->
-<section class="stratum" id="present" style="--depth:#B08D57"
-         data-biome="topsoil" data-block="coarse_dirt" data-label="Present">
-  <div class="stratum-inner">
-    <p class="depth-tag rise">Y +40 &#183; TOPSOIL</p>
-    <h2 class="rise">The layer I&#8217;m<br>standing on</h2>
-    <p class="stratum-note rise">Where the work is happening right now</p>
+<!-- Y +40 · THE SHAFT -->
+<section class="stratum scene-shaft" id="present" style="--depth:#B08D57"
+         data-biome="topsoil" data-block="oak_planks" data-label="Present">
+  <div class="shaft">
+    <div class="shaft-beams">
+      <i style="top:8%"></i><i style="top:34%"></i><i style="top:62%"></i><i style="top:90%"></i>
+    </div>
 
-    <div class="log">
-      <article class="entry rise">
-        <div class="entry-when">MAY 2026<br>&#8212; NOW</div>
-        <div>
-          <div class="entry-role">Software Engineering Intern</div>
-          <div class="entry-org">CIENA &#183; OTTAWA, ON</div>
-          <ul>
-            <li>Architected a <strong>Rust port of an 1,800-line C optical-planning model</strong> using PyO3/maturin and cbindgen</li>
-            <li>Built <strong>seven neural network models</strong> in HuggingFace Candle, replicating an existing TensorFlow/ONNX architecture</li>
-            <li>Engineered an <strong>FFI bridge</strong> exposing the Rust/Candle ML backend as a library to a C-based network simulator</li>
-            <li>Implemented an ONNX/Candle inference mode, validating <strong>zero divergence</strong> across a ~500-case regression suite</li>
-            <li>Cross-compiled a statically-linked binary, enabling ML inference on legacy Linux and Docker systems</li>
-          </ul>
-        </div>
+    <div class="stratum-inner" style="padding-inline:clamp(28px,7vw,90px)">
+      <p class="depth-tag rise">Y +40 &#183; THE SHAFT</p>
+      <h2 class="rise" style="margin-block-end:26px">Signs on the timbers</h2>
+
+      <article class="sign rise">
+        <div class="sign-when">MAY 2026 &#8212; NOW</div>
+        <div class="sign-role">Software Engineering Intern</div>
+        <div class="sign-org">CIENA &#183; OTTAWA, ON</div>
+        <ul>
+          <li>Architected a <strong>Rust port of an 1,800-line C optical-planning model</strong> (PyO3/maturin, cbindgen)</li>
+          <li>Built <strong>7 neural network models</strong> in HuggingFace Candle</li>
+          <li>FFI bridge exposing the Rust/Candle backend to a C network simulator</li>
+          <li>ONNX/Candle inference with <strong>zero divergence</strong> over ~500 regression cases</li>
+        </ul>
       </article>
 
-      <article class="entry rise">
-        <div class="entry-when">JUN 2025<br>&#8212; NOW</div>
-        <div>
-          <div class="entry-role">Software Developer</div>
-          <div class="entry-org">AUXILIUM &#183; REMOTE</div>
-          <ul>
-            <li>Analyzed historical pairing outcomes to find the real drivers behind successful mentor&#8211;student matches</li>
-            <li>Designed a <strong>matching algorithm in Python (Pandas)</strong> ranking mentor&#8211;student compatibility</li>
-            <li>Tuned weighted criteria and constraint filtering, raising successful match rates by <strong>36%</strong></li>
-            <li>Built an indexed SQLite database supporting efficient querying and repeatable matching runs</li>
-          </ul>
-        </div>
+      <article class="sign rise">
+        <div class="sign-when">JUN 2025 &#8212; NOW</div>
+        <div class="sign-role">Software Developer</div>
+        <div class="sign-org">AUXILIUM &#183; REMOTE</div>
+        <ul>
+          <li>Pandas matching algorithm with weighted criteria and constraint filtering</li>
+          <li>Successful match rate up <strong>36%</strong></li>
+          <li>Indexed SQLite store for repeatable runs</li>
+        </ul>
       </article>
 
-      <article class="entry rise">
-        <div class="entry-when">2025<br>&#8212; NOW</div>
-        <div>
-          <div class="entry-role">Chess Coach &amp; STEM Tutor</div>
-          <div class="entry-org">INDEPENDENT &#183; OTTAWA AND ONLINE</div>
-          <ul>
-            <li>Mentored 10+ students across chess, mathematics, physics, and chemistry</li>
-            <li>Coach beginner through advanced players; tutor grades 1&#8211;12 including contest preparation</li>
-            <li><a href="tutoring.html" style="color:var(--depth);border-bottom:1px solid currentColor;">Lessons and reviews &#8594;</a></li>
-          </ul>
-        </div>
+      <article class="sign rise">
+        <div class="sign-when">2025 &#8212; NOW</div>
+        <div class="sign-role">Chess Coach &amp; STEM Tutor</div>
+        <div class="sign-org">INDEPENDENT &#183; OTTAWA AND ONLINE</div>
+        <ul>
+          <li>10+ students across chess, maths, physics and chemistry</li>
+          <li><a href="tutoring.html" style="color:var(--torch)">Lessons and reviews &#8594;</a></li>
+        </ul>
       </article>
     </div>
   </div>
 </section>
 
-<!-- ═══ Y +8 · STONE ═════════════════════════════════════════════════════ -->
-<section class="stratum" id="built" style="--depth:#C87137"
+<!-- Y +8 · ORE GALLERY -->
+<section class="stratum scene-wall" id="built" style="--depth:#C87137"
          data-biome="stone" data-block="deepslate_copper_ore" data-label="Built">
   <div class="stratum-inner">
-    <p class="depth-tag rise">Y +8 &#183; STONE</p>
-    <h2 class="rise">Ore veins</h2>
-    <p class="stratum-note rise">Six things I built, and what each one cost</p>
+    <p class="depth-tag rise">Y +8 &#183; ORE GALLERY</p>
+    <h2 class="rise">Six veins worth working</h2>
+    <p class="stratum-note rise">Each one cost something different to get out</p>
 
-    <div class="veins">
-      <article class="vein rise" style="--ore:#A8302A">
-        <div class="vein-top">
-          <canvas data-ore="redstone" width="34" height="34" aria-hidden="true"></canvas>
-          <div>
-            <h3>ClipFarm</h3>
-            <div class="vein-kind">COMPUTER VISION &#183; 2026&#8212;</div>
-          </div>
+    <div class="ore-wall">
+      <article class="vein-node rise" style="--ore:#A8302A">
+        <div class="vn-top">
+          <canvas data-ore="redstone" width="38" height="38" aria-hidden="true"></canvas>
+          <div><div class="vn-title">ClipFarm</div><div class="vn-kind">COMPUTER VISION &#183; 2026&#8212;</div></div>
         </div>
-        <p>Turns raw volleyball VODs into highlight clips. RF-DETR ball tracking detects rally contacts, refined by YOLOv8-pose classification. Serverless GPU inference with CPU fallback cut per-game tracking from 13 minutes to 8.7; an R2 cache keyed by video hash plus skip-decode sampling took another 31% off.</p>
-        <div class="vein-tech">NEXT.JS &#183; FASTAPI &#183; PYTORCH &#183; CELERY &#183; POSTGRES &#183; DOCKER</div>
-        <div class="vein-links"><a href="https://github.com/chessdudeo7">GitHub</a></div>
+        <p>Volleyball VODs into highlight clips. RF-DETR tracking finds rally contacts, refined by YOLOv8-pose. Serverless GPU inference cut a game from 13 minutes to 8.7; an R2 cache took another 31% off.</p>
+        <div class="vn-tech">NEXT.JS &#183; FASTAPI &#183; PYTORCH &#183; DOCKER</div>
+        <div class="vn-links"><a href="https://github.com/chessdudeo7">GitHub</a></div>
       </article>
 
-      <article class="vein rise" style="--ore:#8B5CC4">
-        <div class="vein-top">
-          <canvas data-ore="amethyst" width="34" height="34" aria-hidden="true"></canvas>
-          <div>
-            <h3>HUME</h3>
-            <div class="vein-kind">ML SAFETY &#183; 2026</div>
-          </div>
+      <article class="vein-node rise" style="--ore:#8B5CC4">
+        <div class="vn-top">
+          <canvas data-ore="amethyst" width="38" height="38" aria-hidden="true"></canvas>
+          <div><div class="vn-title">HUME</div><div class="vn-kind">ML SAFETY &#183; 2026</div></div>
         </div>
-        <p>A structural firewall for an online belief-revision engine, built to block prompt injection. Confidence is revised through log-odds likelihood ratios drawn from structured provenance rather than from text, with structural OOD detection separating in-model contradictions from out-of-model regimes.</p>
-        <div class="vein-tech">PYTHON &#183; BAYESIAN INFERENCE &#183; NEGEX / CONTEXT</div>
-        <div class="vein-links"><a href="https://github.com/chessdudeo7">GitHub</a></div>
+        <p>A structural firewall for a belief-revision engine. Confidence is revised from structured provenance rather than raw text, with OOD detection separating in-model contradictions from out-of-model regimes.</p>
+        <div class="vn-tech">PYTHON &#183; BAYESIAN INFERENCE</div>
+        <div class="vn-links"><a href="https://github.com/chessdudeo7">GitHub</a></div>
       </article>
 
-      <article class="vein rise" style="--ore:#E8B24A">
-        <div class="vein-top">
-          <canvas data-ore="glowstone" width="34" height="34" aria-hidden="true"></canvas>
-          <div>
-            <h3>Lumi</h3>
-            <div class="vein-kind">RETRIEVAL &#183; 2026&#8212;</div>
-          </div>
+      <article class="vein-node rise" style="--ore:#E8B24A">
+        <div class="vn-top">
+          <canvas data-ore="glowstone" width="38" height="38" aria-hidden="true"></canvas>
+          <div><div class="vn-title">Lumi</div><div class="vn-kind">RETRIEVAL &#183; 2026&#8212;</div></div>
         </div>
-        <p>A FastAPI backend for mentor matching and math problem retrieval, with LangChain routing tasks. A ChromaDB RAG system searches 500+ contest problems with topic-aware filtering, fed by a PyMuPDF ingestion pipeline, while a PyTorch matcher scores mentors on subject alignment.</p>
-        <div class="vein-tech">FASTAPI &#183; LANGCHAIN &#183; CHROMADB &#183; PYMUPDF &#183; PYTORCH</div>
-        <div class="vein-links"><a href="https://github.com/chessdudeo7">GitHub</a></div>
+        <p>A FastAPI backend for mentor matching and problem retrieval. LangChain routes tasks; a ChromaDB RAG system searches 500+ contest problems with topic-aware filtering.</p>
+        <div class="vn-tech">FASTAPI &#183; LANGCHAIN &#183; CHROMADB</div>
+        <div class="vn-links"><a href="https://github.com/chessdudeo7">GitHub</a></div>
       </article>
 
-      <article class="vein rise" style="--ore:#4FD6D0">
-        <div class="vein-top">
-          <canvas data-ore="diamond" width="34" height="34" aria-hidden="true"></canvas>
-          <div>
-            <h3>KnightMare</h3>
-            <div class="vein-kind">DEEP LEARNING &#183; 2025</div>
-          </div>
+      <article class="vein-node rise" style="--ore:#4FD6D0">
+        <div class="vn-top">
+          <canvas data-ore="diamond" width="38" height="38" aria-hidden="true"></canvas>
+          <div><div class="vn-title">KnightMare</div><div class="vn-kind">DEEP LEARNING &#183; 2025</div></div>
         </div>
-        <p>A chess engine that learns instead of searching. A PyTorch CNN trained on 100,000+ grandmaster games encodes each position as a 12-channel tensor and outputs a move distribution &#8212; no alpha-beta anywhere. Modal&#8217;s cloud GPUs turned hours of local training into minutes, which is the only reason it shipped inside a hackathon.</p>
-        <div class="vein-tech">PYTORCH &#183; MODAL &#183; PYTHON-CHESS &#183; NUMPY</div>
-        <div class="vein-links">
-          <a href="project-knightmare.html">Write-up</a>
-          <a href="https://github.com/chessdudeo7/ChessHacks">GitHub</a>
-        </div>
+        <p>A chess engine that learns instead of searching. A PyTorch CNN over 100,000+ grandmaster games returns a move distribution &#8212; no alpha-beta anywhere. Modal&#8217;s GPUs made it shippable inside a hackathon.</p>
+        <div class="vn-tech">PYTORCH &#183; MODAL &#183; PYTHON-CHESS</div>
+        <div class="vn-links"><a href="project-knightmare.html">Write-up</a><a href="https://github.com/chessdudeo7/ChessHacks">GitHub</a></div>
       </article>
 
-      <article class="vein rise" style="--ore:#3FA85F">
-        <div class="vein-top">
-          <canvas data-ore="emerald" width="34" height="34" aria-hidden="true"></canvas>
-          <div>
-            <h3>Chess4All</h3>
-            <div class="vein-kind">FULL-STACK &#183; 2024&#8212;</div>
-          </div>
+      <article class="vein-node rise" style="--ore:#3FA85F">
+        <div class="vn-top">
+          <canvas data-ore="emerald" width="38" height="38" aria-hidden="true"></canvas>
+          <div><div class="vn-title">Chess4All</div><div class="vn-kind">FULL-STACK &#183; 2024&#8212;</div></div>
         </div>
-        <p>The training platform I wish I&#8217;d had at 1400. 30+ structured endgame studies, interactive puzzles on a board component written from scratch in vanilla JS, and a searchable database of annotated master games. Firebase handles auth and per-user progress so study state follows you across devices.</p>
-        <div class="vein-tech">JAVASCRIPT &#183; FIREBASE &#183; FIRESTORE &#183; FLASK</div>
-        <div class="vein-links">
-          <a href="project-chess4all.html">Write-up</a>
-          <a href="https://github.com/chessdudeo7/Chess4All">GitHub</a>
-        </div>
+        <p>The training platform I wish I&#8217;d had at 1400. 30+ endgame studies and puzzles on a board component hand-written in vanilla JS, with Firebase tracking progress across devices.</p>
+        <div class="vn-tech">JAVASCRIPT &#183; FIREBASE &#183; FLASK</div>
+        <div class="vn-links"><a href="project-chess4all.html">Write-up</a><a href="https://github.com/chessdudeo7/Chess4All">GitHub</a></div>
       </article>
 
-      <article class="vein rise" style="--ore:#C9973F">
-        <div class="vein-top">
-          <canvas data-ore="gold" width="34" height="34" aria-hidden="true"></canvas>
-          <div>
-            <h3>OTMaC</h3>
-            <div class="vein-kind">COMMUNITY &#183; 2024&#8212;</div>
-          </div>
+      <article class="vein-node rise" style="--ore:#C9973F">
+        <div class="vn-top">
+          <canvas data-ore="gold" width="38" height="38" aria-hidden="true"></canvas>
+          <div><div class="vn-title">OTMaC</div><div class="vn-kind">COMMUNITY &#183; 2024&#8212;</div></div>
         </div>
-        <p>The official site for the Ottawa Math Team Contest, which I help organize. Built to speak to students, parents, and teachers at once without cluttering &#8212; format, past papers, preparation guides, and team registration. Deployed on GitHub Pages so any organizer can ship an update through a pull request.</p>
-        <div class="vein-tech">HTML5 &#183; CSS3 &#183; JAVASCRIPT &#183; GITHUB PAGES</div>
-        <div class="vein-links">
-          <a href="project-otmac.html">Write-up</a>
-          <a href="https://otmac.github.io">Live site</a>
-        </div>
+        <p>The official site for the Ottawa Math Team Contest, which I help organise. Format, past papers and registration, on GitHub Pages so any organiser can ship through a pull request.</p>
+        <div class="vn-tech">HTML5 &#183; CSS3 &#183; JAVASCRIPT</div>
+        <div class="vn-links"><a href="project-otmac.html">Write-up</a><a href="https://otmac.github.io">Live site</a></div>
       </article>
     </div>
   </div>
 </section>
 
-<!-- ═══ Y -16 · DEEPSLATE ════════════════════════════════════════════════ -->
-<section class="stratum" id="toolkit" style="--depth:#8C97A6"
+<!-- Y -16 · THE WORKSHOP -->
+<section class="stratum scene-room" id="toolkit" style="--depth:#8C97A6"
          data-biome="deepslate" data-block="crafting_table" data-label="Toolkit">
   <div class="stratum-inner">
-    <p class="depth-tag rise">Y &#8722;16 &#183; DEEPSLATE</p>
-    <h2 class="rise">Inventory</h2>
-    <p class="stratum-note rise">Everything I&#8217;ve actually shipped something with</p>
+    <p class="depth-tag rise">Y &#8722;16 &#183; THE WORKSHOP</p>
+    <h2 class="rise">A room carved out of the deepslate</h2>
+    <p class="stratum-note rise">Everything on the shelves has shipped something</p>
 
-    <div class="inv-group rise">
-      <div class="inv-label">LANGUAGES</div>
-      <div class="inv">
-        <span class="item">Python</span><span class="item">C / C++</span><span class="item">Rust</span>
-        <span class="item">Java</span><span class="item">TypeScript</span><span class="item">JavaScript</span>
-        <span class="item">PHP</span>
+    <div class="room rise">
+      <span class="room-lamp"></span>
+
+      <div class="rack">
+        <div class="rack-label">Languages</div>
+        <div class="rack-row">
+          <span class="slotcard">Python</span><span class="slotcard">C / C++</span>
+          <span class="slotcard">Rust</span><span class="slotcard">Java</span>
+          <span class="slotcard">TypeScript</span><span class="slotcard">JavaScript</span>
+          <span class="slotcard">PHP</span>
+        </div>
       </div>
-    </div>
 
-    <div class="inv-group rise" data-d="1">
-      <div class="inv-label">FRONTEND</div>
-      <div class="inv">
-        <span class="item">React</span><span class="item">Next.js</span><span class="item">Node.js</span>
-        <span class="item">HTML5</span><span class="item">CSS3</span><span class="item">Pygame</span>
-        <span class="item">Hugo</span>
+      <div class="rack">
+        <div class="rack-label">AI &amp; ML</div>
+        <div class="rack-row">
+          <span class="slotcard">PyTorch</span><span class="slotcard">Hugging Face</span>
+          <span class="slotcard">Candle</span><span class="slotcard">ONNX</span>
+          <span class="slotcard">LangChain</span><span class="slotcard">RAG</span>
+          <span class="slotcard">CNNs</span><span class="slotcard">Modal</span>
+        </div>
       </div>
-    </div>
 
-    <div class="inv-group rise" data-d="1">
-      <div class="inv-label">BACKEND &amp; DATA</div>
-      <div class="inv">
-        <span class="item">FastAPI</span><span class="item">Flask</span><span class="item">REST</span>
-        <span class="item">PostgreSQL</span><span class="item">SQLite</span><span class="item">Supabase</span>
-        <span class="item">Firebase</span><span class="item">Pandas</span>
+      <div class="rack">
+        <div class="rack-label">Backend &amp; Data</div>
+        <div class="rack-row">
+          <span class="slotcard">FastAPI</span><span class="slotcard">Flask</span>
+          <span class="slotcard">PostgreSQL</span><span class="slotcard">SQLite</span>
+          <span class="slotcard">Supabase</span><span class="slotcard">Firebase</span>
+          <span class="slotcard">Pandas</span>
+        </div>
       </div>
-    </div>
 
-    <div class="inv-group rise" data-d="2">
-      <div class="inv-label">AI &amp; ML</div>
-      <div class="inv">
-        <span class="item">PyTorch</span><span class="item">Hugging Face</span><span class="item">Candle</span>
-        <span class="item">ONNX</span><span class="item">LangChain</span><span class="item">RAG</span>
-        <span class="item">CNNs</span><span class="item">Modal</span>
+      <div class="rack">
+        <div class="rack-label">Frontend &amp; Tools</div>
+        <div class="rack-row">
+          <span class="slotcard">React</span><span class="slotcard">Next.js</span>
+          <span class="slotcard">Node.js</span><span class="slotcard">Docker</span>
+          <span class="slotcard">Linux</span><span class="slotcard">Git</span>
+          <span class="slotcard">Cloudflare</span><span class="slotcard">LaTeX</span>
+        </div>
       </div>
-    </div>
 
-    <div class="inv-group rise" data-d="2">
-      <div class="inv-label">TOOLS</div>
-      <div class="inv">
-        <span class="item">Linux</span><span class="item">Git</span><span class="item">Docker</span>
-        <span class="item">Cloudflare</span><span class="item">Celery / Redis</span><span class="item">Jira</span>
-        <span class="item">Bitbucket</span><span class="item">LaTeX</span>
-      </div>
-    </div>
-
-    <div class="inv-group rise" data-d="3">
-      <div class="inv-label">CERTIFICATIONS</div>
-      <div class="inv">
-        <span class="item">Stanford CS 230 Deep Learning</span>
-        <span class="item">Google ML Course</span>
+      <div class="bench-row">
+        <div class="bench-item">
+          <canvas data-ore="table" width="52" height="52" aria-hidden="true"></canvas>
+          CRAFTING TABLE
+        </div>
+        <div class="bench-item">
+          <canvas data-ore="iron" width="52" height="52" aria-hidden="true"></canvas>
+          STANFORD CS 230
+        </div>
+        <div class="bench-item">
+          <canvas data-ore="gold" width="52" height="52" aria-hidden="true"></canvas>
+          GOOGLE ML
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ Y -40 · DIAMOND LAYER ════════════════════════════════════════════ -->
-<section class="stratum" id="record" style="--depth:#4FD6D0"
+<!-- Y -40 · THE VAULT -->
+<section class="stratum scene-vault" id="record" style="--depth:#4FD6D0"
          data-biome="deepslate_caves" data-block="deepslate_diamond_ore" data-label="Record">
   <div class="stratum-inner">
-    <p class="depth-tag rise">Y &#8722;40 &#183; DIAMOND LAYER</p>
-    <h2 class="rise">Rare finds</h2>
+    <p class="depth-tag rise">Y &#8722;40 &#183; THE VAULT</p>
+    <h2 class="rise">Chests worth the walk down</h2>
     <p class="stratum-note rise">The things that took years, not weekends</p>
 
-    <div class="panel rise" style="margin-top:30px;">
-      <div class="entry-role">Honours Computer Science, Co-op</div>
-      <div class="entry-org">UNIVERSITY OF WATERLOO &#183; BCS &#183; GPA 3.9 / 4.0 &#183; 2025&#8211;2029</div>
-      <p class="prose" style="margin-top:16px;">
-        <strong>Ren&#233; Descartes National Scholarship</strong> &#8212; $25,000, one of ten awarded across Canada.
-        Coursework in Object-Oriented Software Development, Logic and Computation, and
-        Elementary Algorithm Design and Data Abstraction.
-      </p>
-    </div>
+    <div class="vault">
+      <article class="chest-card rise">
+        <div class="chest-lid"><span class="chest-glow"></span></div>
+        <div class="chest-body">
+          <h3>Canadian Chess National Master</h3>
+          <p>Third and final norm at the 2026 Markham True North Open, 2nd place with a 2300+ performance rating. Peak 2251 CFC / 2136 FIDE.</p>
+          <div class="yr">TITLE &#183; 2026</div>
+        </div>
+      </article>
 
-    <div class="finds">
-      <div class="find rise">
-        <div>Canadian Chess <strong>National Master</strong> <span class="qual">&#183; peak 2251 CFC, 2136 FIDE</span></div>
-        <div class="find-year">TITLE</div>
-      </div>
-      <div class="find rise">
-        <div>Team Canada, <strong>World Cadet Chess Championships</strong></div>
-        <div class="find-year">2019</div>
-      </div>
-      <div class="find rise">
-        <div>Ontario Chess Championships <span class="qual">&#183; three times top 3</span></div>
-        <div class="find-year">3&#215;</div>
-      </div>
-      <div class="find rise">
-        <div>Canadian Chess Championships <span class="qual">&#183; twice top 5</span></div>
-        <div class="find-year">2&#215;</div>
-      </div>
-      <div class="find rise">
-        <div>University of Waterloo, <strong>Canadian University Chess Championships</strong></div>
-        <div class="find-year">2026</div>
-      </div>
-      <div class="find rise">
-        <div><strong>Canadian Mathematical Olympiad</strong> Rep&#234;chage qualifier <span class="qual">&#183; top 100 nationally, 2nd in Eastern Ontario</span></div>
-        <div class="find-year">2025</div>
-      </div>
-      <div class="find rise">
-        <div>Harvard&#8211;MIT Mathematics Tournament <span class="qual">&#183; Carleton Math Enrichment Centre</span></div>
-        <div class="find-year">2025</div>
-      </div>
+      <article class="chest-card rise">
+        <div class="chest-lid"><span class="chest-glow"></span></div>
+        <div class="chest-body">
+          <h3>Team Canada, World Cadet Championships</h3>
+          <p>Represented Canada internationally. Three times top 3 at the Ontario Championships, twice top 5 nationally.</p>
+          <div class="yr">2019</div>
+        </div>
+      </article>
+
+      <article class="chest-card rise">
+        <div class="chest-lid"><span class="chest-glow"></span></div>
+        <div class="chest-body">
+          <h3>Ren&#233; Descartes National Scholarship</h3>
+          <p>Waterloo&#8217;s top entrance award &#8212; $25,000, one of ten given across Canada. BCS Honours CS with Co-op, GPA 3.9/4.0.</p>
+          <div class="yr">2025 &#8212; 2029</div>
+        </div>
+      </article>
+
+      <article class="chest-card rise">
+        <div class="chest-lid"><span class="chest-glow"></span></div>
+        <div class="chest-body">
+          <h3>Canadian Mathematical Olympiad Rep&#234;chage</h3>
+          <p>Top 100 nationally, 2nd in Eastern Ontario. Competed at the Harvard&#8211;MIT Mathematics Tournament for the Carleton Math Enrichment Centre.</p>
+          <div class="yr">2025</div>
+        </div>
+      </article>
     </div>
   </div>
 </section>
 
-<!-- ═══ Y -64 · BEDROCK ══════════════════════════════════════════════════ -->
-<section class="stratum" id="bedrock" style="--depth:#E8722C"
+<!-- Y -64 · THE LAVA CHAMBER -->
+<section class="stratum scene-chamber" id="bedrock" style="--depth:#E8722C"
          data-biome="the_void" data-block="bedrock" data-label="Bedrock">
-  <div class="stratum-inner">
-    <p class="depth-tag rise">Y &#8722;64 &#183; BEDROCK</p>
-    <h2 class="rise">You can&#8217;t dig<br>any further</h2>
-    <p class="stratum-note rise">So say something instead</p>
+  <div class="stratum-inner chamber">
+    <p class="depth-tag rise">Y &#8722;64 &#183; THE LAVA CHAMBER</p>
+    <h2 class="rise">Bottom of the world</h2>
+    <p class="stratum-note rise">Nothing below this but bedrock</p>
 
-    <div class="rise" data-d="1" style="margin-top:26px;">
+    <div class="rise" data-d="1" style="margin-block-start:26px">
       <a class="bedrock-mail" href="mailto:m49zhu@uwaterloo.ca">m49zhu@uwaterloo.ca</a>
       <div class="elsewhere">
         <a class="btn" href="https://github.com/chessdudeo7">GitHub</a>
@@ -365,6 +328,8 @@
         &#169; 2026 MATTHEW ZHU &#183; BUILT FROM SCRATCH, NO FRAMEWORKS
       </div>
     </div>
+
+    <div class="lava-floor" aria-hidden="true"></div>
   </div>
 </section>
 
@@ -565,6 +530,24 @@
         wy += Math.floor(rnd() * 3) - 1;
         if (wy < 26 || wy > ROWS - 6) { break; }
       }
+
+    /* Caves are carved after the pools are placed, which can eat the floor out
+       from under lava. Give every lava cell something to sit on. */
+    for (var sy2 = ROWS - 1; sy2 >= 0; sy2--) {
+      for (var sx2 = 0; sx2 < cols; sx2++) {
+        if (grid[sy2 * cols + sx2] !== 14) { continue; }
+        if (sy2 + 1 >= ROWS) { continue; }
+        if (grid[(sy2 + 1) * cols + sx2] === SKY) { set(sx2, sy2 + 1, 23); }
+      }
+    }
+
+    /* Fog of war: the surface band starts revealed, everything below is dark
+       until it is dug into. */
+    seen = new Uint8Array(cols * ROWS);
+    for (var fx = 0; fx < cols; fx++) {
+      var lim = Math.min(ROWS - 1, surface[fx]);   /* the top layer only */
+      for (var fy = 0; fy <= lim; fy++) { seen[fy * cols + fx] = 1; }
+    }
     }
   }
 
@@ -726,6 +709,18 @@
 
   var rowOffset = 0;
   var sizing = false;
+  var seen = null;
+  var fog = false;
+
+  function reveal(gx, gy, r) {
+    if (!seen) { return; }
+    for (var y = gy - r; y <= gy + r; y++) {
+      for (var x = gx - r; x <= gx + r; x++) {
+        if (x < 0 || y < 0 || x >= cols || y >= ROWS) { continue; }
+        seen[y * cols + x] = 1;
+      }
+    }
+  }
 
   var lavaCells = [];
 
@@ -789,8 +784,31 @@
 
       for (var gx = 0; gx < cols; gx++) {
         var m = grid[gy * cols + gx];
-        if (m === SKY) { continue; }
         var px = gx * BLOCK;
+
+        if (fog && seen && !seen[gy * cols + gx]) {
+          ctx.fillStyle = "#090A0D";
+          ctx.fillRect(px, py, BLOCK, BLOCK);
+          continue;
+        }
+
+        /* Through gaps you glimpse a deeper layer moving at its own rate.
+           Only air cells pay for this, so it costs almost nothing. */
+        if (m === SKY) {
+          if (gy > 24) {
+            var by = (Math.floor(rowOffset * 0.55) + ry + 9) % ROWS;
+            var bx = (gx + 7) % cols;
+            var bm = grid[by * cols + bx];
+            if (bm && bm !== 14) {
+              ctx.globalAlpha = 0.3;
+              ctx.drawImage(TEX[bm] || TEX[3], px, py);
+              ctx.globalAlpha = 1;
+              ctx.fillStyle = "rgba(6,8,14,0.45)";
+              ctx.fillRect(px, py, BLOCK, BLOCK);
+            }
+          }
+          continue;
+        }
 
         /* Lava is deferred and drawn as one continuous field, so it does not
            inherit the block grid the way solid terrain does. */
@@ -1106,6 +1124,9 @@
     canvas: canvas, DPR: DPR,
     set: function (i, m) { grid[i] = m; },
     buildTex: buildTex,
+    reveal: reveal,
+    isSeen: function (gx, gy) { return !fog || !seen || !!seen[gy * cols + gx]; },
+    setFog: function (v) { fog = v; drawWorld(); },
     shade: shade,
     redraw: function () { drawWorld(); },
     paintSprite: paintSprite
@@ -1131,5 +1152,5 @@
 })();
 </script>
 
-<script src="strata-game.js"></script></body>
+<script src="strata-game.js"></script><script src="strata-fx.js"></script><script src="strata-scroll.js"></script><script src="strata-cave.js"></script></body>
 </html>

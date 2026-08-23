@@ -333,6 +333,7 @@
     if (mode !== "play" || mining) { return; }
     var c = cellAt(e.clientX, e.clientY);
     if (!c) { if (hover) { hover = null; W.redraw(); } return; }
+    if (!W.isSeen(c.gx, c.gy)) { if (hover) { hover = null; W.redraw(); } return; }
     var m = W.grid[c.i];
     var want = placing ? !m : !!m;   /* placing targets air, mining targets solid */
     var next = want ? c : null;
@@ -351,11 +352,13 @@
     if (e.button !== undefined && e.button !== 0) { return; }
     var c = cellAt(e.clientX, e.clientY);
     if (!c) { return; }
+    if (!W.isSeen(c.gx, c.gy)) { flash("You have not uncovered that yet"); return; }
     var m = W.grid[c.i];
 
     if (placing) {
       if (m) { flash("Something is already there"); return; }
       W.set(c.i, ITEMS[placing].place);
+      W.reveal(c.gx, c.gy, placing === "torch" ? 3 : 1);
       take(placing, 1);
       flash("Placed " + ITEMS[placing].n);
       if (!count(placing)) { placing = null; }
@@ -378,6 +381,24 @@
     if (def.tier > bestPick()) { flash("Needs a " + TIERNAME[def.tier] + " pickaxe"); return; }
     mining = {c:c, m:m, t:0, need:def.hard / (1 + bestPick() * 0.8)};
     loop();
+  }
+
+  /* Lava drops into any hole opened beneath it. Repeats until the column is
+     stable — a single step is not enough when the cave below is deep. */
+  function settleLava(gx) {
+    var cols = W.cols, moved = true, guard = 0;
+    while (moved && guard++ < W.ROWS) {
+      moved = false;
+      for (var y = W.ROWS - 2; y >= 0; y--) {
+        var i = y * cols + gx;
+        if (W.grid[i] === 14 && W.grid[i + cols] === W.SKY) {
+          W.set(i + cols, 14);
+          W.set(i, W.SKY);
+          W.reveal(gx, y + 1, 1);
+          moved = true;
+        }
+      }
+    }
   }
 
   function stopMine() { mining = null; }
@@ -406,6 +427,8 @@
     if (p >= 1) {
       var def = BLOCKS[mining.m];
       W.set(mining.c.i, W.SKY);
+      W.reveal(mining.c.gx, mining.c.gy, 2);
+      settleLava(mining.c.gx);
       give(def.item, 1);
       S.mined++;
       flash("+1 " + ITEMS[def.item].n);
@@ -464,8 +487,54 @@
     document.body.classList.toggle("mode-read", m === "read");
     modeBtn.textContent = m === "play" ? "Reading" : "Play";
     try { localStorage.setItem(MODE_KEY, m); } catch (e) {}
-    if (m === "play" && !quiet) { flash("Click blocks to mine. Press E for inventory."); }
-    if (m !== "play") { hover = null; placing = null; W.redraw(); }
+    if (m === "play" && !quiet) { briefing(); }
+    if (m !== "play") { hover = null; placing = null; }
+    W.setFog(m === "play");
+    W.redraw();
+  }
+
+  var GOAL_KEY = "strata-briefed";
+
+  function briefing() {
+    var seenIt = false;
+    try { seenIt = localStorage.getItem(GOAL_KEY) === "1"; } catch (e) {}
+    if (seenIt) { return; }
+
+    var b = document.createElement("div");
+    b.id = "brief";
+    b.innerHTML =
+      '<div class="brief-box">' +
+        '<div class="brief-h">The dig</div>' +
+        '<p class="brief-p">You start on the surface. Everything below is unexplored ' +
+          'rock &#8212; you only uncover what you break into.</p>' +
+        '<ol class="brief-l">' +
+          '<li><b>Chop a tree</b> for logs, then open your inventory with <kbd>E</kbd></li>' +
+          '<li><b>Craft planks, sticks and a crafting table</b> in the 2&#215;2 grid, ' +
+            'then place the table and click it for the full 3&#215;3</li>' +
+          '<li><b>Work up the tool tiers</b> &#8212; wood reaches stone, stone reaches iron, ' +
+            'iron reaches diamond</li>' +
+          '<li><b>Smelt raw iron and gold</b> in a furnace. Coal is the good fuel</li>' +
+          '<li><b>Reach bedrock at Y &#8722;64</b> in full diamond armour</li>' +
+        '</ol>' +
+        '<p class="brief-p brief-dim">Watch for ruins with chests in them, and do not ' +
+          'stand on the lava. Scroll to descend. Your progress saves; the terrain ' +
+          'regenerates each visit.</p>' +
+        '<div class="brief-btns">' +
+          '<button type="button" id="brief-go">Start digging</button>' +
+          '<button type="button" id="brief-never">Do not show again</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(b);
+    requestAnimationFrame(function () { b.classList.add("on"); });
+
+    function close(remember) {
+      if (remember) { try { localStorage.setItem(GOAL_KEY, "1"); } catch (e) {} }
+      b.classList.remove("on");
+      setTimeout(function () { b.remove(); }, 320);
+    }
+    document.getElementById("brief-go").addEventListener("click", function () { close(false); });
+    document.getElementById("brief-never").addEventListener("click", function () { close(true); });
+    b.addEventListener("click", function (e) { if (e.target === b) { close(false); } });
   }
 
   var modeBtn = document.createElement("button");

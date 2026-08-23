@@ -1,0 +1,222 @@
+/* Strata — scenes.
+   Read mode is a descent through six places, but the theming stays quiet so
+   the content is always the loudest thing on screen. One accent per scene,
+   generous spacing, no rotation, no overlapping decoration. */
+
+/* --------------------------------------------------------------------------
+   Shared scene furniture
+   -------------------------------------------------------------------------- */
+.scene-label{
+  display:inline-flex; align-items:center; gap:9px;
+  font-family:var(--hud); font-size:.55rem; letter-spacing:.12em;
+  color:var(--depth); margin-block-end:14px;
+}
+.scene-label::before{
+  content:""; width:10px; height:10px; background:var(--depth);
+  box-shadow:0 0 10px var(--depth);
+}
+
+.stratum h2{ margin-block-end:6px; }
+.stratum-note{ margin-block-end:30px; }
+
+/* A single consistent card. Every scene uses it, tinted differently. */
+.card{
+  position:relative;
+  background:linear-gradient(180deg, rgba(28,30,37,.92), rgba(18,20,25,.94));
+  border:1px solid var(--edge);
+  border-left:3px solid var(--depth);
+  padding:20px 22px;
+  backdrop-filter:blur(6px);
+  transition:border-color .2s var(--ease), background .2s var(--ease);
+}
+.card:hover{ background:linear-gradient(180deg, rgba(34,37,45,.95), rgba(22,24,30,.96)); }
+
+/* --------------------------------------------------------------------------
+   1. Pit head
+   -------------------------------------------------------------------------- */
+.scene-head .stratum-inner{ max-width:760px; }
+.headframe{ display:none; }            /* abstract bars read as clutter */
+
+.pit-mouth{
+  width:min(320px,70%); height:56px; margin:34px 0 0;
+  background:linear-gradient(180deg,#07080B,#000);
+  border:1px solid rgba(232,114,44,.28);
+  display:grid; place-items:center;
+}
+.pit-mouth span{
+  font-family:var(--hud); font-size:.52rem; letter-spacing:.1em; color:var(--torch);
+}
+
+/* --------------------------------------------------------------------------
+   2. The shaft — two quiet timber edges, nothing in the middle
+   -------------------------------------------------------------------------- */
+.shaft{ position:relative; width:100%; max-width:var(--col); margin-inline:auto; }
+.shaft::before, .shaft::after{
+  content:""; position:absolute; top:0; bottom:0; width:6px;
+  background:repeating-linear-gradient(180deg,#5C4026 0 22px,#43301B 22px 26px);
+  opacity:.55;
+}
+.shaft::before{ left:0; }
+.shaft::after{ right:0; }
+.shaft-beams{ display:none; }          /* the beams collided with the cards */
+
+/* Signs are just cards now: no rotation, no percentage offsets. */
+.sign{
+  position:relative; margin:0 0 14px;
+  background:linear-gradient(180deg, rgba(46,33,18,.92), rgba(32,23,12,.94));
+  border:1px solid rgba(201,162,94,.22);
+  border-left:3px solid #C9A25E;
+  padding:20px 22px;
+}
+.sign-when{ font-family:var(--hud); font-size:.5rem; color:#C9A25E; letter-spacing:.08em; }
+.sign-role{
+  font-family:var(--display); font-size:1.35rem; font-weight:700;
+  font-variation-settings:"wdth" 106; color:#F3E7D2; margin-block-start:5px;
+}
+.sign-org{ font-family:var(--hud); font-size:.5rem; color:#9C8560; margin-block-start:5px; }
+.sign ul{
+  margin-block-start:13px; padding-inline-start:17px; display:grid; gap:7px;
+  color:#D6CAB6; font-size:.9rem; line-height:1.6; max-width:64ch;
+}
+.sign li::marker{ color:#C9A25E; }
+.sign strong{ color:#FFF3DF; font-weight:600; }
+
+/* --------------------------------------------------------------------------
+   3. Ore gallery
+   -------------------------------------------------------------------------- */
+.ore-wall{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+  gap:12px;
+}
+.vein-node{
+  position:relative; padding:20px 20px 18px;
+  background:linear-gradient(180deg, rgba(30,32,39,.92), rgba(20,22,27,.94));
+  border:1px solid var(--edge);
+  border-top:3px solid var(--ore);
+  transition:background .2s var(--ease), border-color .2s var(--ease);
+}
+.vein-node:hover{ background:linear-gradient(180deg, rgba(38,41,50,.95), rgba(24,26,32,.96)); }
+
+.vn-top{ display:flex; align-items:center; gap:12px; }
+.vn-top canvas{ width:34px; height:34px; image-rendering:pixelated; flex:0 0 auto; }
+.vn-title{ font-family:var(--display); font-size:1.14rem; font-weight:700; color:var(--text); }
+.vn-kind{
+  font-family:var(--hud); font-size:.46rem; color:var(--ore);
+  letter-spacing:.1em; margin-block-start:4px;
+}
+.vein-node p{
+  color:var(--text-2); font-size:.89rem; margin-block-start:12px;
+  line-height:1.65; max-width:52ch;
+}
+.vn-tech{
+  font-family:var(--hud); font-size:.46rem; color:var(--text-3);
+  line-height:1.9; margin-block-start:12px;
+}
+.vn-links{ display:flex; gap:16px; margin-block-start:12px; font-family:var(--hud); font-size:.5rem; }
+.vn-links a{ color:var(--text-3); border-block-end:1px solid transparent; padding-block-end:2px; }
+.vn-links a:hover{ color:var(--ore); border-color:currentColor; }
+
+/* --------------------------------------------------------------------------
+   4. Workshop
+   -------------------------------------------------------------------------- */
+.room{
+  position:relative; padding:24px 24px 26px;
+  background:linear-gradient(180deg, rgba(30,32,39,.92), rgba(18,20,25,.95));
+  border:1px solid var(--edge);
+  border-left:3px solid var(--depth);
+}
+.room-lamp{ display:none; }            /* the swinging lamp fought the text */
+
+.rack{ margin-block-end:20px; }
+.rack:last-of-type{ margin-block-end:0; }
+.rack-label{
+  font-family:var(--hud); font-size:.5rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--text-3); margin-block-end:9px;
+}
+.rack-row{ display:flex; flex-wrap:wrap; gap:5px; }
+.slotcard{
+  font-family:var(--hud); font-size:.5rem; letter-spacing:.03em;
+  padding:9px 12px; color:var(--text-2);
+  background:rgba(255,255,255,.045); border:1px solid var(--edge-2);
+  transition:color .15s var(--ease), border-color .15s var(--ease);
+}
+.slotcard:hover{ color:var(--text); border-color:var(--depth); }
+
+.bench-row{
+  display:flex; gap:26px; flex-wrap:wrap; margin-block-start:24px;
+  padding-block-start:20px; border-block-start:1px solid var(--edge-2);
+}
+.bench-item{ text-align:center; font-family:var(--hud); font-size:.44rem; color:var(--text-3); }
+.bench-item canvas{
+  width:40px; height:40px; image-rendering:pixelated;
+  display:block; margin:0 auto 8px;
+}
+
+/* --------------------------------------------------------------------------
+   5. Vault
+   -------------------------------------------------------------------------- */
+.vault{ display:grid; gap:10px; }
+.chest-card{
+  display:grid; grid-template-columns:44px minmax(0,1fr); gap:18px; align-items:start;
+  padding:20px 22px;
+  background:linear-gradient(180deg, rgba(30,26,18,.92), rgba(20,17,11,.94));
+  border:1px solid rgba(232,178,74,.18);
+  border-left:3px solid #E8B24A;
+}
+/* A small static chest glyph — no hinging lid. */
+.chest-lid{
+  position:relative; width:40px; height:34px; margin-block-start:2px;
+  background:linear-gradient(180deg,#8A5E2A,#6B4620);
+  border:1px solid #3A2712;
+}
+.chest-lid::before{
+  content:""; position:absolute; inset-inline:0; top:11px; height:2px; background:#3A2712;
+}
+.chest-lid::after{
+  content:""; position:absolute; top:8px; left:50%; translate:-50% 0;
+  width:9px; height:9px; background:#3A3A42;
+}
+.chest-glow{ display:none; }
+
+.chest-body h3{ font-family:var(--display); font-size:1.08rem; font-weight:700; color:var(--text); }
+.chest-body p{ color:var(--text-2); font-size:.88rem; margin-block-start:6px; line-height:1.6; max-width:58ch; }
+.chest-body .yr{ font-family:var(--hud); font-size:.46rem; color:#E8B24A; margin-block-start:8px; }
+
+/* --------------------------------------------------------------------------
+   6. Lava chamber
+   -------------------------------------------------------------------------- */
+.chamber{ position:relative; padding-block-end:64px; }
+.lava-floor{
+  position:absolute; left:0; right:0; bottom:0; height:22px;
+  background:linear-gradient(180deg,#FF8C1A,#B32E0C);
+  opacity:.75;
+}
+
+/* --------------------------------------------------------------------------
+   Entrances — one gentle reveal, used everywhere. Nothing scroll-linked.
+   -------------------------------------------------------------------------- */
+.sign, .vein-node, .room, .chest-card, .bench-item{
+  opacity:0; translate:0 16px;
+  transition:opacity .5s var(--ease), translate .5s var(--ease);
+}
+.sign.in-view, .vein-node.in-view, .room.in-view,
+.chest-card.in-view, .bench-item.in-view{ opacity:1; translate:0 0; }
+
+.rack .slotcard{
+  opacity:0; translate:0 8px;
+  transition:opacity .32s var(--ease) var(--d,0ms), translate .32s var(--ease) var(--d,0ms),
+             color .15s var(--ease), border-color .15s var(--ease);
+}
+.rack.in-view .slotcard{ opacity:1; translate:0 0; }
+
+@media(max-width:760px){
+  .shaft::before, .shaft::after{ display:none; }
+  .chest-card{ grid-template-columns:34px minmax(0,1fr); gap:14px; }
+  .bench-row{ gap:18px; }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .sign, .vein-node, .room, .chest-card, .bench-item, .rack .slotcard{
+    opacity:1; translate:0 0;
+  }
+}

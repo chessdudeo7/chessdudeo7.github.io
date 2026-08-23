@@ -248,3 +248,82 @@ body.mode-play #play-hint{ opacity:1; }
 }
 .mcell canvas{ width:13px; height:13px; image-rendering:pixelated; }
 .blab b{ font-family:var(--hud); font-size:.5rem; color:var(--text); }
+
+/* --------------------------------------------------------------------------
+   Ambience layer: particles, torch breathing, ore glints.
+   Sits above the world and below the veil, so the reading scrim still
+   applies to it and text stays legible.
+   -------------------------------------------------------------------------- */
+#fx{
+  position:fixed; inset:0; z-index:1; pointer-events:none;
+  mix-blend-mode:screen;
+}
+#world-veil{ z-index:2; }
+main{ z-index:3; }
+
+/* Panels materialise as blocks rather than fading in. */
+.assemble{
+  position:absolute; inset:0; z-index:6; display:grid; gap:0;
+  pointer-events:none;
+}
+.assemble i{
+  display:block; background:var(--void);
+  animation:blockOut .42s steps(3,end) forwards;
+}
+@keyframes blockOut{
+  from{ opacity:1; transform:scale(1); }
+  to  { opacity:0; transform:scale(.82); }
+}
+
+@media(prefers-reduced-motion:reduce){
+  #fx{ display:none; }
+  .assemble{ display:none; }
+}
+
+/* --------------------------------------------------------------------------
+   Goal briefing, shown the first time Play mode is entered
+   -------------------------------------------------------------------------- */
+#brief{
+  position:fixed; inset:0; z-index:80; display:grid; place-items:center; padding:20px;
+  background:rgba(4,5,9,.86); backdrop-filter:blur(5px);
+  opacity:0; transition:opacity .3s var(--ease);
+}
+#brief.on{ opacity:1; }
+.brief-box{
+  width:min(560px,100%); max-height:100%; overflow-y:auto;
+  background:linear-gradient(180deg,#1B1B22,#111116);
+  border:3px solid #0A0B0E;
+  box-shadow:inset 2px 2px 0 rgba(255,255,255,.12), inset -2px -2px 0 rgba(0,0,0,.5),
+             0 14px 0 rgba(0,0,0,.45);
+  padding:22px 24px 20px;
+  transform:translateY(10px); transition:transform .3s var(--ease);
+}
+#brief.on .brief-box{ transform:translateY(0); }
+.brief-h{
+  font-family:var(--hud); font-size:.9rem; color:var(--torch);
+  letter-spacing:.06em; margin-block-end:14px;
+}
+.brief-p{ font-family:var(--body); font-size:.9rem; color:var(--text-2); line-height:1.65; }
+.brief-dim{ color:var(--text-3); font-size:.82rem; margin-block-start:14px; }
+.brief-l{
+  margin:14px 0 0; padding-inline-start:20px; display:grid; gap:9px;
+  font-family:var(--body); font-size:.88rem; color:var(--text-2); line-height:1.55;
+}
+.brief-l li::marker{ color:var(--torch); font-family:var(--hud); font-size:.6rem; }
+.brief-l b{ color:var(--text); font-weight:600; }
+.brief-l kbd{
+  font-family:var(--hud); font-size:.55rem; padding:2px 6px;
+  border:1px solid var(--edge); background:rgba(255,255,255,.07); color:var(--text);
+}
+.brief-btns{ display:flex; flex-wrap:wrap; gap:8px; margin-block-start:20px; }
+.brief-btns button{
+  font-family:var(--hud); font-size:.55rem; padding:11px 16px; cursor:pointer;
+  background:linear-gradient(180deg,#4A7A2A,#33591C); color:#EAF6DC;
+  border:2px solid #0A0B0E;
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,.22), inset -1px -1px 0 rgba(0,0,0,.4);
+}
+.brief-btns button:hover{ filter:brightness(1.15); }
+.brief-btns button:last-child{
+  background:none; color:var(--text-3); border-color:var(--edge); box-shadow:none;
+}
+.brief-btns button:last-child:hover{ color:var(--text-2); border-color:var(--text-3); }
