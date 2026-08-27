@@ -1,14 +1,18 @@
-/* Strata — Minecraft GUI textures.
-   The menu background and the panel faces are the game's own block textures,
-   tiled. Rather than ship images, the world renderer has already generated
-   dirt, stone and planks, so those canvases are reused directly as CSS
-   backgrounds — the UI is literally made of the same blocks as the world. */
+/* Strata — Minecraft container textures for read mode.
+   Rather than ship images, the world renderer has already generated stone and
+   plank textures, so those canvases are reused directly as CSS backgrounds:
+   the panels are literally made of the same blocks as the world.
+
+   The texture is pulled hard toward neutral grey before it is handed over.
+   It is blended in `overlay` mode over a dark panel, where a full-strength
+   texture would read as noise; at this strength it only breaks up the flat
+   fill, which is all it is there to do. */
 (function () {
   "use strict";
   var W = window.WORLD;
   if (!W || !W.TEX) { return; }
 
-  function tile(texId, scale, darken) {
+  function tile(texId, scale, flatten) {
     var src = W.TEX[texId];
     if (!src) { return null; }
     var n = src.width * (scale || 2);
@@ -17,25 +21,19 @@
     var g = c.getContext("2d");
     g.imageSmoothingEnabled = false;
     g.drawImage(src, 0, 0, n, n);
-    if (darken) {
-      g.fillStyle = "rgba(0,0,0," + darken + ")";
-      g.fillRect(0, 0, n, n);
-    }
+    /* Wash toward mid grey so `overlay` leaves contrast, not colour. */
+    g.fillStyle = "rgba(128,128,128," + flatten + ")";
+    g.fillRect(0, 0, n, n);
     try { return "url(" + c.toDataURL("image/png") + ")"; }
-    catch (e) { return null; }          /* tainted canvas: fall back to flat colour */
+    catch (e) { return null; }          /* tainted canvas: fall back to flat fill */
   }
 
   var root = document.documentElement;
 
-  /* The classic darkened-dirt menu backdrop. */
-  var dirt = tile(2, 3, 0.62);
-  if (dirt) { root.style.setProperty("--mc-dirt", dirt); }
-
-  /* Stone for heavier panels, planks for the wooden ones. */
-  var stone = tile(3, 2, 0.30);
+  var stone = tile(3, 3, 0.80);
   if (stone) { root.style.setProperty("--mc-stone", stone); }
 
-  var planks = tile(18, 2, 0.20);
+  var planks = tile(18, 3, 0.78);
   if (planks) { root.style.setProperty("--mc-planks", planks); }
 
   document.body.classList.add("mc-gui");

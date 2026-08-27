@@ -1,169 +1,133 @@
-/* Strata — Minecraft GUI skin for READ MODE ONLY.
-   Everything here is scoped under `main`, so Play mode's inventory, crafting
-   grid, hotbar, HUD, toasts and tooltips are untouched — those already read
-   correctly and should not be restyled.
+/* Strata — Minecraft container skin for READ MODE ONLY.
+   Scoped under `main`, so Play mode's inventory, crafting grid, hotbar, HUD
+   and toasts are untouched.
 
-   The idea: content is presented as in-game GUI windows opened over the
-   world, which is exactly how Minecraft draws its own interfaces. */
+   Restraint is the point. Minecraft's own GUIs are dark, flat and quiet: a
+   panel, a hard bevel, a small label, sunken slots. The theme comes from the
+   construction, not from shouting. Body copy keeps the readable typeface —
+   the pixel font is used only where the game itself uses small type. */
 
 :root{
-  --mc-face:    #C6C6C6;   /* panel body                */
-  --mc-hi:      #FFFFFF;   /* top / left highlight      */
-  --mc-lo:      #555555;   /* bottom / right shade      */
-  --mc-edge:    #000000;   /* outer border              */
-  --mc-slot:    #8B8B8B;   /* sunken well               */
-  --mc-slot-lo: #373737;
-  --mc-ink:     #3F3F3F;   /* dark text on a grey panel */
-  --mc-ink-dim: #6A6A6A;
-  --mc-gold:    #FFFF55;
-  --mc-wood:    #9A6B33;
-  --mc-wood-lo: #5A3D1C;
+  --gui-face:  #191B21;   /* container body                   */
+  --gui-face-2:#14161B;   /* body, lower                      */
+  --gui-hi:    rgba(255,255,255,.10);   /* top / left bevel   */
+  --gui-lo:    rgba(0,0,0,.45);         /* bottom / right     */
+  --gui-edge:  #0A0B0E;   /* hard outer border                */
+  --gui-slot:  #101216;   /* sunken well                      */
+  --gui-tab:   #23262E;   /* title strip                      */
 }
 
-/* ── The GUI window ─────────────────────────────────────────────────────────
-   Hard 2px bevel, black border, no rounding, no blur, no soft gradient.
+/* ── The container ────────────────────────────────────────────────────────
+   Two-tone bevel + a black outline. One texture pass at very low strength,
+   so the surface reads as stone without turning into noise.
    ─────────────────────────────────────────────────────────────────────── */
 .mc-gui main .vein-node,
 .mc-gui main .room,
-.mc-gui main .chest-card{
-  background:var(--mc-face);
-  background-image:var(--mc-stone, none);
-  background-blend-mode:luminosity;
-  border:2px solid var(--mc-edge);
-  box-shadow:
-    inset 3px 3px 0 var(--mc-hi),
-    inset -3px -3px 0 var(--mc-lo),
-    0 4px 0 rgba(0,0,0,.45);
-  backdrop-filter:none;
-  color:var(--mc-ink);
-  padding:14px 16px 16px;
-}
-
-/* A container title strip, like the "Chest" / "Crafting" label in game. */
-.mc-gui main .vein-node::after,
-.mc-gui main .room::after,
-.mc-gui main .chest-card::after{
-  content:attr(data-gui);
-  position:absolute; inset-block-start:-2px; inset-inline-start:-2px;
-  font-family:var(--hud); font-size:.46rem; letter-spacing:.1em;
-  padding:5px 9px; color:#2A2A2A;
-  background:var(--mc-slot);
-  box-shadow:inset 2px 2px 0 var(--mc-hi), inset -2px -2px 0 var(--mc-slot-lo);
-  border:2px solid var(--mc-edge);
-}
-.mc-gui main .vein-node,
-.mc-gui main .room,
-.mc-gui main .chest-card{ position:relative; margin-block-start:16px; }
-
-/* ── Signs are oak, with sign-coloured text ─────────────────────────────── */
+.mc-gui main .chest-card,
 .mc-gui main .sign{
-  background:var(--mc-wood);
-  background-image:var(--mc-planks, none);
-  background-blend-mode:multiply;
-  border:2px solid #2A1B0C;
+  position:relative;
+  border:2px solid var(--gui-edge);
   box-shadow:
-    inset 3px 3px 0 rgba(255,255,255,.22),
-    inset -3px -3px 0 rgba(0,0,0,.45),
-    0 4px 0 rgba(0,0,0,.4);
+    inset 2px 2px 0 var(--gui-hi),
+    inset -2px -2px 0 var(--gui-lo),
+    0 3px 0 rgba(0,0,0,.35);
   backdrop-filter:none;
-  padding:16px 18px;
 }
-.mc-gui main .sign-when{ color:#2E1F0C; text-shadow:1px 1px 0 rgba(255,255,255,.22); }
-.mc-gui main .sign-role{
-  font-family:var(--hud); font-size:.78rem; line-height:1.7; color:#1E1408;
-  text-shadow:1px 1px 0 rgba(255,255,255,.25);
-}
-.mc-gui main .sign-org{ color:#402C13; }
-.mc-gui main .sign ul{ color:#2A1C0B; }
-.mc-gui main .sign li::marker{ color:#5A3D1C; }
-.mc-gui main .sign strong{ color:#120C05; }
-.mc-gui main .sign a{ color:#1B3D7A !important; }
 
-/* ── Text inside grey panels ───────────────────────────────────────────── */
-.mc-gui main .vn-title,
-.mc-gui main .chest-body h3{
-  font-family:var(--hud); font-size:.66rem; line-height:1.75; color:#1E1E1E;
-  text-shadow:1px 1px 0 rgba(255,255,255,.3);
+.mc-gui main .vein-node,
+.mc-gui main .room{
+  background-color:var(--gui-face);
+  background-image:var(--mc-stone, none);
+  background-blend-mode:overlay;
 }
-.mc-gui main .vein-node p,
-.mc-gui main .chest-body p,
-.mc-gui main .room p{ color:#3A3A3A; }
-.mc-gui main .vn-tech,
-.mc-gui main .chest-body .yr{ color:#5A5A5A; }
-.mc-gui main .vn-kind{ color:#2A2A2A; }
-.mc-gui main .rack-label{ color:#4A4A4A; text-shadow:1px 1px 0 rgba(255,255,255,.3); }
-.mc-gui main .bench-item{ color:#4A4A4A; }
-.mc-gui main .vein-node{ border-top:2px solid var(--mc-edge); }
-.mc-gui main .vein-node::before{ box-shadow:none; }
+.mc-gui main .chest-card{ background-color:#1B1710; }
+.mc-gui main .sign{
+  background-color:#241A0F;
+  background-image:var(--mc-planks, none);
+  background-blend-mode:overlay;
+}
 
-/* Skill chips become inventory slots. */
+/* The accent stays where the base design put it: a single coloured edge.
+   Kept above the bevel so it still reads. */
+.mc-gui main .vein-node{ border-top:3px solid var(--ore); }
+.mc-gui main .room{ border-left:3px solid var(--depth); }
+.mc-gui main .chest-card{ border-left:3px solid #E8B24A; }
+.mc-gui main .sign{ border-left:3px solid #C9A25E; }
+
+/* ── Container label ──────────────────────────────────────────────────────
+   Sits inline at the top of the panel, in the flow, like the "Chest" caption
+   above a container's slots. Never floats over a corner. */
+.mc-gui main [data-gui]::before{
+  content:attr(data-gui);
+  display:block; width:max-content; max-width:100%;
+  font-family:var(--hud); font-size:.44rem; letter-spacing:.14em;
+  color:var(--text-3);
+  padding:5px 9px; margin-block-end:14px;
+  background:var(--gui-tab);
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,.06),
+             inset -1px -1px 0 rgba(0,0,0,.5);
+}
+.mc-gui main .chest-card[data-gui]::before{ grid-column:1 / -1; }
+
+/* Only the skills rack carries a label: the project and vault cards already
+   state their own category, and a second small caption saying the same thing
+   was pure duplication. */
+
+/* ── Sunken slots ─────────────────────────────────────────────────────────
+   Skill chips and the small bench icons become inventory wells: recessed
+   rather than raised, which is the one cue that reads as Minecraft instantly.
+   ─────────────────────────────────────────────────────────────────────── */
 .mc-gui main .slotcard{
-  background:var(--mc-slot); color:#1E1E1E;
-  box-shadow:inset 2px 2px 0 var(--mc-hi), inset -2px -2px 0 var(--mc-slot-lo);
-  border:2px solid var(--mc-edge);
-  text-shadow:1px 1px 0 rgba(255,255,255,.3);
+  background:var(--gui-slot); border:1px solid var(--gui-edge);
+  box-shadow:inset 1px 1px 0 rgba(0,0,0,.55), inset -1px -1px 0 rgba(255,255,255,.07);
 }
-.mc-gui main .slotcard:hover{ background:#D4D4D4; color:#000; border-color:var(--mc-edge); }
+.mc-gui main .slotcard:hover{
+  background:#171A20; color:var(--text); border-color:var(--gui-edge);
+  box-shadow:inset 1px 1px 0 rgba(0,0,0,.55),
+             inset -1px -1px 0 rgba(255,255,255,.07),
+             0 0 0 1px var(--depth);
+}
+.mc-gui main .bench-item canvas,
+.mc-gui main .vn-top canvas{
+  background:var(--gui-slot);
+  box-shadow:inset 1px 1px 0 rgba(0,0,0,.55), inset -1px -1px 0 rgba(255,255,255,.07);
+  padding:4px;
+}
 
-/* The chest glyph reads better as a slot on a grey panel. */
-.mc-gui main .chest-lid{
-  background:var(--mc-wood); border:2px solid #2A1B0C;
-  box-shadow:inset 2px 2px 0 rgba(255,255,255,.2), inset -2px -2px 0 rgba(0,0,0,.4);
+/* ── Buttons as game widgets ─────────────────────────────────────────────
+   Raised, then visibly depressed on press — the bevel flips. */
+.mc-gui main .btn{
+  background:var(--gui-tab); color:var(--text);
+  border:2px solid var(--gui-edge);
+  box-shadow:inset 2px 2px 0 rgba(255,255,255,.09),
+             inset -2px -2px 0 rgba(0,0,0,.5);
+  transition:background .14s var(--ease);
 }
-
-/* ── Headings and section labels ───────────────────────────────────────── */
-.mc-gui main .stratum h2{
-  font-family:var(--hud);
-  font-size:clamp(.95rem,2.2vw,1.35rem); line-height:1.65; letter-spacing:.01em;
-  text-shadow:3px 3px 0 rgba(0,0,0,.7);
-}
-.mc-gui main .spawn-title{
-  font-family:var(--hud);
-  font-size:clamp(1.5rem,5vw,3rem); line-height:1.35; letter-spacing:.02em;
-  text-shadow:4px 4px 0 rgba(0,0,0,.75);
-}
-.mc-gui main .spawn-title span{ display:block; color:var(--torch); }
-.mc-gui main .depth-tag{ text-shadow:2px 2px 0 rgba(0,0,0,.7); }
-.mc-gui main .stratum-note{ text-shadow:2px 2px 0 rgba(0,0,0,.6); }
-
-/* ── Buttons and links, in game-widget form ────────────────────────────── */
-.mc-gui main .btn,
-.mc-gui main .vn-links a{
-  font-family:var(--hud); font-size:.5rem;
-  background:var(--mc-face); color:var(--mc-ink);
-  border:2px solid var(--mc-edge);
-  box-shadow:inset 2px 2px 0 var(--mc-hi), inset -2px -2px 0 var(--mc-lo);
-  text-shadow:1px 1px 0 rgba(255,255,255,.35);
-  padding:10px 14px; transition:none;
-}
-.mc-gui main .btn:hover,
-.mc-gui main .vn-links a:hover{
-  background:#D4D4D4; color:#000; border-color:var(--mc-edge);
-}
+.mc-gui main .btn:hover{ background:#2C313B; color:#fff; border-color:var(--gui-edge); }
 .mc-gui main .btn:active{
-  box-shadow:inset -2px -2px 0 var(--mc-hi), inset 2px 2px 0 var(--mc-lo);
+  box-shadow:inset -2px -2px 0 rgba(255,255,255,.09),
+             inset 2px 2px 0 rgba(0,0,0,.5);
 }
 .mc-gui main .btn-torch{
-  background:#5A8C3A; color:#FFF; text-shadow:2px 2px 0 rgba(0,0,0,.5);
-  box-shadow:inset 2px 2px 0 #8ACB63, inset -2px -2px 0 #2F5B1C;
+  background:#7A4218; color:#FFEBD6;
+  box-shadow:inset 2px 2px 0 rgba(255,255,255,.16), inset -2px -2px 0 rgba(0,0,0,.5);
 }
-.mc-gui main .btn-torch:hover{ background:#6BA345; color:#FFF; }
+.mc-gui main .btn-torch:hover{ background:#94501C; color:#fff; }
 
-.mc-gui main .bedrock-mail{
-  font-family:var(--hud); font-size:clamp(.7rem,2.4vw,1.05rem); line-height:1.7;
-  text-shadow:3px 3px 0 rgba(0,0,0,.7); border-block-end:3px solid var(--torch);
-}
-.mc-gui main .pit-mouth{ border:2px solid var(--mc-edge); }
-.mc-gui main .colophon{ text-shadow:2px 2px 0 rgba(0,0,0,.6); }
+/* ── Type ────────────────────────────────────────────────────────────────
+   Headings keep the display face so the page stays readable; the hard
+   1-pixel offset shadow is the Minecraft tell. */
+.mc-gui main .stratum h2,
+.mc-gui main .spawn-title,
+.mc-gui main .sign-role,
+.mc-gui main .vn-title{ text-shadow:2px 2px 0 rgba(0,0,0,.55); }
+.mc-gui main .depth-tag,
+.mc-gui main .rack-label,
+.mc-gui main .sign-when{ text-shadow:1px 1px 0 rgba(0,0,0,.6); }
 
-/* Nothing in a Minecraft GUI is rounded or blurred — read mode only. */
+/* Blocks are not rounded, and nothing underground is frosted. Read mode only. */
 .mc-gui main *{ border-radius:0 !important; }
 .mc-gui main .sign,
 .mc-gui main .vein-node,
 .mc-gui main .room,
 .mc-gui main .chest-card{ backdrop-filter:none !important; }
-
-@media(max-width:620px){
-  .mc-gui main .stratum h2{ font-size:.85rem; }
-  .mc-gui main .sign-role{ font-size:.66rem; }
-}
