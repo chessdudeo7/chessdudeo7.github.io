@@ -1,363 +1,113 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tutoring | Matthew Zhu</title>
-  
-  <link rel="stylesheet" href="style.css" />
-  
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#111714" />
+    <meta name="description" content="Personalized one-on-one chess and STEM tutoring with Matthew Zhu, a Canadian chess National Master and University of Waterloo computer science student." />
+    <title>Tutoring — Matthew Zhu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Geist+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="tutoring.css?v=14" />
+  </head>
+  <body>
+    <div class="page-progress" aria-hidden="true"><i></i></div>
+    <header class="tutor-header">
+      <a class="tutor-brand" href="index.html"><span>MZ</span><strong>Matthew Zhu<small>1:1 tutoring</small></strong></a>
+      <nav aria-label="Tutoring navigation"><a href="#subjects">Subjects</a><a href="#reviews">Reviews</a><a href="#contact">Contact</a></nav>
+      <a class="header-cta" href="#contact">Book a session <span>↘</span></a>
+    </header>
 
-  <style>
-    /* Page-specific styles not found in style.css 
-       (Specific to the Tutoring/Review logic)
-    */
-    .subject-card {
-      margin-bottom: 20px;
-    }
+    <main>
+      <section class="tutor-hero" id="top" aria-labelledby="tutor-title">
+        <img src="https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=2000&q=88" alt="Chess pieces on a board" />
+        <div class="hero-shade" aria-hidden="true"></div>
+        <div class="hero-content reveal">
+          <p class="eyebrow">Chess · Math · Physics · Chemistry</p>
+          <h1 id="tutor-title">Build real<br /><span>understanding.</span></h1>
+          <p>Personalized one-on-one lessons that turn difficult ideas into clear, manageable steps, from first principles to competitive performance.</p>
+          <div class="hero-actions"><a href="#contact">Start a conversation <span>↗</span></a><a href="#reviews">Read student reviews</a></div>
+        </div>
+        <div class="hero-proof reveal" aria-label="Tutoring highlights">
+          <div><strong>10+</strong><span>Students mentored</span></div>
+          <div><strong>4</strong><span>Subjects</span></div>
+          <div><strong>5.0</strong><span>Review average</span></div>
+        </div>
+        <a class="back-portfolio" href="index.html">← Portfolio</a>
+      </section>
 
-    .details {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease;
-      color: var(--muted);
-      margin-top: 10px;
-      font-size: 0.95rem;
-      border-left: 2px solid var(--accent-1);
-      padding-left: 15px;
-    }
+      <section class="subjects section" id="subjects" aria-labelledby="subjects-title">
+        <header class="section-heading reveal"><p>01 / WHAT I TEACH</p><h2 id="subjects-title">Four subjects.<br /><span>One clear approach.</span></h2><p>Choose a subject to see the experience I bring to each lesson.</p></header>
+        <div class="subject-list">
+          <article class="subject reveal open" data-subject="chess">
+            <button class="subject-summary" type="button" aria-expanded="true"><span class="subject-code">CH</span><span><small>Beginner → Advanced</small><strong>Chess</strong></span><i>−</i></button>
+            <div class="subject-details"><p>Structured coaching across openings, middlegames, endgames, calculation, and tournament preparation.</p><ul><li>Canadian National Master</li><li>Peak 2251 CFC · 2136 FIDE</li><li>Team Canada · 2019 World Cadet Championships</li><li>3× Top 3 in Ontario Championships</li><li>2× Top 5 in Canadian Championships</li><li>#1 in Ottawa for my age</li><li>Waterloo rep · 2026 Canadian University Championships</li></ul></div>
+          </article>
+          <article class="subject reveal" data-subject="math">
+            <button class="subject-summary" type="button" aria-expanded="false"><span class="subject-code">MA</span><span><small>Grade 1–12 + Contest Math</small><strong>Mathematics</strong></span><i>+</i></button>
+            <div class="subject-details"><p>Curriculum support, IB preparation, and contest problem solving built around reasoning rather than memorization.</p><ul><li>99 in Advanced Functions &amp; Calculus</li><li>IB 7 in HL Math</li><li>CMO Repêchage qualifier (Top 100)</li><li>2nd in Eastern Ontario (2025)</li><li>HMMT 2025 competitor</li><li>3× AIME qualifier</li><li>René Descartes Scholarship</li></ul></div>
+          </article>
+          <article class="subject reveal" data-subject="physics">
+            <button class="subject-summary" type="button" aria-expanded="false"><span class="subject-code">PH</span><span><small>Grade 9–12</small><strong>Physics</strong></span><i>+</i></button>
+            <div class="subject-details"><p>Concept-first support for mechanics, energy, waves, and the mathematical tools behind high-school physics.</p><ul><li>99 in Grade 11 Physics</li><li>97 in Grade 12 Physics</li><li>IB 7 in HL Physics</li></ul></div>
+          </article>
+          <article class="subject reveal" data-subject="chemistry">
+            <button class="subject-summary" type="button" aria-expanded="false"><span class="subject-code">CM</span><span><small>Grade 9–12</small><strong>Chemistry</strong></span><i>+</i></button>
+            <div class="subject-details"><p>Clear explanations and guided practice across reactions, stoichiometry, bonding, equilibrium, and IB coursework.</p><ul><li>97 in Grade 12 Chemistry</li><li>IB 7 in SL Chemistry</li></ul></div>
+          </article>
+        </div>
+      </section>
 
-    .subject-card.open .details {
-      max-height: 300px;
-    }
+      <section class="method section" aria-labelledby="method-title">
+        <div class="method-copy reveal"><p class="eyebrow">HOW LESSONS WORK</p><h2 id="method-title">Meet the student<br />where they are.</h2><p>I adapt explanations, examples, and practice to each student’s level and goals. Every session is designed to produce understanding they can use independently.</p></div>
+        <ol class="method-steps">
+          <li class="reveal"><span>01</span><div><strong>Diagnose</strong><p>Find the exact concept, habit, or position creating friction.</p></div></li>
+          <li class="reveal"><span>02</span><div><strong>Explain</strong><p>Break it into manageable pieces with clear reasoning and examples.</p></div></li>
+          <li class="reveal"><span>03</span><div><strong>Practice</strong><p>Apply the idea with guided problems, drills, and immediate feedback.</p></div></li>
+          <li class="reveal"><span>04</span><div><strong>Transfer</strong><p>Leave with specific next steps and the confidence to continue alone.</p></div></li>
+        </ol>
+      </section>
 
-    .toggle-btn {
-      background: transparent;
-      border: 1px solid var(--accent-1);
-      color: white;
-      padding: 6px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 10px;
-      font-family: inherit;
-      transition: all 0.2s ease;
-    }
+      <section class="reviews section" id="reviews" aria-labelledby="reviews-title">
+        <header class="reviews-heading reveal"><p>02 / FROM STUDENTS & FAMILIES</p><h2 id="reviews-title">What learning<br /><span>felt like.</span></h2><div class="review-controls"><button type="button" id="review-prev" aria-label="Previous review">←</button><span><b id="review-current">01</b> / 05</span><button type="button" id="review-next" aria-label="Next review">→</button></div></header>
+        <div class="review-layout reveal">
+          <div class="review-dots" role="tablist" aria-label="Choose a review"><button class="active" data-review-target="0" aria-label="Review by Vicky J"><span>01</span><strong>Vicky J</strong><small>Math · Parent</small></button><button data-review-target="1" aria-label="Review by Aditya T"><span>02</span><strong>Aditya T</strong><small>Chess · Parent</small></button><button data-review-target="2" aria-label="Review by Alexander B"><span>03</span><strong>Alexander B</strong><small>Chess · Student</small></button><button data-review-target="3" aria-label="Review by Joshua"><span>04</span><strong>Joshua</strong><small>IB STEM · Student</small></button><button data-review-target="4" aria-label="Anonymous review"><span>05</span><strong>Anonymous</strong><small>Coaching</small></button></div>
+          <div class="review-stage" aria-live="polite">
+            <article class="review active" data-review="0"><div class="review-meta"><span>★★★★★</span><time datetime="2026-03-29">03.29.2026</time></div><blockquote>“Matthew is currently tutoring my two daughters in math. He is an exceptionally knowledgeable math tutor who explains concepts with clarity and helps my girls build both understanding and confidence. I am very impressed by his dedication and genuine care for his students. He is flexible, patient, and always willing to help. Even when his schedule is busy, he still makes time to answer questions, which we truly appreciate. In addition to math, he also offers Java tutoring and thoughtfully adapts his teaching to meet each student’s individual needs. His commitment and adaptability make him an outstanding educator.”</blockquote><footer><strong>Vicky J</strong><span>Math tutoring · Parent</span></footer></article>
+            <article class="review" data-review="1"><div class="review-meta"><span>★★★★★</span><time datetime="2026-03-16">03.16.2026</time></div><blockquote>“Matthew is my son’s chess coach and is doing excellent job of working with my son to improve is chess. Matthew comes well prepared for the coaching sessions and customizes his instruction to my son’s level and style of play. He has worked with my son on all aspects of the game including suggesting openings and variations that play to my son's strengths, working on improving his middle game as well as enhancing his end game skills and knowledge. Mathew also always provides detailed feedback on areas of improvement and drills to practice. My son enjoys learning from Mathew and has seen steady progress. Thanks for the great job, Matthew!”</blockquote><footer><strong>Aditya T</strong><span>Chess coaching · Parent</span></footer></article>
+            <article class="review" data-review="2"><div class="review-meta"><span>★★★★★</span><time datetime="2026-03-11">03.11.2026</time></div><blockquote>“I really enjoyed how Matthew explained the variations as I studied the Sicilian Dragon with him. He made it easy for me to understand key positions. I had a good time learning, his teaching style is one that makes you not stress and remember things easily. Definitely recommend him as a chess coach.”</blockquote><footer><strong>Alexander B</strong><span>Chess coaching · Student</span></footer></article>
+            <article class="review" data-review="3"><div class="review-meta"><span>★★★★★</span><time datetime="2026-02-15">02.15.2026</time></div><blockquote>“Matthew currently tutors me in several IB subjects. He answers questions thoroughly and provides clear, detailed explanations that help you better understand the material and identify areas for improvement. He is highly knowledgeable and remarkably flexible, able to break down complex topics into manageable, easy-to-understand parts.”</blockquote><footer><strong>Joshua</strong><span>IB STEM tutoring · Student</span></footer></article>
+            <article class="review" data-review="4"><div class="review-meta"><span>★★★★★</span><time datetime="2025-10-04">10.04.2025</time></div><blockquote>“He is an excellent coach who consistently demonstrates great patience, deep knowledge, and professionalism. He takes the time to understand each student’s strengths and weaknesses, providing thoughtful guidance and encouragement along the way.”</blockquote><footer><strong>Anonymous</strong><span>Coaching</span></footer></article>
+          </div>
+        </div>
+        <button class="review-invite reveal" id="open-review" type="button"><span>Already worked with me?</span><strong>Leave a review ↗</strong></button>
+      </section>
 
-    .toggle-btn:hover {
-      background: var(--accent-1);
-    }
+      <section class="tutor-contact" id="contact" aria-labelledby="contact-title">
+        <div class="contact-copy reveal"><p>03 / GET IN TOUCH</p><h2 id="contact-title">Let’s plan your<br /><span>next breakthrough.</span></h2><p>Tell me what you’re working on, where you’re stuck, and what a successful lesson would look like.</p><a href="mailto:m49zhu@uwaterloo.ca">m49zhu@uwaterloo.ca ↗</a></div>
+        <form class="inquiry-form reveal" id="inquiry-form">
+          <label><span>Name</span><input name="name" autocomplete="name" required placeholder="Your name" /></label>
+          <label><span>Email</span><input type="email" name="email" autocomplete="email" required placeholder="you@example.com" /></label>
+          <label><span>Subject</span><select name="subject"><option>Chess</option><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Multiple subjects</option></select></label>
+          <label class="message-field"><span>What would you like help with?</span><textarea name="message" required placeholder="Grade or level, current topic, and your goals"></textarea></label>
+          <button type="submit">Compose inquiry <span>↗</span></button>
+          <small>Opens a prepared email in your mail app.</small>
+        </form>
+        <footer><span>© <span id="year"></span> Matthew Zhu</span><a href="index.html">Portfolio</a><a href="https://www.linkedin.com/in/matthewzhu99">LinkedIn ↗</a><a href="#top">Back to top ↑</a></footer>
+      </section>
+    </main>
 
-    /* Star Rating Styling */
-    .star-rating {
-      font-size: 2rem;
-      color: var(--accent-2);
-      cursor: pointer;
-      user-select: none;
-      margin-right: 5px;
-    }
-
-    .stars {
-      color: var(--accent-2);
-      margin-bottom: 5px;
-      font-size: 1.2rem;
-    }
-
-    /* Form Overrides to match theme */
-    input, textarea {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: white;
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 12px;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    input:focus, textarea:focus {
-      outline: none;
-      border-color: var(--accent-1);
-    }
-
-    .review {
-      margin-bottom: 20px;
-      padding: 15px;
-      background: var(--glass);
-      border-radius: 10px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .review h4 {
-      color: var(--accent-1);
-      margin-bottom: 5px;
-    }
-
-    .review small {
-      color: var(--muted);
-      display: block;
-      margin-top: 8px;
-      font-size: 0.8rem;
-    }
-  </style>
-
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
-  <script>(function(){ emailjs.init("2wiA-HEMgM41TWBjJ"); })();</script>
-</head>
-<body>
-
-<nav class="navbar">
-  <div class="logo">
-    <a href="index.html" style="text-decoration: none; color: inherit;">Matthew Zhu</a>
-  </div>
-  <ul class="nav-links">
-    <li><a href="index.html">Profile</a></li>
-    <li><a href="projects.html">Projects</a></li>
-    <li><a href="tutoring.html" style="color:var(--accent-1);">Tutoring</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
-
-<header class="hero fade-up">
-  <h1>Tutoring Services</h1>
-  <p>Elevate your chess game or master STEM with personalized 1-on-1 lessons.</p>
-</header>
-
-<section class="section fade-up">
-  <h2>What I Tutor</h2>
-  
-  <div class="project-card subject-card">
-    <h3>♟ Chess</h3>
-    <p style="color: var(--accent-2); font-weight: 600;">Beginner → Advanced</p>
-    <button class="toggle-btn">View Qualifications</button>
-    <div class="details">
-      <p>National Master<br>2000+ FIDE, 2200+ CFC<br>#1 in Ottawa for my age<br>Top 3 in Ontario for my age<br>8-time Provincial & National Competitor</p>
-    </div>
-  </div>
-
-  <div class="project-card subject-card">
-    <h3>📐 Math</h3>
-    <p style="color: var(--accent-2); font-weight: 600;">Grade 1–12 + Contest Math</p>
-    <button class="toggle-btn">View Qualifications</button>
-    <div class="details">
-      <p>99 in Advanced Functions & Calculus<br>IB 7 in HL Math<br>René Descartes Scholarship<br>3x AIME Qualifier</p>
-    </div>
-  </div>
-
-  <div class="project-card subject-card">
-    <h3>⚛ Physics</h3>
-    <p style="color: var(--accent-2); font-weight: 600;">Grade 9–12</p>
-    <button class="toggle-btn">View Qualifications</button>
-    <div class="details">
-      <p>99 in Grade 11 Physics<br>97 in Grade 12 Physics<br>IB 7 in HL Physics</p>
-    </div>
-  </div>
-
-  <div class="project-card subject-card">
-    <h3>🧪 Chemistry</h3>
-    <p style="color: var(--accent-2); font-weight: 600;">Grade 9–12</p>
-    <button class="toggle-btn">View Qualifications</button>
-    <div class="details">
-      <p>97 in Grade 12 Chemistry<br>IB 7 in SL Chemistry</p>
-    </div>
-  </div>
-</section>
-
-<section class="section fade-up">
-  <h2>Submit a Review</h2>
-  <form id="review-form" class="review-form">
-    <input type="text" id="review-name" placeholder="Your Name" required />
-    <div id="star-container" style="margin-bottom: 15px;">
-      <span class="star-rating" data-value="1">&#9734;</span>
-      <span class="star-rating" data-value="2">&#9734;</span>
-      <span class="star-rating" data-value="3">&#9734;</span>
-      <span class="star-rating" data-value="4">&#9734;</span>
-      <span class="star-rating" data-value="5">&#9734;</span>
-    </div>
-    <textarea id="review-text" placeholder="How was your session?" rows="4" required></textarea>
-    <button type="submit" class="button">Submit Review</button>
-  </form>
-
-  <div id="reviews-container" style="margin-top: 40px;">
-    <h3>Student Reviews</h3>
-    </div>
-</section>
-
-<section id="contact" class="section fade-up" style="text-align: center;">
-  <h2>Get In Touch</h2>
-  <p style="margin-bottom: 20px;">Interested in lessons? Send me a message below!</p>
-  
-  <form id="contact-form" style="max-width: 500px; margin: 0 auto; text-align: left;">
-    <input type="text" id="name" placeholder="Your Name" required />
-    <input type="email" id="email" placeholder="Your Email" required />
-    <textarea id="message" placeholder="Tell me about your tutoring needs..." rows="5" required></textarea>
-    <button type="submit" class="button" style="width: 100%;">Send Message</button>
-  </form>
-
-  <div style="margin-top: 40px; margin-bottom: 40px;">
-    <p style="margin-bottom: 15px; color: var(--muted);">Or email me directly at:</p>
-    <a href="mailto:m49zhu@uwaterloo.ca" class="button" style="display: inline-block;">m49zhu@uwaterloo.ca</a>
-  </div>
-</section>
-
-<footer class="fade-up">&copy; 2026 Matthew Zhu. All rights reserved. </footer>
-
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
-
-<script>
-window.addEventListener("DOMContentLoaded", () => {
-  
-  // 1. Firebase Initialization
-  const firebaseConfig = {
-    apiKey: "AIzaSyD7WVCD-O23S5g9QZTfPRiUf63tu7bLaCM",
-    authDomain: "personal-website-4889a.firebaseapp.com",
-    projectId: "personal-website-4889a",
-    storageBucket: "personal-website-4889a.firebasestorage.app",
-    messagingSenderId: "884740731820",
-    appId: "1:884740731820:web:057d078a088337dc660009",
-    measurementId: "G-2NYM4HBJBT"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-
-  // 2. Toggle Qualifications Logic
-  document.querySelectorAll(".toggle-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const card = btn.parentElement;
-      card.classList.toggle("open");
-      btn.textContent = card.classList.contains("open") ? "Hide Qualifications" : "View Qualifications";
-    });
-  });
-
-  // 3. Contact Form Submission (EmailJS)
-  const contactForm = document.getElementById("contact-form");
-  const sendButton = contactForm.querySelector("button");
-  contactForm.addEventListener("submit", function(e){
-    e.preventDefault();
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const message = document.getElementById("message").value.trim();
-    
-    sendButton.disabled = true;
-    sendButton.textContent = "Sending...";
-    
-    emailjs.send("service_0xxrfnr","template_82nwl6d",{
-      from_name: name,
-      from_email: email,
-      message: message
-    })
-    .then(() => {
-      alert("Message sent successfully!");
-      contactForm.reset();
-    })
-    .catch((err) => {
-      alert("Failed to send message. Please try again.");
-      console.error(err);
-    })
-    .finally(() => {
-      sendButton.disabled = false;
-      sendButton.textContent = "Send Message";
-    });
-  });
-
-  // 4. Star Rating Logic
-  const stars = document.querySelectorAll("#star-container .star-rating");
-  let selectedRating = 0;
-
-  function highlightStars(rating) {
-    stars.forEach(star => {
-      star.innerHTML = Number(star.dataset.value) <= rating ? "&#9733;" : "&#9734;";
-    });
-  }
-
-  stars.forEach(star => {
-    star.addEventListener("mouseover", () => highlightStars(Number(star.dataset.value)));
-    star.addEventListener("mouseout", () => highlightStars(selectedRating));
-    star.addEventListener("click", () => {
-      selectedRating = Number(star.dataset.value);
-      highlightStars(selectedRating);
-    });
-  });
-
-  // 5. Submit Review Logic (Firebase)
-  const reviewForm = document.getElementById("review-form");
-  reviewForm.addEventListener("submit", e => {
-    e.preventDefault();
-    const name = document.getElementById("review-name").value.trim();
-    const text = document.getElementById("review-text").value.trim();
-    
-    if(selectedRating === 0) {
-      alert("Please select a star rating.");
-      return;
-    }
-
-    db.collection("reviews").add({
-      name: name,
-      rating: selectedRating,
-      text: text,
-      created: new Date()
-    })
-    .then(() => {
-      reviewForm.reset();
-      selectedRating = 0;
-      highlightStars(0);
-      loadReviews();
-    })
-    .catch(err => {
-      alert("Error submitting review.");
-      console.error(err);
-    });
-  });
-
-  // 6. Load Reviews Logic
-  function renderStars(rating) {
-    return Array.from({length: 5}, (_, i) => i < rating ? "&#9733;" : "&#9734;").join("");
-  }
-
-  function escapeHtml(text) {
-    const map = {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"};
-    return text.replace(/[&<>"']/g, m => map[m]);
-  }
-
-  function loadReviews() {
-    const container = document.getElementById("reviews-container");
-    container.innerHTML = "<h3>Recent Reviews</h3>";
-    
-    db.collection("reviews").orderBy("created", "desc").get().then(snapshot => {
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const dateStr = data.created ? data.created.toDate().toLocaleDateString() : "";
-        const div = document.createElement("div");
-        div.classList.add("review");
-        div.innerHTML = `
-          <h4>${escapeHtml(data.name)}</h4>
-          <div class="stars">${renderStars(data.rating)}</div>
-          <p>${escapeHtml(data.text)}</p>
-          <small>${dateStr}</small>
-        `;
-        container.appendChild(div);
-      });
-    });
-  }
-
-  // 7. Scroll Reveal Logic
-  const reveals = document.querySelectorAll(".fade-up, .fade-left, .fade-right, .scale-up");
-  function animateOnScroll() {
-    const triggerBottom = window.innerHeight * 0.9;
-    reveals.forEach(el => {
-      const top = el.getBoundingClientRect().top;
-      if (top < triggerBottom) {
-        el.classList.add("reveal");
-      }
-    });
-  }
-
-  window.addEventListener("scroll", animateOnScroll);
-  animateOnScroll(); // Initial check
-  loadReviews();     // Initial load
-});
-</script>
-</body>
+    <dialog id="review-dialog">
+      <form method="dialog"><button class="dialog-close" aria-label="Close review form">×</button></form>
+      <p class="eyebrow">SHARE YOUR EXPERIENCE</p><h2>Leave a review.</h2>
+      <form id="review-form">
+        <label><span>Name</span><input name="name" required placeholder="Your name or Anonymous" /></label>
+        <fieldset><legend>Rating</legend><div class="stars"><input id="star5" type="radio" name="rating" value="5" checked /><label for="star5">★</label><input id="star4" type="radio" name="rating" value="4" /><label for="star4">★</label><input id="star3" type="radio" name="rating" value="3" /><label for="star3">★</label><input id="star2" type="radio" name="rating" value="2" /><label for="star2">★</label><input id="star1" type="radio" name="rating" value="1" /><label for="star1">★</label></div></fieldset>
+        <label><span>Your review</span><textarea name="review" required placeholder="How was your session?"></textarea></label>
+        <button type="submit">Email review for moderation ↗</button><small>Reviews are checked before being published.</small>
+      </form>
+    </dialog>
+    <script src="tutoring.js?v=6"></script>
+  </body>
 </html>

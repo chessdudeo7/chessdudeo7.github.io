@@ -1,266 +1,192 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio | Matthew Zhu</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f1e9" />
+    <meta name="description" content="Matthew Zhu is a University of Waterloo computer science student, software engineering intern at Ciena, full-stack and ML developer, and Canadian chess National Master." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Matthew Zhu — Computer Science Student" />
+    <meta property="og:description" content="Full-stack and ML projects, Rust + ML work at Ciena, competitive chess, and tutoring by University of Waterloo computer science student Matthew Zhu." />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Matthew Zhu — Computer Science Student" />
+    <meta name="twitter:description" content="Full-stack and ML projects, Rust + ML work at Ciena, competitive chess, and tutoring by University of Waterloo computer science student Matthew Zhu." />
+    <title>Matthew Zhu — Computer Science Student</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Geist+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css?v=clean-24" />
+  </head>
+  <body>
+    <a class="skip-link" href="#profile">Skip to main content</a>
+    <div class="boot-screen" aria-hidden="true"><span>INITIALIZING PORTFOLIO_OS</span><strong>100%</strong></div>
+    <div class="cursor" aria-hidden="true"></div>
+    <div class="scroll-progress" aria-hidden="true"><i></i></div>
 
-  <link rel="stylesheet" href="style.css">
-  
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <header class="site-header">
+      <a class="identity" href="#top" aria-label="Back to top"><span class="identity-mark">MZ</span><span>Matthew Zhu<br /><small>CS @ WATERLOO</small></span></a>
+      <nav aria-label="Main navigation"><a href="#profile">01 Profile</a><a href="#projects">02 Projects</a><a href="#experience">03 Work</a><a href="#contact">04 Contact</a></nav>
+      <a class="resume-link magnetic" href="resume.pdf" aria-label="Download resume">Resume <span>↓</span></a>
+    </header>
 
-  <style>
-    /* Page-Specific Styles */
-    .hero-text::after {
-      content: '|';
-      animation: blink 0.8s infinite;
-    }
-    @keyframes blink { 50% { opacity: 0; } }
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <canvas class="hero-field" aria-hidden="true"></canvas>
+        <div class="hero-status reveal"><span class="live-dot"></span><span>Software Engineering Intern @ Ciena</span><span class="location">University of Waterloo · 2A CS</span></div>
+        <div class="hero-copy">
+          <p class="kicker reveal">Hello, world. I’m</p>
+          <h1 id="hero-title" class="reveal">MATTHEW<br /><span>ZHU</span><i>_</i></h1>
+          <p class="hero-intro reveal">Computer science student at the University of Waterloo building <strong>full-stack software</strong> and <strong>machine-learning systems</strong>, currently porting ML models to Rust at Ciena, and a Canadian chess National Master.</p>
+        </div>
+        <div class="hero-console reveal" aria-label="Quick developer profile">
+          <div class="console-bar"><span></span><span></span><span></span><p>~/matthew/about.json</p></div>
+          <pre><code><span class="code-dim">01</span>  {
+<span class="code-dim">02</span>    <span class="code-key">"focus"</span>: [<span class="code-string">"full-stack"</span>, <span class="code-string">"AI/ML"</span>],
+<span class="code-dim">03</span>    <span class="code-key">"school"</span>: <span class="code-string">"University of Waterloo"</span>,
+<span class="code-dim">04</span>    <span class="code-key">"gpa"</span>: <span class="code-number">3.9</span>,
+<span class="code-dim">05</span>    <span class="code-key">"now"</span>: <span class="code-string">"SWE Intern @ Ciena"</span>,
+<span class="code-dim">06</span>    <span class="code-key">"chess"</span>: <span class="code-string">"National Master"</span>,
+<span class="code-dim">07</span>    <span class="code-key">"building"</span>: <span class="code-number">true</span>
+<span class="code-dim">08</span>  }</code></pre>
+        </div>
+        <a class="scroll-link reveal" href="#profile"><span>Get to know me</span><i>↓</i></a>
+        <div class="hero-index" aria-hidden="true">CS<span>/</span>01</div>
+      </section>
 
-    /* Resume Section */
-    .resume-box {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
+      <section class="signal-strip" aria-label="Technical interests"><div class="signal-track">
+        <span>FULL-STACK DEVELOPMENT</span><i>◆</i><span>MACHINE LEARNING</span><i>◆</i><span>RUST &amp; SYSTEMS</span><i>◆</i><span>COMPETITIVE CHESS</span><i>◆</i><span>STEM EDUCATION</span><i>◆</i>
+        <span aria-hidden="true">FULL-STACK DEVELOPMENT</span><i aria-hidden="true">◆</i><span aria-hidden="true">MACHINE LEARNING</span><i aria-hidden="true">◆</i><span aria-hidden="true">RUST &amp; SYSTEMS</span><i aria-hidden="true">◆</i><span aria-hidden="true">COMPETITIVE CHESS</span><i aria-hidden="true">◆</i><span aria-hidden="true">STEM EDUCATION</span><i aria-hidden="true">◆</i>
+      </div></section>
 
-    /* Experience Timeline */
-    .timeline-item {
-      border-left: 2px solid var(--accent-1);
-      padding-left: 20px;
-      margin-bottom: 30px;
-      position: relative;
-    }
-    .timeline-item::before {
-      content: '';
-      position: absolute;
-      left: -6px;
-      top: 0;
-      width: 10px;
-      height: 10px;
-      background: var(--accent-2);
-      border-radius: 50%;
-    }
-    .timeline-date {
-      color: var(--accent-2);
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 5px;
-      display: block;
-    }
+      <section class="profile section" id="profile" aria-labelledby="profile-title">
+        <div class="profile-heading reveal"><div><span class="section-number">01</span><p>Start with the person</p></div><h2 id="profile-title">The person<br /><span>behind the code.</span></h2></div>
+        <div class="profile-grid">
+          <div class="portrait reveal"><img src="https://images.unsplash.com/photo-1529699211952-734e80c4d42b?auto=format&fit=crop&w=1000&q=85" alt="Chess board representing Matthew's competitive chess background" loading="lazy" decoding="async" /><div class="portrait-label"><span>FIG. 01</span><span>NATIONAL MASTER · 2251 CFC PEAK</span></div></div>
+          <div class="bio reveal"><p class="bio-lead">I’m a 2A computer science student, software engineer, STEM tutor, and competitive chess player.</p><p>I like building things end to end: video pipelines, RAG backends, chess engines, and the systems glue that makes ML models run where they’re needed. This year I’m a software engineering intern at Ciena, porting optical-planning and neural-network code from C and TensorFlow into Rust.</p><p>Away from the keyboard I’m working toward the International Master title, and I’ve represented Team Canada at the World Cadet Chess Championships.</p><div class="education"><p class="label">EDUCATION</p><h3>BCS, Honours Computer Science (Co-op)</h3><p>University of Waterloo · Sept 2025 — Present · GPA 3.9/4.0</p><p>René Descartes National Scholarship recipient (1 of 10 in Canada, $25,000). Coursework: CS 135, CS 136, CS 136L, CS 245 (Logic &amp; Computation), CS 246 (Object-Oriented Software Development), MATH 137, MATH 138, MATH 145, MATH 146.</p></div></div>
+          <div class="stack reveal"><p class="label">TOOLBOX / CURRENTLY USING</p><div class="stack-group"><span>LANGUAGES</span><p>Python, C/C++, Rust, Java, JavaScript, TypeScript, PHP</p></div><div class="stack-group"><span>FRONTEND</span><p>React, Next.js, Node.js, HTML5, CSS3, Pygame, Hugo</p></div><div class="stack-group"><span>BACKEND &amp; DATA</span><p>Flask, FastAPI, REST APIs, PostgreSQL, SQLite, Firebase, Supabase, Pandas</p></div><div class="stack-group"><span>AI / ML</span><p>PyTorch, Hugging Face, LangChain, RAG, Modal, CNNs</p></div><div class="stack-group"><span>TOOLS &amp; PLATFORMS</span><p>Linux, Git, Docker, Cloudflare, Jira, LaTeX</p></div></div>
+        </div>
+        <div class="experience reveal"><div class="experience-heading"><p class="label">ACADEMIC.LOG</p><span>3 MILESTONES</span></div><article><time>SEP 2025 — NOW</time><h3>Computer Science Student</h3><p>University of Waterloo</p><span>Honours CS with Co-op, 3.9 GPA; René Descartes National Scholarship recipient.</span></article><article><time>2025 — 2026</time><h3>Certifications</h3><p>Stanford · Google</p><span>Stanford CS 230 Deep Learning and the Google for Developers Machine Learning Course.</span></article><article><time>2021 — 2025</time><h3>IB Diploma Student</h3><p>Merivale High School</p><span>Graduated with a 97% average and an IB Diploma score of 40/45.</span></article></div>
+      </section>
 
-    /* Coursework Grid */
-    .course-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .course-tag {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      color: var(--muted);
-      transition: all 0.2s ease;
-    }
-    .course-tag:hover {
-      background: var(--accent-1);
-      color: white;
-      border-color: var(--accent-1);
-    }
-  </style>
-</head>
+      <section class="projects section" id="projects" aria-labelledby="projects-title">
+        <div class="section-top reveal">
+          <div><span class="section-number">02</span><p>What I’ve built</p></div>
+          <h2 id="projects-title">Ideas turned<br /><span>into projects.</span></h2>
+          <p class="section-note">Not tutorial clones. Real problems, opinionated solutions, and lessons earned the hard way.</p>
+        </div>
+        <div class="project-list">
+          <article class="project reveal">
+            <div class="project-number">01</div>
+            <button class="project-visual" type="button" data-project="clipfarm" aria-label="Open ClipFarm project details"><img src="https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?auto=format&fit=crop&w=1400&q=85" alt="Volleyball players at sunset representing the ClipFarm highlight pipeline" loading="lazy" decoding="async" /><span class="project-action">Project details +</span><span class="project-command">docker compose up</span></button>
+            <div class="project-info"><div class="project-title-row"><p>FEATURED · FULL-STACK ML</p><span>2026 · 13 → 8.7 MIN</span></div><h3>ClipFarm</h3><p>Upload a full volleyball game and get back a feed of highlight clips. Ball tracking finds the rallies, crowd reaction and rally shape score them, and pose detection labels each spike, serve, dig, and block.</p><ul><li>Next.js</li><li>FastAPI</li><li>Celery/Redis</li><li>PyTorch</li><li>Postgres</li><li>Docker</li></ul><div class="project-links"><button type="button" data-project="clipfarm">Details +</button><a href="https://github.com/ClipFarmVB/ClipFarm">GitHub ↗</a></div></div>
+          </article>
+          <article class="project reveal">
+            <div class="project-number">02</div>
+            <button class="project-visual" type="button" data-project="dogwatch" aria-label="Open Dogwatch project details"><img src="https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=1400&q=85" alt="Quadcopter drone in flight representing the Dogwatch search fleet" loading="lazy" decoding="async" /><span class="project-action">Project details +</span><span class="project-command">whiteout run --seed 7</span></button>
+            <div class="project-info"><div class="project-title-row"><p>HACKATHON WINNER · AUTONOMY</p><span>HACK THE NORTH 2026</span></div><h3>Dogwatch</h3><p>Four autonomous assets (a quadcopter, a fixed-wing, and two towers) search an Arctic strait for an unlit vessel and hold a track on it. Winner of the Dominion Dynamics WHITEOUT track at Hack the North 2026.</p><ul><li>Python</li><li>MAVLink</li><li>Bayesian search</li><li>Computer vision</li></ul><div class="project-links"><button type="button" data-project="dogwatch">Details +</button><a href="https://github.com/Ollienel777/HTN_WHITEOUT">GitHub ↗</a></div></div>
+          </article>
+          <article class="project reveal">
+            <div class="project-number">03</div>
+            <button class="project-visual" type="button" data-project="hume" aria-label="Open HUME project details"><img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1400&q=85" alt="Abstract AI lettering representing the HUME belief-revision engine" loading="lazy" decoding="async" /><span class="project-action">Project details +</span><span class="project-command">python -m pytest probes/</span></button>
+            <div class="project-info"><div class="project-title-row"><p>HACKATHON WINNER · AI SAFETY</p><span>HACK THE 6IX 2026</span></div><h3>HUME</h3><p>A belief-revision engine for a scientific knowledge graph that updates confidence by how strong the evidence is, and can’t be talked into edits by text hidden in a document. Winner of the Cortex Biosciences track at Hack the 6ix 2026.</p><ul><li>Python</li><li>Knowledge graphs</li><li>Bayesian updates</li><li>NLP</li></ul><div class="project-links"><button type="button" data-project="hume">Details +</button><a href="https://github.com/Ollienel777/GROUND-TRUTH-HT6">GitHub ↗</a></div></div>
+          </article>
+          <article class="project reveal">
+            <div class="project-number">04</div>
+            <button class="project-visual" type="button" data-project="lumi" aria-label="Open Lumi project details"><img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1400&q=85" alt="Library shelves representing Lumi's searchable problem bank" loading="lazy" decoding="async" /><span class="project-action">Project details +</span><span class="project-command">uvicorn api.main:app</span></button>
+            <div class="project-info"><div class="project-title-row"><p>AUXILIUM · AI AGENTS · RAG</p><span>2026 · 1,743 PROBLEMS</span></div><h3>Lumi</h3><p>Auxilium’s chat assistant for mentor matching, booking, and contest-math tutoring. I built the tutoring side: it finds real Waterloo contest problems, crops them straight from the PDFs, and builds worksheets.</p><ul><li>FastAPI</li><li>LangChain</li><li>MongoDB Atlas</li><li>ONNX</li><li>PyMuPDF</li></ul><div class="project-links"><button type="button" data-project="lumi">Details +</button><a href="https://github.com/Emily3226/lumi">GitHub ↗</a></div></div>
+          </article>
+          <article class="project reveal">
+            <div class="project-number">05</div>
+            <button class="project-visual" type="button" data-project="knightmare" aria-label="Open KnightMare project details"><img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1400&q=85" alt="Source code representing the KnightMare chess AI project" loading="lazy" decoding="async" /><span class="project-action">Project details +</span><span class="project-command">modal run train_modal.py</span></button>
+            <div class="project-info"><div class="project-title-row"><p>AI / ML · CHESSHACKS</p><span>2025 · 100K+ GAMES</span></div><h3>KnightMare</h3><p>A neural chess bot built for ChessHacks. A residual CNN trained on 100,000+ grandmaster games predicts which move a strong player would make, and the bot plays the most likely legal move.</p><ul><li>Python</li><li>PyTorch</li><li>Modal</li><li>python-chess</li></ul><div class="project-links"><button type="button" data-project="knightmare">Details +</button><a href="https://github.com/chessdudeo7/ChessHacks">GitHub ↗</a></div></div>
+          </article>
+          <article class="project reveal">
+            <div class="project-number">06</div>
+            <button class="project-visual" type="button" data-project="grandmaster" aria-label="Open Grandmaster Suite project details"><img src="https://images.unsplash.com/photo-1580541832626-2a7131ee809f?auto=format&fit=crop&w=1400&q=85" alt="Chess pawns representing the Grandmaster Suite" loading="lazy" decoding="async" /><span class="project-action">Project details +</span><span class="project-command">flask run</span></button>
+            <div class="project-info"><div class="project-title-row"><p>CHESS TRAINING &amp; COACHING</p><span>2024 — NOW · 3 PROJECTS</span></div><h3>Grandmaster Suite</h3><p>The umbrella for my chess software: Chess4All’s endgame studies, the KnightMare neural bot, and the coaching site, with a Flask scheduling API and Firebase-backed profiles and reviews.</p><ul><li>Python</li><li>Flask</li><li>Pandas</li><li>Firebase</li><li>JavaScript</li></ul><div class="project-links"><button type="button" data-project="grandmaster">Details +</button><a href="https://github.com/chessdudeo7/Grandmaster-Suite">GitHub ↗</a></div></div>
+          </article>
+          <article class="project reveal">
+            <div class="project-number">07</div>
+            <button class="project-visual" type="button" data-project="chess4all" aria-label="Open Chess4All project details"><img src="https://images.unsplash.com/photo-1586165368502-1bad197a6461?auto=format&fit=crop&w=1400&q=85" alt="Black and white chess knights representing Chess4All" loading="lazy" decoding="async" /><span class="project-action">Project details +</span><span class="project-command">open endgames.html</span></button>
+            <div class="project-info"><div class="project-title-row"><p>CHESS STUDY WEBSITE</p><span>2024 · 30+ STUDIES</span></div><h3>Chess4All</h3><p>A chess study site with 30+ endgame lessons across six families, tactics puzzles, a master-games viewer, and Firebase sign-up. Built as a three-person high school team project.</p><ul><li>HTML</li><li>CSS</li><li>JavaScript</li><li>Firebase</li></ul><div class="project-links"><button type="button" data-project="chess4all">Details +</button><a href="https://github.com/MHS-CSCE/sdp-chess4all">GitHub ↗</a></div></div>
+          </article>
+          <article class="project reveal">
+            <div class="project-number">08</div>
+            <button class="project-visual" type="button" data-project="otmac" aria-label="Open OTMaC Website project details"><img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=1400&q=85" alt="Mathematics work representing the Ottawa Math Team Contest website" loading="lazy" decoding="async" /><span class="project-action">Project details +</span><span class="project-command">open contest.html</span></button>
+            <div class="project-info"><div class="project-title-row"><p>CONTEST WEBSITE</p><span>2024 · ORGANIZER</span></div><h3>OTMaC Website</h3><p>The official site for the Ottawa Math Team Contest, built and maintained for students, parents, and teachers across the region.</p><ul><li>HTML</li><li>CSS</li><li>JavaScript</li><li>GitHub Pages</li></ul><div class="project-links"><button type="button" data-project="otmac">Details +</button><a href="https://github.com/OTMaC/otmac.github.io">GitHub ↗</a></div></div>
+          </article>
+          <a class="project-more reveal" href="https://github.com/chessdudeo7"><span>MORE ON GITHUB</span><strong>More<br />projects<br />on GitHub ↗</strong><small>github.com/chessdudeo7</small></a>
+        </div>
+      </section>
 
-<body>
+      <section class="work section" id="experience" aria-labelledby="work-title">
+        <div class="work-heading reveal">
+          <div><span class="section-number">03</span><p>Where I’ve contributed</p></div>
+          <h2 id="work-title">Experience with<br /><span>real impact.</span></h2>
+          <p>From Rust ML backends in industry to matching algorithms, contest infrastructure, and one-on-one teaching.</p>
+        </div>
+        <div class="work-list">
+          <article class="work-role reveal">
+            <div class="work-meta"><time>MAY 2026 — PRESENT</time><span>CIENA · OTTAWA</span></div>
+            <div class="work-title"><span class="role-index">01</span><h3>Software Engineering<br />Intern</h3></div>
+            <div class="work-copy"><p>Bringing optical-planning and machine-learning code into Rust so it can run inside Ciena’s C-based network simulator and on legacy systems.</p><ul><li>Architected a Rust port of an 1,800-line C optical-planning model using PyO3 and cbindgen</li><li>Built 7 neural network models in Hugging Face Candle, replicating a TensorFlow/ONNX architecture</li><li>Engineered an FFI bridge exposing the Rust/Candle ML backend to a C network simulator</li><li>Validated zero divergence between ONNX and Candle inference with a ~500-case regression suite</li><li>Cross-compiled a statically linked Rust binary for ML inference on legacy Linux/Docker systems</li></ul></div>
+          </article>
+          <article class="work-role reveal">
+            <div class="work-meta"><time>JUN 2025 — PRESENT</time><span>AUXILIUM · REMOTE</span></div>
+            <div class="work-title"><span class="role-index">02</span><h3>Software<br />Developer</h3></div>
+            <div class="work-copy"><p>Designing the matching engine that pairs mentors with students, grounded in historical pairing outcomes, and building the contest-tutoring side of Lumi, Auxilium’s chat assistant.</p><ul><li>Analyzed historical pairings to identify the key drivers of successful mentor-student matches</li><li>Built a Pandas matching algorithm that ranks mentor-student compatibility</li><li>Raised successful match rates by 36% with weighted criteria and constraint filtering</li><li>Built an indexed SQLite database for efficient queries and repeatable matching runs</li><li>Built Lumi’s contest tutor: RAG over 1,743 Waterloo contest problems, cropped from the original PDFs</li></ul></div>
+          </article>
+          <article class="work-role reveal">
+            <div class="work-meta"><time>2025 — PRESENT</time><span>INDEPENDENT</span></div>
+            <div class="work-title"><span class="role-index">03</span><h3>STEM Tutor &amp;<br />Chess Coach</h3></div>
+            <div class="work-copy"><p>Personalized one-on-one instruction across mathematics, physics, chemistry, programming, and competitive chess.</p><ul><li>Mentored 10+ students</li><li>Adapted lessons to individual goals, from curriculum to contest math</li><li>National Master chess expertise, from openings to endgames</li></ul><a href="tutoring.html">Tutoring profile ↗</a></div>
+          </article>
+          <article class="work-role reveal">
+            <div class="work-meta"><time>2024 — PRESENT</time><span>OTMaC</span></div>
+            <div class="work-title"><span class="role-index">04</span><h3>Organizer &amp;<br />Web Developer</h3></div>
+            <div class="work-copy"><p>Built and maintain the public website for the Ottawa Math Team Contest as part of its organizing team.</p><ul><li>Designed for students, parents, and teachers</li><li>Structured registration and preparation resources</li><li>Deployed through collaborative GitHub workflows</li></ul><a href="https://github.com/OTMaC/otmac.github.io">OTMaC on GitHub ↗</a></div>
+          </article>
+        </div>
+        <div class="work-metrics reveal" aria-label="Work highlights">
+          <div><strong data-count="36" data-suffix="%">0%</strong><span>Higher match rate at Auxilium</span></div>
+          <div><strong data-count="7">0</strong><span>Neural networks ported to Rust</span></div>
+          <div><strong data-count="10" data-suffix="+">0+</strong><span>Students mentored</span></div>
+        </div>
+      </section>
 
-<nav class="navbar">
-  <div class="logo">
-    <a href="index.html">Matthew Zhu</a>
-  </div>
-  <ul class="nav-links">
-    <li><a href="index.html" style="color:var(--accent-1);">Profile</a></li>
-    <li><a href="projects.html">Projects</a></li>
-    <li><a href="tutoring.html">Tutoring</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
+      <section class="beyond section" aria-labelledby="beyond-title">
+        <div class="beyond-copy reveal"><p class="label">OFFLINE MODE</p><h2 id="beyond-title">When I’m not<br />at my <span>keyboard...</span></h2></div>
+        <div class="hobby-terminal reveal"><div class="terminal-line"><span>matthew@life:~$</span> ls interests/</div><button class="hobby active" aria-pressed="true" data-output="Canadian National Master, peak 2251 CFC / 2136 FIDE. Represented Team Canada at the 2019 World Cadet Championships, 3× top 3 in Ontario, 2× top 5 in Canada, and played for Waterloo at the 2026 Canadian University Championships.">chess/</button><button class="hobby" aria-pressed="false" data-output="Canadian Math Olympiad Repêchage qualifier (top 100), 2nd in Eastern Ontario (2025), competed at HMMT 2025 with the Carleton Math Enrichment Centre, and a 3× AIME qualifier.">math/</button><button class="hobby" aria-pressed="false" data-output="Two 2026 track wins: Hack the North (Dominion Dynamics WHITEOUT) with Dogwatch, and Hack the 6ix (Cortex Biosciences) with HUME. Plus KnightMare, a neural chess bot from ChessHacks 2025.">hackathons/</button><button class="hobby" aria-pressed="false" data-output="Mentoring 10+ students across STEM subjects and chess through personalized one-on-one lessons.">coaching/</button><button class="hobby" aria-pressed="false" data-output="Building ML pipelines, chess training tools, contest websites, and this portfolio from scratch.">side-projects/</button><p class="terminal-output" aria-live="polite"><span>→</span> <span id="hobby-output">Canadian National Master, peak 2251 CFC / 2136 FIDE. Represented Team Canada at the 2019 World Cadet Championships, 3× top 3 in Ontario, 2× top 5 in Canada, and played for Waterloo at the 2026 Canadian University Championships.</span><i></i></p></div>
+      </section>
 
-<header class="hero fade-up">
-  <h1 class="hero-text" id="typing-text"></h1>
-  <p>CS Student @ UWaterloo | Full Stack Developer | Competitive Chess Player</p>
-  
-  <div class="hero-links" style="margin-top: 20px;">
-    <a href="https://github.com/chessdudeo7" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-    <a href="https://www.linkedin.com/in/matthewzhu99" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
-  </div>
-</header>
-
-<section class="section fade-up">
-  <div class="project-card resume-box">
-    <div>
-      <h2 style="margin-bottom: 5px; border: none;">Resume</h2>
-      <p>Check out my experience, education, and technical skills.</p>
-    </div>
-    <a href="resume.pdf" download="resume.pdf" class="button">
-      <i class="fas fa-download"></i> Download Resume
-    </a>
-  </div>
-</section>
-
-<section class="section fade-up">
-  <h2>About Me</h2>
-  <ul>
-    <li>2A Computer Science student at the University of Waterloo</li>
-    <li>Passionate about software development and programming</li>
-    <li>Competitive chess player aiming for the International Master title</li>
-  </ul>
-</section>
-
-<section class="section fade-right">
-  <h2>Experience</h2>
-  
-  <div class="timeline-item">
-    <span class="timeline-date">Sept 2025 - Present</span>
-    <h3>Computer Science Student</h3>
-    <p>University of Waterloo</p>
-    <p>Rene Descartes National Scholarship Recipient</p>
-    <p>Looking to specialize in AI</p>
-  </div>
-
-  <div class="timeline-item">
-    <span class="timeline-date">2025 - Present</span>
-    <h3>STEM Tutor and Chess Coach</h3>
-    <p>Private</p>
-    <p>Mentored 10+ students in math, physics, chemistry, and chess</p>
-  </div>
-
-  <div class="timeline-item">
-    <span class="timeline-date">2021 - 2025</span>
-    <h3>High School Student</h3>
-    <p>Merivale High School</p>
-    <p>Received Ontario Secondary School Diploma with a 97% average</p>
-    <p>Received IB Diploma with a score of 40/45</p>
-  </div>
-</section>
-
-<section class="section fade-up">
-  <h2>Technical Skills</h2>
-  
-  <div style="margin-bottom: 30px;">
-    
-    <div style="margin-bottom: 15px;">
-      <div style="margin-bottom:8px;">
-        <span>Python / C / C++</span>
+      <section class="contact" id="contact" aria-labelledby="contact-title">
+        <div class="contact-meta reveal"><span>04 / CONTACT</span><span>UNIVERSITY OF WATERLOO · CS</span></div>
+        <div class="contact-main reveal"><p>Have an opportunity, an idea,<br />or just a good question?</p><h2 id="contact-title">LET’S<br /><span>TALK.</span></h2><a class="contact-button magnetic" href="mailto:m49zhu@uwaterloo.ca">m49zhu@uwaterloo.ca <span>↗</span></a></div>
+        <footer><p>© <span id="year"></span> MATTHEW ZHU</p><div><a href="https://github.com/chessdudeo7">GITHUB ↗</a><a href="https://www.linkedin.com/in/matthewzhu99">LINKEDIN ↗</a><a href="tutoring.html">TUTORING ↗</a><a href="resume.pdf">RESUME ↓</a></div><a href="#top">BACK TO TOP ↑</a></footer>
+      </section>
+    </main>
+    <dialog class="project-dialog" aria-labelledby="project-dialog-title" aria-describedby="project-dialog-summary">
+      <div class="project-dialog-bar"><span id="project-dialog-index">PROJECT / 01</span><button type="button" class="project-dialog-close" aria-label="Close project details">×</button></div>
+      <div class="project-dialog-content">
+        <p class="project-dialog-type" id="project-dialog-type"></p>
+        <h2 id="project-dialog-title"></h2>
+        <p class="project-dialog-summary" id="project-dialog-summary"></p>
+        <div class="project-dialog-context"><span>Project context</span><p id="project-dialog-context"></p></div>
+        <div class="project-dialog-grid">
+          <div><span>What it does</span><p id="project-dialog-purpose"></p></div>
+          <div><span>Build scope</span><p id="project-dialog-role"></p></div>
+          <div><span>Core challenge</span><p id="project-dialog-challenge"></p></div>
+          <div><span>Technical approach</span><p id="project-dialog-highlights"></p></div>
+        </div>
+        <div class="project-dialog-detail-grid">
+          <section><span>Key features</span><ul id="project-dialog-features"></ul></section>
+          <section><span>Outcome &amp; lessons</span><p id="project-dialog-outcome"></p></section>
+        </div>
+        <div class="project-dialog-next"><span>Next iteration</span><p id="project-dialog-next"></p></div>
+        <ul class="project-dialog-tags" id="project-dialog-tags"></ul>
+        <div class="project-dialog-links"><a id="project-dialog-primary" href="#"></a><a id="project-dialog-secondary" href="#"></a></div>
       </div>
-      <div style="background:rgba(255,255,255,0.1); height:6px; border-radius:3px;">
-        <div style="width:90%; height:100%; background:var(--accent-1); border-radius:3px;"></div>
-      </div>
-    </div>
-
-    <div style="margin-bottom: 15px;">
-      <div style="margin-bottom:8px;">
-        <span>HTML / CSS / JavaScript</span>
-      </div>
-      <div style="background:rgba(255,255,255,0.1); height:6px; border-radius:3px;">
-        <div style="width:85%; height:100%; background:var(--accent-2); border-radius:3px;"></div>
-      </div>
-    </div>
-
-    <div style="margin-bottom: 15px;">
-      <div style="margin-bottom:8px;">
-        <span>Firebase / SQL / Git</span>
-      </div>
-      <div style="background:rgba(255,255,255,0.1); height:6px; border-radius:3px;">
-        <div style="width:75%; height:100%; background:var(--accent-1); border-radius:3px;"></div>
-      </div>
-    </div>
-  </div>
-
-  <h3>Relevant Coursework</h3>
-  <div class="course-grid">
-    <span class="course-tag">CS 135: Designing Functional Programs</span>
-    <span class="course-tag">CS 136: Elementary Algorithm Design and Data Abstraction</span>
-    <span class="course-tag">CS 136L: Tools and Techniques for Software Development</span>
-    <span class="course-tag">MATH 137: Calculus 1 (Honours)</span>
-    <span class="course-tag">MATH 138: Calculus 2 (Honours)</span>
-    <span class="course-tag">MATH 145: Algebra (Advanced)</span>
-    <span class="course-tag">MATH 146: Linear Algebra (Advanced)</span>
-  </div>
-</section>
-
-<section class="section fade-up">
-  <h2>Featured Projects</h2>
-
-  <div class="project-card">
-    <h3>♟ Chess4All</h3>
-    <p style="color:var(--accent-2); font-size:0.9rem; margin-bottom:10px;">HTML • CSS • JavaScript • FireBase</p>
-    <p>A comprehensive chess training tool featuring 30+ endgame study pages, puzzles, and a database of master games</p>
-    <div style="margin-top:15px;">
-      <a href="https://github.com/chessdudeo7/Chess4All" class="button" style="padding: 8px 16px; font-size: 0.9rem;">View on GitHub</a>
-    </div>
-  </div>
-
-  <div class="project-card">
-    <h3>♟ KnightMare - ChessHacks</h3>
-    <p style="color:var(--accent-2); font-size:0.9rem; margin-bottom:10px;">Python • PyTorch • Modal</p>
-    <p>An AI chess model trained on 100,000+ games, using machine learning algorithms to predict optimal moves and evaluate positions</p>
-    <div style="margin-top:15px;">
-      <a href="https://github.com/chessdudeo7/ChessHacks" class="button" style="padding: 8px 16px; font-size: 0.9rem;">View on GitHub</a>
-    </div>
-  </div>
-
-  <div class="project-card" style="margin-top: 20px;">
-    <h3>💻 OTMaC Website</h3>
-    <p style="color:var(--accent-2); font-size:0.9rem; margin-bottom:10px;">HTML • CSS • JS</p>
-    <p>The official promotional website for the Ottawa Math Team Contest, providing interested students with contest details and preparation materials</p>
-    <div style="margin-top:15px;">
-      <a href="https://github.com/OTMaC/otmac.github.io" class="button" style="padding: 8px 16px; font-size: 0.9rem;">View on GitHub</a>
-    </div>
-  </div>
-</section>
-
-<section id="contact" class="section fade-up" style="text-align: center;">
-  <h2>Get In Touch</h2>
-  <p style="margin-bottom: 20px;">I'm currently looking for summer 2026 internships. If you are interested, please reach out to me via email.</p>
-  <a href="mailto:m49zhu@uwaterloo.ca" class="button">m49zhu@uwaterloo.ca</a>
-</section>
-
-<footer>
-  &copy; 2026 Matthew Zhu. All rights reserved.
-</footer>
-
-<script>
-  /* Typing Effect */
-  const text = "Hi, I'm Matthew Zhu";
-  const speed = 100;
-  let i = 0;
-  
-  function typeWriter() {
-    if (i < text.length) {
-      document.getElementById("typing-text").innerHTML += text.charAt(i);
-      i++;
-      setTimeout(typeWriter, speed);
-    }
-  }
-
-  /* Scroll Animations */
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('reveal');
-      }
-    });
-  });
-
-  const hiddenElements = document.querySelectorAll('.fade-up, .fade-right');
-  hiddenElements.forEach((el) => observer.observe(el));
-
-  window.onload = typeWriter;
-</script>
-
-</body>
+    </dialog>
+    <script src="script.js?v=clean-14"></script>
+  </body>
 </html>
