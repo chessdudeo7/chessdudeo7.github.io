@@ -367,3 +367,19 @@ body:has(.project-dialog[open]) { overflow:hidden; }
 	.project-more:hover { background:var(--text); color:#fff; }
 	.project-more:hover strong,.project-more:hover span,.project-more:hover small { color:#fff; }
 }
+
+/* Layout-safe motion: every element stays inside its own box */
+.project-visual,.project-reverse .project-visual { aspect-ratio:16/10; box-shadow:none; }
+.scroll-motion .project-visual { transform:perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)); }
+.scroll-motion .project-visual img { transform:scale(1.06) translateY(calc(var(--scene-y,0) * .2)); }
+.scroll-motion .project-visual:hover img { transform:scale(1.1) translateY(calc(var(--scene-y,0) * .2)); }
+.scroll-motion .project-info h3,
+.scroll-motion .work-title,.scroll-motion .work-copy,
+.scroll-motion .work-role:nth-child(2) .work-title,.scroll-motion .work-role:nth-child(2) .work-copy,
+.scroll-motion .stack-group,.scroll-motion .experience article,
+.scroll-motion .portrait img { transform:none; }
+.scroll-motion .section-top h2,.scroll-motion .work-heading h2,.scroll-motion .profile-heading h2,.scroll-motion .beyond-copy h2 { transform:translateX(calc(var(--scene-x,0) * .3)); }
+.scroll-motion .hobby-terminal { transform:translateY(calc(var(--scene-y,0) * .4)); }
+@media (min-width:851px) { .hero-intro { margin-top:clamp(3rem,3.6vw,4.5rem); } }
+.contact h2 { width:fit-content; }
+@media (max-width:1100px) { .contact-button { position:static; width:fit-content; margin-top:2.5rem; } }
