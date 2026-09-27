@@ -385,3 +385,65 @@ body:has(.project-dialog[open]) { overflow:hidden; }
 @media (max-width:1100px) { .contact-button { position:static; width:fit-content; margin-top:2.5rem; } }
 .hero::before { content:none; }
 @media (min-width:851px) { .scroll-link { position:relative; left:auto; bottom:auto; grid-column:1; grid-row:3; align-self:end; margin-top:1.5rem; } }
+
+/* Readability pass: minimum text sizes, contrast, tap targets */
+.identity small { font-size:.62rem; color:#5f6862; }
+.hero-status { font-size:.72rem; }
+.console-bar p { font-size:.68rem; }
+.hero-console pre { font-size:clamp(.62rem,.85vw,.78rem); }
+.code-dim { color:#8a877e; }
+.scroll-link { font-size:.74rem; }
+.signal-track { font-size:.7rem; }
+.section-top>div,.profile-heading>div,.work-heading>div { font-size:.74rem; }
+.section-number { font-size:.72rem; }
+.profile-heading>div { color:#9caaa1; }
+.portrait-label { font-size:.66rem; }
+.label { font-size:.7rem!important; }
+.beyond .label { color:var(--blue)!important; }
+.bio>p { font-size:.9rem; }
+.education p { font-size:.8rem; }
+.stack-group span { font-size:.68rem; }
+.stack-group p { font-size:.8rem; }
+.experience-heading { font-size:.7rem; }
+.experience time,.experience article p,.experience article span { font-size:.74rem; }
+.projects::before { font-size:.64rem; }
+.project-number { font-size:.66rem; }
+.project-action { font-size:.7rem; }
+.project-command { font-size:.68rem; }
+.project-title-row { font-size:.66rem; }
+.project-info>p { font-size:.86rem; }
+.project-info li { font-size:.64rem; }
+.project-links { font-size:.7rem; }
+.project-more span,.project-more small { font-size:.66rem; }
+.work { --muted:#535d57; }
+.work-heading>p,.work-copy>p { font-size:.9rem; }
+.work-meta { font-size:.68rem; }
+.role-index { font-size:.62rem; }
+.work-copy li { font-size:.82rem; line-height:1.5; }
+.work-copy a { font-size:.7rem; }
+.work-metrics span { font-size:.68rem; }
+.hobby-terminal { font-size:.82rem; }
+.contact-meta,.contact footer { font-size:.7rem; }
+.contact-button { font-size:.82rem; }
+.resume-link { font-size:.7rem; }
+.project-dialog-bar,.project-dialog-type,.project-dialog-links a { font-size:.68rem; }
+.project-dialog-context span,.project-dialog-next span,.project-dialog-detail-grid span,.project-dialog-grid span,.project-dialog-tags li { font-size:.64rem; }
+.project-dialog-context p,.project-dialog-next p,.project-dialog-grid p,.project-dialog-detail-grid p,.project-dialog-detail-grid li { font-size:.84rem; }
+
+/* Watermarks removed so no decorative text sits behind content */
+.profile::before,.work::after,.beyond::before,.contact::before { content:none; }
+
+/* Boot screen only on the first page view of a session */
+.booted .boot-screen { display:none; }
+
+@media (max-width:850px) {
+	.hero-console pre { font-size:clamp(.5rem,2.5vw,.62rem); }
+	.site-header nav { grid-template-columns:repeat(5,1fr); }
+	.site-header nav a { font-size:.62rem; }
+	.site-header nav a span { display:none; }
+	.resume-link { display:inline-flex; align-items:center; min-height:2.5rem; font-size:.66rem; }
+	.project-links a,.project-links button,.work-copy a { display:inline-flex; align-items:flex-end; min-height:2.75rem; padding-bottom:.4rem; }
+}
+.work-metrics span { margin-top:1rem; }
+.beyond-copy .label { margin-bottom:1.6rem; }
+.contact-main>p { margin-bottom:clamp(2rem,5.2vw,5.5rem); }

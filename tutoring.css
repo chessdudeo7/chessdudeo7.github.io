@@ -95,3 +95,49 @@ dialog { width:min(38rem,92vw); max-height:90vh; border:1px solid var(--ink); pa
 .subject-summary small { margin-bottom:.75rem; }
 .contact-copy h2 { margin-bottom:clamp(1.6rem,2.4vw,2.4rem); }
 .tutor-hero>img { width:100%; }
+
+/* Readability pass: minimum text sizes */
+.tutor-brand>span { font-size:.66rem; }
+.tutor-brand strong { font-size:.7rem; }
+.tutor-brand small { font-size:.6rem; }
+.tutor-header nav a { font-size:.66rem; }
+.header-cta { font-size:.64rem; }
+.eyebrow { font-size:.68rem; }
+.hero-actions a:first-child,.hero-actions a:last-child { font-size:.68rem; }
+.hero-proof span { font-size:.6rem; }
+.back-portfolio { font-size:.66rem; }
+.section-heading>p:first-child,.reviews-heading>p { font-size:.68rem; }
+.section-heading>p:last-child { font-size:.88rem; }
+.subject-code { font-size:.6rem; }
+.subject-summary small { font-size:.64rem; }
+.subject-details>p { font-size:.86rem; }
+.subject-details li { font-size:.62rem; }
+.subject.open .subject-details { max-height:22rem; }
+.method-copy>p:last-child { font-size:.88rem; }
+.method-steps li>span { font-size:.64rem; }
+.method-steps p { font-size:.82rem; }
+.review-controls span,.review-controls b { font-size:.64rem; }
+.review-dots button strong { font-size:.74rem; }
+.review-dots button small { font-size:.58rem; }
+.review-dots button>span { font-size:.62rem; }
+.review-meta,.review-meta span,.review footer span { font-size:.64rem; }
+.review-invite strong { font-size:.68rem; }
+.contact-copy>p:first-child { font-size:.68rem; }
+.contact-copy>p:nth-of-type(2) { font-size:.9rem; }
+.contact-copy>a { font-size:.7rem; }
+.inquiry-form label>span,#review-form label>span,#review-form legend { font-size:.62rem; }
+.inquiry-form button,#review-form button { font-size:.68rem; }
+.inquiry-form>small,#review-form>small { font-size:.64rem; }
+.tutor-contact>footer { font-size:.62rem; }
+
+/* Watermarks removed so no decorative text sits behind content */
+.subjects::before,.reviews::after,.review::before,.tutor-contact::before { content:none; }
+
+@media (max-width:850px) {
+	.subject.open .subject-details { max-height:30rem; }
+	.tutor-header nav a { font-size:.62rem; }
+}
+@media (max-width:430px) { .header-cta { font-size:.58rem; } }
+.hero-content .eyebrow { margin-bottom:clamp(1.5rem,2.6vw,3rem); }
+.method-copy h2 { margin-bottom:1.8rem; }
+.contact-copy h2 { margin-top:clamp(1rem,2.2vw,2.6rem); }

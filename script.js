@@ -5,7 +5,7 @@ document.documentElement.classList.add("js");
 document.getElementById("year").textContent = new Date().getFullYear();
 const defaultDocumentTitle = document.title;
 
-const navLinks = [...document.querySelectorAll(".site-header nav a")];
+const navLinks = [...document.querySelectorAll('.site-header nav a[href^="#"]')];
 const navSections = navLinks.map((link) => document.querySelector(link.getAttribute("href")));
 
 function updatePageState() {
@@ -326,6 +326,8 @@ const field = document.querySelector(".hero-field");
 const fieldContext = field.getContext("2d");
 const fieldPointer = { x: -1000, y: -1000 };
 let fieldNodes = [];
+let fieldVisible = true;
+let fieldFrame = 0;
 
 function sizeField() {
   const bounds = field.getBoundingClientRect();
@@ -366,7 +368,7 @@ function drawField(time = 0) {
     fieldContext.fillRect(point.x - 1.5, point.y - 1.5, pointSize, pointSize);
   });
 
-  if (!reducedMotion) requestAnimationFrame(drawField);
+  fieldFrame = !reducedMotion && fieldVisible ? requestAnimationFrame(drawField) : 0;
 }
 
 field.addEventListener("pointermove", (event) => {
@@ -379,6 +381,11 @@ field.addEventListener("pointermove", (event) => {
 window.addEventListener("resize", sizeField);
 sizeField();
 drawField();
+
+new IntersectionObserver(([entry]) => {
+  fieldVisible = entry.isIntersecting;
+  if (fieldVisible && !fieldFrame && !reducedMotion) fieldFrame = requestAnimationFrame(drawField);
+}).observe(field);
 
 document.querySelectorAll(".hobby").forEach((button) => {
   button.addEventListener("click", () => {
