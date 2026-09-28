@@ -141,3 +141,12 @@ dialog { width:min(38rem,92vw); max-height:90vh; border:1px solid var(--ink); pa
 .hero-content .eyebrow { margin-bottom:clamp(1.5rem,2.6vw,3rem); }
 .method-copy h2 { margin-bottom:1.8rem; }
 .contact-copy h2 { margin-top:clamp(1rem,2.2vw,2.6rem); }
+
+/* Review form fields and submission status */
+.review-form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+#review-form select { width:100%; border:0; border-bottom:1px solid var(--line); border-radius:0; padding:.7rem 0; background:transparent; color:var(--ink); outline:none; }
+#review-form select:focus-visible,#review-form input:focus-visible,#review-form textarea:focus-visible { border-bottom-color:var(--blue); }
+#review-form button:disabled { opacity:.6; cursor:progress; }
+#review-status[data-state="success"] { color:var(--green); font-weight:700; }
+#review-status[data-state="error"] { color:var(--orange); font-weight:700; }
+#review-status a { text-decoration:underline; }
