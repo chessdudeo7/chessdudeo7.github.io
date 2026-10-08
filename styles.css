@@ -126,8 +126,8 @@ body::before { opacity:.2; background-image:radial-gradient(rgba(17,23,20,.28) .
 .profile { overflow:hidden; border:0; background:#111a17; color:#f3f0e7; }
 .profile::before { content:"01"; position:absolute; right:-2vw; top:2rem; color:rgba(255,255,255,.035); font:400 26vw/1 var(--headline); pointer-events:none; }
 .profile-heading { position:relative; grid-template-columns:.6fr 2fr; margin-bottom:5rem; }
-.profile .section-number { background:#81a2ff; color:#111a17; }
-.profile-heading h2 span { color:#81a2ff; }
+.profile .section-number { background:#8da4ff; color:#111a17; }
+.profile-heading h2 span { color:#8da4ff; }
 .profile-grid { position:relative; grid-template-columns:.72fr 1.15fr .8fr; gap:4vw; }
 .portrait { position:relative; }
 .portrait::before { content:""; position:absolute; inset:.7rem -.7rem -.7rem .7rem; border:1px solid rgba(129,162,255,.6); }
@@ -135,13 +135,13 @@ body::before { opacity:.2; background-image:radial-gradient(rgba(17,23,20,.28) .
 .portrait-label { position:relative; color:#8f9c95; }
 .bio-lead { color:#f3f0e7!important; font-size:clamp(1.5rem,2.4vw,2.25rem)!important; }
 .bio>p,.education p,.stack-group span,.experience article span { color:#9caaa1; }
-.label { color:#81a2ff!important; }
+.label { color:#8da4ff!important; }
 .education,.stack,.stack-group,.experience-heading,.experience article { border-color:rgba(255,255,255,.15); }
 .stack { padding:1rem 1.2rem 0; border:1px solid rgba(255,255,255,.15); }
 .experience { position:relative; margin-top:6rem; }
-.experience-heading { border-bottom-color:#81a2ff; }
+.experience-heading { border-bottom-color:#8da4ff; }
 .experience article { grid-template-columns:.6fr 1.25fr .75fr 1.4fr; }
-.experience article:hover { padding-left:1rem; background:rgba(255,255,255,.035); color:#81a2ff; }
+.experience article:hover { padding-left:1rem; background:rgba(255,255,255,.035); color:#8da4ff; }
 
 .beyond { position:relative; min-height:75svh; padding-block:7rem; background:var(--bg); }
 .beyond::before { content:"NM"; position:absolute; left:4vw; bottom:1rem; color:rgba(36,72,200,.06); font:400 18vw/1 var(--headline); }
@@ -311,7 +311,7 @@ body:has(.project-dialog[open]) { overflow:hidden; }
 .scroll-motion .portrait img { transform:scale(1.04) translateY(var(--scene-y,0)); will-change:transform; }
 .scroll-motion .stack-group { transform:translateX(var(--item-lift,0)); will-change:transform; }
 .scroll-motion .experience article { position:relative; transform:translateY(var(--item-lift,0)); will-change:transform; }
-.scroll-motion .experience article::after { content:""; position:absolute; left:0; bottom:-1px; width:100%; height:1px; background:#81a2ff; transform:scaleX(var(--item-progress,0)); transform-origin:left; }
+.scroll-motion .experience article::after { content:""; position:absolute; left:0; bottom:-1px; width:100%; height:1px; background:#8da4ff; transform:scaleX(var(--item-progress,0)); transform-origin:left; }
 
 .scroll-motion .beyond::before { transform:translateX(var(--scene-x,0)); will-change:transform; }
 .scroll-motion .hobby-terminal { transform:translateY(var(--scene-y,0)) rotate(calc((var(--scene-progress,0) - .5) * 1.2deg)); will-change:transform; }
@@ -447,3 +447,63 @@ body:has(.project-dialog[open]) { overflow:hidden; }
 .work-metrics span { margin-top:1rem; }
 .beyond-copy .label { margin-bottom:1.6rem; }
 .contact-main>p { margin-bottom:clamp(2rem,5.2vw,5.5rem); }
+
+/* Visual pass: type scale, warmer surfaces, calmer hero, consistent imagery */
+:root { --muted:#555f59; }
+.hero::after { content:none; }
+.site-header { box-shadow:.3rem .3rem 0 rgba(17,23,20,.1); }
+.beyond h2 span { color:var(--blue); }
+.work { background:var(--panel); }
+.work::before { content:none; }
+
+/* Body copy up a step, labels no smaller than ~11px */
+.bio>p,.work-copy>p,.project-dialog-summary { font-size:1rem; }
+.bio>p { color:#b3beb7; }
+.section-note,.work-heading>p,.project-info>p { font-size:.95rem; }
+.work-copy li,.project-dialog-context p,.project-dialog-next p,.project-dialog-grid p,.project-dialog-detail-grid p,.project-dialog-detail-grid li { font-size:.92rem; }
+.education p { font-size:.88rem; }
+.stack-group p { font-size:.86rem; }
+.hero-status,.scroll-link,.project-links,.work-copy a { font-size:.75rem; }
+.site-header,.console-bar p,.signal-track,.label,.stack-group span,.project-action,.project-command,.work-metrics span,.contact-meta,.contact footer,.resume-link,.project-dialog-bar,.project-dialog-type,.project-dialog-links a { font-size:.72rem; }
+.label { font-size:.72rem!important; }
+.identity small,.role-index { font-size:.68rem; }
+.portrait-label,.projects::before,.project-number,.project-title-row,.project-more span,.project-more small,.project-dialog-context span,.project-dialog-next span,.project-dialog-detail-grid span,.project-dialog-grid span,.project-dialog-tags li { font-size:.7rem; }
+
+/* Project images share one ink-and-blue treatment; colour returns on hover */
+.project-visual { background:var(--panel); }
+.project-visual img { filter:grayscale(1) contrast(1.08); }
+.project-visual::after { content:""; position:absolute; inset:0; background:var(--blue); mix-blend-mode:color; opacity:.4; pointer-events:none; transition:opacity .4s; }
+.project-visual:hover img,.project-visual:focus-visible img { filter:none; }
+.project-visual:hover::after,.project-visual:focus-visible::after { opacity:0; }
+.project-action,.project-command { z-index:1; }
+
+/* Tech tags read as chips, not links */
+.project-info ul { gap:.4rem; }
+.project-info li { margin-right:0; border:0; padding:.3rem .55rem; background:var(--panel); font-size:.7rem; }
+
+/* Work rows: employer leads, titles step down, no forced height */
+.work-role { min-height:0; padding:2.5rem 0; }
+.work-meta { justify-content:flex-start; gap:.6rem; font-size:.72rem; }
+.work-meta span { order:-1; color:var(--text); font-size:.95rem; font-weight:600; }
+.work-title h3 { font-size:clamp(1.9rem,3vw,3.2rem); line-height:.95; }
+
+/* Less simultaneous motion */
+.scroll-motion .section-top h2,.scroll-motion .work-heading h2,.scroll-motion .profile-heading h2,.scroll-motion .beyond-copy h2 { transform:none; }
+
+@media (min-width:851px) {
+	.hero { grid-template-columns:minmax(0,1.6fr) minmax(19.5rem,.6fr); }
+	.hero-console { animation:none; }
+	.hero-console pre { padding:1.1rem 1rem; font-size:clamp(.7rem,.85vw,.82rem); }
+}
+@media (max-width:1000px) and (min-width:851px) {
+	.site-header nav { gap:1.6rem; }
+	.site-header nav a span { display:none; }
+}
+@media (max-width:850px) {
+	#profile,#projects,#experience,#contact { scroll-margin-top:8rem; }
+	.hero h1 { font-size:clamp(2.6rem,15.5vw,4rem); }
+	.hero-console pre { font-size:clamp(.62rem,3.1vw,.75rem); }
+	.site-header nav a { font-size:.68rem; }
+	.work-meta { justify-content:space-between; align-items:baseline; }
+	.work-meta span { order:0; }
+}

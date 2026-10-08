@@ -150,3 +150,29 @@ dialog { width:min(38rem,92vw); max-height:90vh; border:1px solid var(--ink); pa
 #review-status[data-state="success"] { color:var(--green); font-weight:700; }
 #review-status[data-state="error"] { color:var(--orange); font-weight:700; }
 #review-status a { text-decoration:underline; }
+
+/* Visual pass: type scale, warmer surfaces, form focus and layout */
+:root { --muted:#555f59; }
+.tutor-header { box-shadow:.3rem .3rem 0 rgba(17,23,20,.1); }
+.reviews { background:#ebe7dc; }
+.eyebrow { color:#8da4ff; }
+.inquiry-form input:focus-visible,.inquiry-form select:focus-visible,.inquiry-form textarea:focus-visible { outline:2px solid #fff; outline-offset:3px; border-bottom-color:#fff; }
+
+/* Body copy up a step, labels no smaller than ~11px */
+.section-heading>p:last-child,.subject-details>p,.method-copy>p:last-child,.contact-copy>p:nth-of-type(2) { font-size:.95rem; }
+.method-steps p { font-size:.9rem; }
+.tutor-header nav a,.eyebrow,.hero-actions a:first-child,.hero-actions a:last-child,.section-heading>p:first-child,.reviews-heading>p,.review-invite strong,.contact-copy>p:first-child,.contact-copy>a,.inquiry-form button,#review-form button { font-size:.72rem; }
+.header-cta,.back-portfolio,.subject-summary small,.subject-details li,.method-steps li>span,.review-controls span,.review-controls b,.review-meta,.review-meta span,.review footer span,.inquiry-form>small,#review-form>small { font-size:.7rem; }
+.tutor-brand small,.hero-proof span,.subject-code,.review-dots button small,.review-dots button>span,.inquiry-form label>span,#review-form label>span,#review-form legend,.tutor-contact>footer { font-size:.68rem; }
+.subject.open .subject-details { max-height:26rem; }
+
+@media (max-width:1100px) {
+	.inquiry-form { grid-template-columns:minmax(0,1fr); }
+	.inquiry-form label,.message-field { grid-column:1; }
+}
+@media (max-width:850px) {
+	#subjects,#reviews,#contact { scroll-margin-top:2rem; }
+	.subject.open .subject-details { max-height:34rem; }
+	.tutor-header nav a { font-size:.68rem; }
+}
+@media (max-width:430px) { .header-cta { font-size:.6rem; } }

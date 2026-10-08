@@ -355,7 +355,7 @@ function drawField(time = 0) {
     points.slice(index + 1).forEach((other) => {
       const distance = Math.hypot(point.x - other.x, point.y - other.y);
       if (distance < 135) {
-        fieldContext.strokeStyle = `rgba(23,70,209,${(1 - distance / 135) * 0.18})`;
+        fieldContext.strokeStyle = `rgba(36,72,200,${(1 - distance / 135) * 0.18})`;
         fieldContext.beginPath();
         fieldContext.moveTo(point.x, point.y);
         fieldContext.lineTo(other.x, other.y);
@@ -363,7 +363,7 @@ function drawField(time = 0) {
       }
     });
     const pointerDistance = Math.hypot(point.x - fieldPointer.x, point.y - fieldPointer.y);
-    fieldContext.fillStyle = pointerDistance < 150 ? "#e33d2e" : "#1746d1";
+    fieldContext.fillStyle = pointerDistance < 150 ? "#c93622" : "#2448c8";
     const pointSize = pointerDistance < 150 ? 5 : 3;
     fieldContext.fillRect(point.x - 1.5, point.y - 1.5, pointSize, pointSize);
   });
