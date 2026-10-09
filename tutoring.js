@@ -5,7 +5,13 @@ const sections = navLinks.map((link) => document.querySelector(link.getAttribute
 
 document.getElementById("year").textContent = new Date().getFullYear();
 
+let lastScrollY = scrollY;
+
 function updatePageState() {
+  if (Math.abs(scrollY - lastScrollY) > 6) {
+    document.documentElement.classList.toggle("nav-collapsed", scrollY > 160 && scrollY > lastScrollY);
+    lastScrollY = scrollY;
+  }
   const range = document.documentElement.scrollHeight - innerHeight;
   document.documentElement.style.setProperty("--progress", `${range > 0 ? scrollY / range * 100 : 0}%`);
   let activeIndex = -1;

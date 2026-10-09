@@ -176,3 +176,11 @@ dialog { width:min(38rem,92vw); max-height:90vh; border:1px solid var(--ink); pa
 	.tutor-header nav a { font-size:.68rem; }
 }
 @media (max-width:430px) { .header-cta { font-size:.6rem; } }
+
+/* Phone header: the section row tucks away while scrolling down, returns on scroll up */
+@media (max-width:850px) {
+	.tutor-header { transition:grid-template-rows .25s; }
+	.tutor-header nav { overflow:hidden; }
+	.nav-collapsed .tutor-header:not(:focus-within) { grid-template-rows:3.6rem 0; }
+	.nav-collapsed .tutor-header:not(:focus-within) nav { border-top-color:transparent; }
+}

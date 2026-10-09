@@ -8,7 +8,13 @@ const defaultDocumentTitle = document.title;
 const navLinks = [...document.querySelectorAll('.site-header nav a[href^="#"]')];
 const navSections = navLinks.map((link) => document.querySelector(link.getAttribute("href")));
 
+let lastScrollY = scrollY;
+
 function updatePageState() {
+  if (Math.abs(scrollY - lastScrollY) > 6) {
+    document.documentElement.classList.toggle("nav-collapsed", scrollY > 160 && scrollY > lastScrollY);
+    lastScrollY = scrollY;
+  }
   const range = document.documentElement.scrollHeight - innerHeight;
   document.documentElement.style.setProperty("--scroll-progress", `${range > 0 ? scrollY / range * 100 : 0}%`);
   let activeIndex = -1;
